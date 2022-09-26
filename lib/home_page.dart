@@ -1,11 +1,9 @@
-import 'package:ddfapp/first_row.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/grid_input.dart';
 import 'package:ddfapp/label_column.dart';
 import 'package:ddfapp/label_row.dart';
 import 'package:ddfapp/side_widget.dart';
 import 'dart:io';
-import 'dart:convert';
 
 import 'package:hex/hex.dart';
 
@@ -132,81 +130,81 @@ class _HomePageState extends State<HomePage> {
                         ),
                         GridInput(
                           readOnly: readOnlyInput,
-                          textC0: TextEditingController(),
-                          textC1: TextEditingController(),
-                          textC2: TextEditingController(),
-                          textC3: TextEditingController(),
-                          textC4: TextEditingController(),
-                          textC5: TextEditingController(),
-                          textC6: TextEditingController(),
-                          textC7: TextEditingController(),
-                          textC8: TextEditingController(),
-                          textC9: TextEditingController(),
+                          textC0: textOutput[20],
+                          textC1: textOutput[21],
+                          textC2: textOutput[22],
+                          textC3: textOutput[23],
+                          textC4: textOutput[24],
+                          textC5: textOutput[25],
+                          textC6: textOutput[26],
+                          textC7: textOutput[27],
+                          textC8: textOutput[28],
+                          textC9: textOutput[29],
                         ),
                         GridInput(
                           readOnly: readOnlyInput,
-                          textC0: TextEditingController(),
-                          textC1: TextEditingController(),
-                          textC2: TextEditingController(),
-                          textC3: TextEditingController(),
-                          textC4: TextEditingController(),
-                          textC5: TextEditingController(),
-                          textC6: TextEditingController(),
-                          textC7: TextEditingController(),
-                          textC8: TextEditingController(),
-                          textC9: TextEditingController(),
+                          textC0: textOutput[30],
+                          textC1: textOutput[31],
+                          textC2: textOutput[32],
+                          textC3: textOutput[33],
+                          textC4: textOutput[34],
+                          textC5: textOutput[35],
+                          textC6: textOutput[36],
+                          textC7: textOutput[37],
+                          textC8: textOutput[38],
+                          textC9: textOutput[39],
                         ),
                         GridInput(
                           readOnly: readOnlyInput,
-                          textC0: TextEditingController(),
-                          textC1: TextEditingController(),
-                          textC2: TextEditingController(),
-                          textC3: TextEditingController(),
-                          textC4: TextEditingController(),
-                          textC5: TextEditingController(),
-                          textC6: TextEditingController(),
-                          textC7: TextEditingController(),
-                          textC8: TextEditingController(),
-                          textC9: TextEditingController(),
+                          textC0: textOutput[40],
+                          textC1: textOutput[41],
+                          textC2: textOutput[42],
+                          textC3: textOutput[43],
+                          textC4: textOutput[44],
+                          textC5: textOutput[45],
+                          textC6: textOutput[46],
+                          textC7: textOutput[47],
+                          textC8: textOutput[48],
+                          textC9: textOutput[49],
                         ),
                         GridInput(
                           readOnly: readOnlyInput,
-                          textC0: TextEditingController(),
-                          textC1: TextEditingController(),
-                          textC2: TextEditingController(),
-                          textC3: TextEditingController(),
-                          textC4: TextEditingController(),
-                          textC5: TextEditingController(),
-                          textC6: TextEditingController(),
-                          textC7: TextEditingController(),
-                          textC8: TextEditingController(),
-                          textC9: TextEditingController(),
+                          textC0: textOutput[50],
+                          textC1: textOutput[51],
+                          textC2: textOutput[52],
+                          textC3: textOutput[53],
+                          textC4: textOutput[54],
+                          textC5: textOutput[55],
+                          textC6: textOutput[56],
+                          textC7: textOutput[57],
+                          textC8: textOutput[58],
+                          textC9: textOutput[59],
                         ),
                         GridInput(
                           readOnly: readOnlyInput,
-                          textC0: TextEditingController(),
-                          textC1: TextEditingController(),
-                          textC2: TextEditingController(),
-                          textC3: TextEditingController(),
-                          textC4: TextEditingController(),
-                          textC5: TextEditingController(),
-                          textC6: TextEditingController(),
-                          textC7: TextEditingController(),
-                          textC8: TextEditingController(),
-                          textC9: TextEditingController(),
+                          textC0: textOutput[60],
+                          textC1: textOutput[61],
+                          textC2: textOutput[62],
+                          textC3: textOutput[63],
+                          textC4: textOutput[64],
+                          textC5: textOutput[65],
+                          textC6: textOutput[66],
+                          textC7: textOutput[67],
+                          textC8: textOutput[68],
+                          textC9: textOutput[69],
                         ),
                         GridInput(
                           readOnly: readOnlyInput,
-                          textC0: TextEditingController(),
-                          textC1: TextEditingController(),
-                          textC2: TextEditingController(),
-                          textC3: TextEditingController(),
-                          textC4: TextEditingController(),
-                          textC5: TextEditingController(),
-                          textC6: TextEditingController(),
-                          textC7: TextEditingController(),
-                          textC8: TextEditingController(),
-                          textC9: TextEditingController(),
+                          textC0: textOutput[70],
+                          textC1: textOutput[71],
+                          textC2: textOutput[72],
+                          textC3: textOutput[73],
+                          textC4: textOutput[74],
+                          textC5: textOutput[75],
+                          textC6: textOutput[76],
+                          textC7: textOutput[77],
+                          textC8: textOutput[78],
+                          textC9: textOutput[79],
                         ),
                       ],
                     ),
@@ -215,64 +213,122 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
                         children: [
-                          Row(
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ToggleSwitch(
-                                checked: checkedColumn,
-                                onChanged: (v) => setState(
-                                  () {
-                                    checkedColumn = v;
-                                    readOnlyColumn = !v;
-                                  },
-                                ),
-                                content: Text(
-                                  checkedColumn
-                                      ? "Column Value : Unlocked"
-                                      : "Column Value : Locked",
-                                ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  ToggleSwitch(
+                                    checked: checkedColumn,
+                                    onChanged: (v) => setState(
+                                      () {
+                                        checkedColumn = v;
+                                        readOnlyColumn = !v;
+                                      },
+                                    ),
+                                    content: Text(
+                                      checkedColumn
+                                          ? "Column Value : Unlocked"
+                                          : "Column Value : Locked",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  ToggleSwitch(
+                                    checked: checkedRow,
+                                    onChanged: (x) => setState(
+                                      () {
+                                        checkedRow = x;
+                                        readOnlyRow = !x;
+                                      },
+                                    ),
+                                    content: Text(
+                                      checkedRow
+                                          ? "Row Value : Unlocked"
+                                          : "Row Value : Locked",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  ToggleSwitch(
+                                    checked: checkedInput,
+                                    onChanged: (y) => setState(
+                                      () {
+                                        checkedInput = y;
+                                        readOnlyInput = !y;
+                                      },
+                                    ),
+                                    content: Text(
+                                      checkedInput
+                                          ? "Input Value : Unlocked"
+                                          : "Input Value : Locked",
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                          Row(
-                            children: [
-                              ToggleSwitch(
-                                checked: checkedRow,
-                                onChanged: (x) => setState(
-                                  () {
-                                    checkedRow = x;
-                                    readOnlyRow = !x;
-                                  },
-                                ),
-                                content: Text(
-                                  checkedRow
-                                      ? "Row Value : Unlocked"
-                                      : "Row Value : Locked",
-                                ),
-                              ),
-                            ],
+                          SizedBox(
+                            width: 25,
                           ),
-                          Row(
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ToggleSwitch(
-                                checked: checkedInput,
-                                onChanged: (y) => setState(
-                                  () {
-                                    checkedInput = y;
-                                    readOnlyInput = !y;
-                                  },
-                                ),
-                                content: Text(
-                                  checkedInput
-                                      ? "Input Value : Unlocked"
-                                      : "Input Value : Locked",
-                                ),
+                              SizedBox(
+                                height: 5,
                               ),
+                              Row(
+                                children: [
+                                  FilledButton(
+                                    child: Text("Clear All Injector Value"),
+                                    onPressed: () {},
+                                    //   style: ButtonStyle(
+                                    //       backgroundColor: ,
+                                    // ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  FilledButton(
+                                    child: Text("halo"),
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  FilledButton(
+                                    child: Text("halo"),
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              )
                             ],
-                          ),
+                          )
                         ],
                       ),
                     ),
@@ -296,13 +352,13 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(
                           height: 10,
                         ),
-                        testd
-                            ? const SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: ProgressRing(),
-                              )
-                            : const SizedBox(),
+                        // testd
+                        //     ? const SizedBox(
+                        //         width: 15,
+                        //         height: 15,
+                        //         child: ProgressRing(),
+                        //       )
+                        //     : const SizedBox(),
                       ],
                     ),
                     const SizedBox(
@@ -397,14 +453,18 @@ void showContentDialog(BuildContext context, resultText, output) async {
   // final List<String> strOutput = [output.text.toString()];
   final List<String> outputStr =
       List.generate(output.length, (index) => output[index].text);
-  final hexOutput = [HEX.encode(outputStr.map(int.parse).toList())];
+  final List<int> outputInt = outputStr.map(int.parse).toList();
+  final hexOutput = outputInt.map((e) => "0x${e.toRadixString(16)}").toList();
   final result = await showDialog<String>(
     context: context,
     builder: (context) => ContentDialog(
       constraints: const BoxConstraints(maxWidth: 500),
-      title: const Text('Flash program to Microcontroller?'),
+      title: const Text('Save value to Microcontroller?'),
       content: Text(
-        resultText,
+        "RPM Value :\n" +
+            "Throttle Value :\n" +
+            "Injection Data :\n" +
+            hexOutput.toString(),
       ),
       actions: [
         Button(
@@ -415,7 +475,7 @@ void showContentDialog(BuildContext context, resultText, output) async {
           },
         ),
         FilledButton(
-          child: const Text('Flash'),
+          child: const Text('Accept'),
           onPressed: () {
             Navigator.pop(context, hexOutput.toString());
           },

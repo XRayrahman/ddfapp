@@ -108,7 +108,7 @@ class GridInput extends StatelessWidget {
         },
       ),
     ];
-    String? placeholder = "0";
+    String? placeholder = "";
     BoxDecoration boxDecoration = const BoxDecoration(
       color: Color.fromARGB(50, 100, 100, 100),
     );
