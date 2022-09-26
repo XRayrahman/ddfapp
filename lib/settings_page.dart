@@ -20,17 +20,23 @@ class _SettingsPageState extends State<SettingsPage> {
       rows: [
         DataRow.byIndex(
           index: 2,
-          cells: [
+          cells: const [
             DataCell(
-              Text("test1"),
+              Text("cell 1"),
+            ),
+            DataCell(
+              Text("cell 2"),
             ),
           ],
         ),
         DataRow.byIndex(
           index: 0,
-          cells: [
+          cells: const [
             DataCell(
-              Text("test2"),
+              Text("test 1"),
+            ),
+            DataCell(
+              Text("test 2"),
             ),
           ],
         ),

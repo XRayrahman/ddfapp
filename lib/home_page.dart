@@ -1,9 +1,13 @@
+import 'package:ddfapp/first_row.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/grid_input.dart';
 import 'package:ddfapp/label_column.dart';
 import 'package:ddfapp/label_row.dart';
 import 'package:ddfapp/side_widget.dart';
 import 'dart:io';
+import 'dart:convert';
+
+import 'package:hex/hex.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,8 +28,12 @@ class _HomePageState extends State<HomePage> {
   Color colorDisabled = const Color.fromARGB(255, 101, 101, 101);
   bool testd = false;
   String flashText = "flash program";
+  int lengthController = 80;
 
   List txt = ["q", "w", "e", "r", "t"];
+  List textOutput =
+      List.generate(80, (index) => TextEditingController(text: "0"));
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -98,29 +106,29 @@ class _HomePageState extends State<HomePage> {
                         // ),
                         GridInput(
                           readOnly: readOnlyInput,
-                          textC0: TextEditingController(),
-                          textC1: TextEditingController(),
-                          textC2: TextEditingController(),
-                          textC3: TextEditingController(),
-                          textC4: TextEditingController(),
-                          textC5: TextEditingController(),
-                          textC6: TextEditingController(),
-                          textC7: TextEditingController(),
-                          textC8: TextEditingController(),
-                          textC9: TextEditingController(),
+                          textC0: textOutput[0],
+                          textC1: textOutput[1],
+                          textC2: textOutput[2],
+                          textC3: textOutput[3],
+                          textC4: textOutput[4],
+                          textC5: textOutput[5],
+                          textC6: textOutput[6],
+                          textC7: textOutput[7],
+                          textC8: textOutput[8],
+                          textC9: textOutput[9],
                         ),
                         GridInput(
                           readOnly: readOnlyInput,
-                          textC0: TextEditingController(),
-                          textC1: TextEditingController(),
-                          textC2: TextEditingController(),
-                          textC3: TextEditingController(),
-                          textC4: TextEditingController(),
-                          textC5: TextEditingController(),
-                          textC6: TextEditingController(),
-                          textC7: TextEditingController(),
-                          textC8: TextEditingController(),
-                          textC9: TextEditingController(),
+                          textC0: textOutput[10],
+                          textC1: textOutput[11],
+                          textC2: textOutput[12],
+                          textC3: textOutput[13],
+                          textC4: textOutput[14],
+                          textC5: textOutput[15],
+                          textC6: textOutput[16],
+                          textC7: textOutput[17],
+                          textC8: textOutput[18],
+                          textC9: textOutput[19],
                         ),
                         GridInput(
                           readOnly: readOnlyInput,
@@ -276,7 +284,8 @@ class _HomePageState extends State<HomePage> {
                             testd = true;
                             Process.run('ls', ['-al']).then(
                               (ProcessResult results) {
-                                showContentDialog(context, results.stdout);
+                                showContentDialog(
+                                    context, results.stdout, textOutput);
                                 // setState(() {
                                 //   flashText = results.stdout;
                                 // });
@@ -383,7 +392,12 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-void showContentDialog(BuildContext context, resultText) async {
+void showContentDialog(BuildContext context, resultText, output) async {
+  // final List outputInt = [];
+  // final List<String> strOutput = [output.text.toString()];
+  final List<String> outputStr =
+      List.generate(output.length, (index) => output[index].text);
+  final hexOutput = [HEX.encode(outputStr.map(int.parse).toList())];
   final result = await showDialog<String>(
     context: context,
     builder: (context) => ContentDialog(
@@ -403,7 +417,7 @@ void showContentDialog(BuildContext context, resultText) async {
         FilledButton(
           child: const Text('Flash'),
           onPressed: () {
-            Navigator.pop(context, 'User flashing program');
+            Navigator.pop(context, hexOutput.toString());
           },
         ),
       ],

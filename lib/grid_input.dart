@@ -6,8 +6,8 @@ class GridInput extends StatelessWidget {
   const GridInput(
       {super.key,
       required this.readOnly,
-      required this.textC1,
       required this.textC0,
+      required this.textC1,
       required this.textC2,
       required this.textC3,
       required this.textC4,
