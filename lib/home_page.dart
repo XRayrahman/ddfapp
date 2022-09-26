@@ -1,8 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:evapp/grid_input.dart';
-import 'package:evapp/label_column.dart';
-import 'package:evapp/label_row.dart';
-import 'package:evapp/side_widget.dart';
+import 'package:ddfapp/grid_input.dart';
+import 'package:ddfapp/label_column.dart';
+import 'package:ddfapp/label_row.dart';
+import 'package:ddfapp/side_widget.dart';
 import 'dart:io';
 
 class HomePage extends StatefulWidget {

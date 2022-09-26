@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:evapp/home_page.dart';
-import 'package:evapp/settings_page.dart';
+import 'package:ddfapp/home_page.dart';
+import 'package:ddfapp/settings_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:window_size/window_size.dart';
 // import 'package:flutter/material.dart';

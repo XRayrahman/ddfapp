@@ -14,7 +14,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return DataTable(
       columns: const [
         DataColumn(
-          label: Text("satu"),
+          label: Text("test"),
         ),
       ],
       rows: [
@@ -22,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
           index: 2,
           cells: [
             DataCell(
-              Text("halo"),
+              Text("test1"),
             ),
           ],
         ),
@@ -30,7 +30,7 @@ class _SettingsPageState extends State<SettingsPage> {
           index: 0,
           cells: [
             DataCell(
-              Text("siap"),
+              Text("test2"),
             ),
           ],
         ),
