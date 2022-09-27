@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:ddfapp/home_page.dart';
-import 'package:ddfapp/settings_page.dart';
+import 'package:ddfapp/home/home_page.dart';
+import 'package:ddfapp/settings/settings_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:window_size/window_size.dart';
 // import 'package:flutter/material.dart';
@@ -9,8 +9,8 @@ import 'package:window_size/window_size.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    setWindowMinSize(const Size(1380, 720));
-    setWindowMaxSize(const Size(1380, 780));
+    setWindowMinSize(const Size(1380, 800));
+    setWindowMaxSize(const Size(1380, 840));
   }
   runApp(const MyApp());
 }
@@ -58,13 +58,14 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       )),
       pane: NavigationPane(
+        selected: indexPage,
         size: const NavigationPaneSize(openMaxWidth: 50),
         onChanged: ((value) {
           setState(() {
             indexPage = value;
           });
         }),
-        displayMode: PaneDisplayMode.open,
+        displayMode: PaneDisplayMode.top,
         items: [
           PaneItem(
             icon: const Icon(FluentIcons.home),

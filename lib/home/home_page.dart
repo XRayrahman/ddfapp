@@ -1,8 +1,8 @@
-import 'package:ddfapp/home_controller.dart';
+import 'package:ddfapp/home/home_controller.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:ddfapp/grid_input.dart';
-import 'package:ddfapp/label_column.dart';
-import 'package:ddfapp/label_row.dart';
+import 'package:ddfapp/widgets/grid_input.dart';
+import 'package:ddfapp/widgets/label_column.dart';
+import 'package:ddfapp/widgets/label_row.dart';
 import 'package:ddfapp/side_widget.dart';
 import 'package:get/get.dart';
 import 'dart:io';
@@ -338,10 +338,8 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Row(
                                 children: [
-                                  Obx(
-                                    () => Text(
-                                      h.hexInjector[0].toString(),
-                                    ),
+                                  Text(
+                                    h.hexInjector[0].toString(),
                                   ),
                                 ],
                               ),
@@ -355,16 +353,16 @@ class _HomePageState extends State<HomePage> {
                         FilledButton(
                           child: Text(flashText),
                           onPressed: () => setState(() {
-                            testd = true;
-                            Process.run('ls', ['-al']).then(
-                              (ProcessResult results) {
-                                showContentDialog(
-                                    context, results.stdout, textOutput);
-                                // setState(() {
-                                //   flashText = results.stdout;
-                                // });
-                              },
-                            );
+                            if (h.hexInjector == null) {
+                            } else {
+                              testd = true;
+                              Process.run('ls', ['-al']).then(
+                                (ProcessResult results) {
+                                  showContentDialog(
+                                      context, results.stdout, textOutput);
+                                },
+                              );
+                            }
                           }),
                         ),
                         const SizedBox(
@@ -469,7 +467,7 @@ class _HomePageState extends State<HomePage> {
 void showContentDialog(BuildContext context, resultText, output) async {
   // final List outputInt = [];
   // final List<String> strOutput = [output.text.toString()];
-  final HomeController h = Get.find();
+  final HomeController h = Get.put(HomeController());
   final List<String> outputStr =
       List.generate(output.length, (index) => output[index].text);
   final List<int> outputInt = outputStr.map(int.parse).toList();
