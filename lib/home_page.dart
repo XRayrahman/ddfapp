@@ -7,8 +7,6 @@ import 'package:ddfapp/side_widget.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 
-import 'package:hex/hex.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -223,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Row(
@@ -244,7 +242,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Row(
@@ -265,7 +263,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Row(
@@ -288,20 +286,21 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Row(
                                 children: [
                                   Button(
-                                    child: Text("Clear All Injector Value"),
+                                    child:
+                                        const Text("Clear All Injector Value"),
                                     onPressed: () {
                                       setState(() {
                                         h.onClearInjector();
@@ -313,13 +312,13 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Row(
                                 children: [
                                   FilledButton(
-                                    child: Text("refresh"),
+                                    child: const Text("refresh"),
                                     onPressed: () {
                                       setState(() {
                                         textOutput = List.generate(
@@ -334,7 +333,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Row(

@@ -13,7 +13,6 @@ class HomeController extends GetxController {
     decsInjector = List.generate(80, (index) => decInjector[index][0]);
     // HEX.decode(hexInjector.map.toString()).toList();
     update();
-    print(decsInjector[0]);
   }
 
   onDecreaseIndex() {
