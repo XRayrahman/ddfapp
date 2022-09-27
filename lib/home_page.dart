@@ -1,8 +1,10 @@
+import 'package:ddfapp/home_controller.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/grid_input.dart';
 import 'package:ddfapp/label_column.dart';
 import 'package:ddfapp/label_row.dart';
 import 'package:ddfapp/side_widget.dart';
+import 'package:get/get.dart';
 import 'dart:io';
 
 import 'package:hex/hex.dart';
@@ -15,6 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final HomeController h = Get.put(HomeController());
   bool checkedRow = true;
   bool checkedColumn = true;
   bool checkedInput = true;
@@ -28,12 +31,13 @@ class _HomePageState extends State<HomePage> {
   String flashText = "flash program";
   int lengthController = 80;
 
-  List txt = ["q", "w", "e", "r", "t"];
-  List textOutput =
-      List.generate(80, (index) => TextEditingController(text: "0"));
-
   @override
   Widget build(BuildContext context) {
+    List textOutput = List.generate(
+        80,
+        (index) =>
+            TextEditingController(text: h.decsInjector[index].toString()));
+
     return Container(
       padding: const EdgeInsets.all(20),
       child: Row(
@@ -296,9 +300,13 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Row(
                                 children: [
-                                  FilledButton(
+                                  Button(
                                     child: Text("Clear All Injector Value"),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        h.onClearInjector();
+                                      });
+                                    },
                                     //   style: ButtonStyle(
                                     //       backgroundColor: ,
                                     // ),
@@ -311,8 +319,18 @@ class _HomePageState extends State<HomePage> {
                               Row(
                                 children: [
                                   FilledButton(
-                                    child: Text("halo"),
-                                    onPressed: () {},
+                                    child: Text("refresh"),
+                                    onPressed: () {
+                                      setState(() {
+                                        textOutput = List.generate(
+                                          80,
+                                          (index) => TextEditingController(
+                                            text:
+                                                h.hexInjector[index].toString(),
+                                          ),
+                                        );
+                                      });
+                                    },
                                   ),
                                 ],
                               ),
@@ -321,12 +339,13 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Row(
                                 children: [
-                                  FilledButton(
-                                    child: Text("halo"),
-                                    onPressed: () {},
+                                  Obx(
+                                    () => Text(
+                                      h.hexInjector[0].toString(),
+                                    ),
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           )
                         ],
@@ -451,15 +470,20 @@ class _HomePageState extends State<HomePage> {
 void showContentDialog(BuildContext context, resultText, output) async {
   // final List outputInt = [];
   // final List<String> strOutput = [output.text.toString()];
+  final HomeController h = Get.find();
   final List<String> outputStr =
       List.generate(output.length, (index) => output[index].text);
   final List<int> outputInt = outputStr.map(int.parse).toList();
-  final hexOutput = outputInt.map((e) => "0x${e.toRadixString(16)}").toList();
+  final hexOutput = outputInt.map((e) => e.toRadixString(16)).toList();
+
+  // with 0x prefix
+  // final hexOutput = outputInt.map((e) => "0x${e.toRadixString(16)}").toList();
+
   final result = await showDialog<String>(
     context: context,
     builder: (context) => ContentDialog(
-      constraints: const BoxConstraints(maxWidth: 500),
-      title: const Text('Save value to Microcontroller?'),
+      constraints: const BoxConstraints(maxWidth: 330),
+      title: const Text('Save value to ECU?'),
       content: Text(
         "RPM Value :\n" +
             "Throttle Value :\n" +
@@ -477,6 +501,7 @@ void showContentDialog(BuildContext context, resultText, output) async {
         FilledButton(
           child: const Text('Accept'),
           onPressed: () {
+            h.onSaveHex(hexOutput);
             Navigator.pop(context, hexOutput.toString());
           },
         ),
