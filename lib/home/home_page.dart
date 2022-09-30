@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     List textColumn = List.generate(
       lengthColumn,
       (index) => TextEditingController(
-        text: h.decsInjector[index].toString(),
+        text: h.decsInjector[index][1].toString(),
       ),
     );
 
@@ -101,6 +101,8 @@ class _HomePageState extends State<HomePage> {
                       boxDecor: BoxDecoration(
                         color: checkedColumn ? colorEnabled : colorDisabled,
                       ),
+                      textController: List.generate(
+                          lengthColumn, (index) => textColumn[index]),
                     ),
                     const SizedBox(
                       width: 10,
@@ -239,6 +241,11 @@ class _HomePageState extends State<HomePage> {
                                                 h.hexInjector[index].toString(),
                                           ),
                                         );
+                                        // textColumn = List.generate(
+                                        //   8,
+                                        //   (index) => TextEditingController(
+                                        //       text: intRPM),
+                                        // );
                                       });
                                     },
                                   ),
@@ -269,8 +276,8 @@ class _HomePageState extends State<HomePage> {
                               testd = true;
                               Process.run('ls', ['-al']).then(
                                 (ProcessResult results) {
-                                  showContentDialog(
-                                      context, results.stdout, textOutput);
+                                  showContentDialog(context, results.stdout,
+                                      textOutput, textColumn);
                                 },
                               );
                             }
@@ -375,19 +382,12 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-void showContentDialog(BuildContext context, resultText, output) async {
+void showContentDialog(BuildContext context, resultText, output, column) async {
   // final List intOutput = [];
   // final List<String> strOutput = [output.text.toString()];
   final HomeController h = Get.put(HomeController());
-  final List<String> strOutput =
-      List.generate(output.length, (index) => output[index].text);
-  final List<int> intOutput = strOutput.map(int.parse).toList();
-  final hexOutput = intOutput.map((e) => e.toRadixString(16)).toList();
-
-  final List<String> strRPM =
-      List.generate(output.length, (index) => output[index].text);
-  final List<int> intRPM = strRPM.map(int.parse).toList();
-  final hexRPM = intRPM.map((e) => e.toRadixString(16)).toList();
+  final hexOutput = h.strToHex(output, "injector");
+  final hexRPM = h.strToHex(column, "RPM");
 
   // with 0x prefix
   // final hexOutput = intOutput.map((e) => "0x${e.toRadixString(16)}").toList();
@@ -414,7 +414,7 @@ void showContentDialog(BuildContext context, resultText, output) async {
         FilledButton(
           child: const Text('Accept'),
           onPressed: () {
-            h.onSaveHex(hexOutput, hexOutput, hexOutput);
+            h.onSaveHex(hexOutput, hexRPM, hexOutput);
             // Navigator.pop(context, hexOutput.toString());
             Navigator.pop(context, h.decsInjector.toString());
           },
