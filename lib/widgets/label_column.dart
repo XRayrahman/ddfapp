@@ -4,65 +4,34 @@ import 'package:flutter/material.dart';
 
 class LabelColumn extends StatelessWidget {
   LabelColumn({super.key, required this.enabled, this.boxDecor});
-  final _textController = TextEditingController();
+  // final _textController = TextEditingController();
   final bool enabled;
   final BoxDecoration? boxDecor;
+  List placeHolder = [
+    "1000",
+    "1500",
+    "2000",
+    "2500",
+    "3000",
+    "3500",
+    "4000",
+    "4500",
+  ];
 
   @override
   Widget build(BuildContext context) {
     Color? textcolor = const Color.fromARGB(255, 255, 255, 255);
     return Column(
-      children: [
-        TextInput(
-          placholder: "4500",
+      children: List.generate(
+        8,
+        (index) => TextInput(
+          enabled: enabled,
+          placholder: placeHolder[index],
           boxDecoration: boxDecor,
           textcolor: textcolor,
-          controller: _textController,
-          enabled: enabled,
+          // controller: _textController,
         ),
-        TextInput(
-          placholder: "4000",
-          boxDecoration: boxDecor,
-          textcolor: textcolor,
-          enabled: enabled,
-        ),
-        TextInput(
-          placholder: "3500",
-          boxDecoration: boxDecor,
-          textcolor: textcolor,
-          enabled: enabled,
-        ),
-        TextInput(
-          placholder: "3000",
-          boxDecoration: boxDecor,
-          textcolor: textcolor,
-          enabled: enabled,
-        ),
-        TextInput(
-          placholder: "2500",
-          boxDecoration: boxDecor,
-          textcolor: textcolor,
-          enabled: enabled,
-        ),
-        TextInput(
-          placholder: "2000",
-          boxDecoration: boxDecor,
-          textcolor: textcolor,
-          enabled: enabled,
-        ),
-        TextInput(
-          placholder: "1500",
-          boxDecoration: boxDecor,
-          textcolor: textcolor,
-          enabled: enabled,
-        ),
-        TextInput(
-          placholder: "1000",
-          boxDecoration: boxDecor,
-          textcolor: textcolor,
-          enabled: enabled,
-        ),
-      ],
+      ),
     );
   }
 }

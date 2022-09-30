@@ -27,14 +27,16 @@ class _HomePageState extends State<HomePage> {
   Color colorDisabled = const Color.fromARGB(255, 101, 101, 101);
   bool testd = false;
   String flashText = "flash program";
-  int lengthController = 80;
+  int lengthOutput = 80;
 
   @override
   Widget build(BuildContext context) {
     List textOutput = List.generate(
-        80,
-        (index) =>
-            TextEditingController(text: h.decsInjector[index].toString()));
+      lengthOutput,
+      (index) => TextEditingController(
+        text: h.decsInjector[index][2].toString(),
+      ),
+    );
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -106,108 +108,44 @@ class _HomePageState extends State<HomePage> {
                         // ),
                         GridInput(
                           readOnly: readOnlyInput,
-                          textC0: textOutput[0],
-                          textC1: textOutput[1],
-                          textC2: textOutput[2],
-                          textC3: textOutput[3],
-                          textC4: textOutput[4],
-                          textC5: textOutput[5],
-                          textC6: textOutput[6],
-                          textC7: textOutput[7],
-                          textC8: textOutput[8],
-                          textC9: textOutput[9],
+                          textC:
+                              List.generate(80, (index) => textOutput[index]),
                         ),
-                        GridInput(
-                          readOnly: readOnlyInput,
-                          textC0: textOutput[10],
-                          textC1: textOutput[11],
-                          textC2: textOutput[12],
-                          textC3: textOutput[13],
-                          textC4: textOutput[14],
-                          textC5: textOutput[15],
-                          textC6: textOutput[16],
-                          textC7: textOutput[17],
-                          textC8: textOutput[18],
-                          textC9: textOutput[19],
-                        ),
-                        GridInput(
-                          readOnly: readOnlyInput,
-                          textC0: textOutput[20],
-                          textC1: textOutput[21],
-                          textC2: textOutput[22],
-                          textC3: textOutput[23],
-                          textC4: textOutput[24],
-                          textC5: textOutput[25],
-                          textC6: textOutput[26],
-                          textC7: textOutput[27],
-                          textC8: textOutput[28],
-                          textC9: textOutput[29],
-                        ),
-                        GridInput(
-                          readOnly: readOnlyInput,
-                          textC0: textOutput[30],
-                          textC1: textOutput[31],
-                          textC2: textOutput[32],
-                          textC3: textOutput[33],
-                          textC4: textOutput[34],
-                          textC5: textOutput[35],
-                          textC6: textOutput[36],
-                          textC7: textOutput[37],
-                          textC8: textOutput[38],
-                          textC9: textOutput[39],
-                        ),
-                        GridInput(
-                          readOnly: readOnlyInput,
-                          textC0: textOutput[40],
-                          textC1: textOutput[41],
-                          textC2: textOutput[42],
-                          textC3: textOutput[43],
-                          textC4: textOutput[44],
-                          textC5: textOutput[45],
-                          textC6: textOutput[46],
-                          textC7: textOutput[47],
-                          textC8: textOutput[48],
-                          textC9: textOutput[49],
-                        ),
-                        GridInput(
-                          readOnly: readOnlyInput,
-                          textC0: textOutput[50],
-                          textC1: textOutput[51],
-                          textC2: textOutput[52],
-                          textC3: textOutput[53],
-                          textC4: textOutput[54],
-                          textC5: textOutput[55],
-                          textC6: textOutput[56],
-                          textC7: textOutput[57],
-                          textC8: textOutput[58],
-                          textC9: textOutput[59],
-                        ),
-                        GridInput(
-                          readOnly: readOnlyInput,
-                          textC0: textOutput[60],
-                          textC1: textOutput[61],
-                          textC2: textOutput[62],
-                          textC3: textOutput[63],
-                          textC4: textOutput[64],
-                          textC5: textOutput[65],
-                          textC6: textOutput[66],
-                          textC7: textOutput[67],
-                          textC8: textOutput[68],
-                          textC9: textOutput[69],
-                        ),
-                        GridInput(
-                          readOnly: readOnlyInput,
-                          textC0: textOutput[70],
-                          textC1: textOutput[71],
-                          textC2: textOutput[72],
-                          textC3: textOutput[73],
-                          textC4: textOutput[74],
-                          textC5: textOutput[75],
-                          textC6: textOutput[76],
-                          textC7: textOutput[77],
-                          textC8: textOutput[78],
-                          textC9: textOutput[79],
-                        ),
+                        // GridInput(
+                        //   readOnly: readOnlyInput,
+                        //   textC: List.generate(
+                        //       10, (index) => textOutput[(index + 10)]),
+                        // ),
+                        // GridInput(
+                        //   readOnly: readOnlyInput,
+                        //   textC: List.generate(
+                        //       10, (index) => textOutput[(index + 20)]),
+                        // ),
+                        // GridInput(
+                        //   readOnly: readOnlyInput,
+                        //   textC: List.generate(
+                        //       10, (index) => textOutput[(index + 30)]),
+                        // ),
+                        // GridInput(
+                        //   readOnly: readOnlyInput,
+                        //   textC: List.generate(
+                        //       10, (index) => textOutput[(index + 40)]),
+                        // ),
+                        // GridInput(
+                        //   readOnly: readOnlyInput,
+                        //   textC: List.generate(
+                        //       10, (index) => textOutput[(index + 50)]),
+                        // ),
+                        // GridInput(
+                        //   readOnly: readOnlyInput,
+                        //   textC: List.generate(
+                        //       10, (index) => textOutput[(index + 60)]),
+                        // ),
+                        // GridInput(
+                        //   readOnly: readOnlyInput,
+                        //   textC: List.generate(
+                        //       10, (index) => textOutput[(index + 70)]),
+                        // ),
                       ],
                     ),
                   ],
@@ -465,16 +403,21 @@ class _HomePageState extends State<HomePage> {
 }
 
 void showContentDialog(BuildContext context, resultText, output) async {
-  // final List outputInt = [];
+  // final List intOutput = [];
   // final List<String> strOutput = [output.text.toString()];
   final HomeController h = Get.put(HomeController());
-  final List<String> outputStr =
+  final List<String> strOutput =
       List.generate(output.length, (index) => output[index].text);
-  final List<int> outputInt = outputStr.map(int.parse).toList();
-  final hexOutput = outputInt.map((e) => e.toRadixString(16)).toList();
+  final List<int> intOutput = strOutput.map(int.parse).toList();
+  final hexOutput = intOutput.map((e) => e.toRadixString(16)).toList();
+
+  final List<String> strRPM =
+      List.generate(output.length, (index) => output[index].text);
+  final List<int> intRPM = strRPM.map(int.parse).toList();
+  final hexRPM = intRPM.map((e) => e.toRadixString(16)).toList();
 
   // with 0x prefix
-  // final hexOutput = outputInt.map((e) => "0x${e.toRadixString(16)}").toList();
+  // final hexOutput = intOutput.map((e) => "0x${e.toRadixString(16)}").toList();
 
   final result = await showDialog<String>(
     context: context,
@@ -498,8 +441,9 @@ void showContentDialog(BuildContext context, resultText, output) async {
         FilledButton(
           child: const Text('Accept'),
           onPressed: () {
-            h.onSaveHex(hexOutput);
-            Navigator.pop(context, hexOutput.toString());
+            h.onSaveHex(hexOutput, hexOutput, hexOutput);
+            // Navigator.pop(context, hexOutput.toString());
+            Navigator.pop(context, h.decsInjector.toString());
           },
         ),
       ],

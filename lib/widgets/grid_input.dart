@@ -1,190 +1,167 @@
+import 'package:ddfapp/home/home_controller.dart';
 import 'package:ddfapp/text_input.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'dart:core';
 
-class GridInput extends StatelessWidget {
-  const GridInput(
-      {super.key,
-      required this.readOnly,
-      required this.textC0,
-      required this.textC1,
-      required this.textC2,
-      required this.textC3,
-      required this.textC4,
-      required this.textC5,
-      required this.textC6,
-      required this.textC7,
-      required this.textC8,
-      required this.textC9});
+class GridInput extends StatefulWidget {
+  GridInput({
+    super.key,
+    required this.readOnly,
+    required this.textC,
+  });
 
   final bool readOnly;
-  final TextEditingController textC0;
-  final TextEditingController textC1;
-  final TextEditingController textC2;
-  final TextEditingController textC3;
-  final TextEditingController textC4;
-  final TextEditingController textC5;
-  final TextEditingController textC6;
-  final TextEditingController textC7;
-  final TextEditingController textC8;
-  final TextEditingController textC9;
+  List<TextEditingController> textC =
+      List.generate(80, (index) => TextEditingController());
+
+  @override
+  State<GridInput> createState() => _GridInputState();
+}
+
+class _GridInputState extends State<GridInput> {
+  HomeController h = HomeController();
+  final text = "0";
 
   // final TEController1 = TextEditingController;
-
-  // final textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final textController = <TextEditingController>[
-      textC0,
-      textC1,
-      textC2,
-      textC3,
-      textC4,
-      textC5,
-      textC6,
-      textC7,
-      textC8,
-      textC9,
-    ];
-    final suffix = <Widget>[
-      IconButton(
-        icon: const Icon(FluentIcons.cancel),
-        onPressed: () {
-          textController[0].clear();
-        },
-      ),
-      IconButton(
-        icon: const Icon(FluentIcons.cancel),
-        onPressed: () {
-          textController[1].clear();
-        },
-      ),
-      IconButton(
-        icon: const Icon(FluentIcons.cancel),
-        onPressed: () {
-          textController[2].clear();
-        },
-      ),
-      IconButton(
-        icon: const Icon(FluentIcons.cancel),
-        onPressed: () {
-          textController[3].clear();
-        },
-      ),
-      IconButton(
-        icon: const Icon(FluentIcons.cancel),
-        onPressed: () {
-          textController[4].clear();
-        },
-      ),
-      IconButton(
-        icon: const Icon(FluentIcons.cancel),
-        onPressed: () {
-          textController[5].clear();
-        },
-      ),
-      IconButton(
-        icon: const Icon(FluentIcons.cancel),
-        onPressed: () {
-          textController[6].clear();
-        },
-      ),
-      IconButton(
-        icon: const Icon(FluentIcons.cancel),
-        onPressed: () {
-          textController[7].clear();
-        },
-      ),
-      IconButton(
-        icon: const Icon(FluentIcons.cancel),
-        onPressed: () {
-          textController[8].clear();
-        },
-      ),
-      IconButton(
-        icon: const Icon(FluentIcons.cancel),
-        onPressed: () {
-          textController[9].clear();
-        },
-      ),
-    ];
+    const int dataLength = 80;
+    final textController =
+        List.generate(dataLength, (index) => widget.textC[index]);
+
+    // final suffix = List.generate(
+    //   dataLength,
+    //   (index) => IconButton(
+    //     icon: const Icon(FluentIcons.cancel),
+    //     onPressed: (() => setState(() {
+    //           textController[index].clear;
+    //         })),
+    //   ),
+    // );
     String? placeholder = "";
     BoxDecoration boxDecoration = const BoxDecoration(
       color: Color.fromARGB(50, 100, 100, 100),
     );
-    return Row(
-      children: [
-        TextInput(
-          suffix: suffix[0],
-          placholder: placeholder,
-          controller: textController[0],
-          boxDecoration: boxDecoration,
-          enabled: readOnly,
+    return Column(
+      children: List.generate(
+        8,
+        (indexColumn) => Row(
+          children: List.generate(
+            10,
+            (indexRow) => indexColumn == 0
+                ? TextInput(
+                    enabled: widget.readOnly,
+                    suffix: IconButton(
+                      icon: const Icon(FluentIcons.cancel),
+                      onPressed: () {
+                        textController[indexRow].clear();
+                      },
+                    ),
+                    placholder: placeholder,
+                    controller: textController[indexRow],
+                    boxDecoration: boxDecoration,
+                  )
+                : indexColumn == 1
+                    ? TextInput(
+                        enabled: widget.readOnly,
+                        suffix: IconButton(
+                          icon: const Icon(FluentIcons.cancel),
+                          onPressed: () {
+                            textController[indexRow + 10].clear();
+                          },
+                        ),
+                        placholder: placeholder,
+                        controller: textController[indexRow + 10],
+                        boxDecoration: boxDecoration,
+                      )
+                    : indexColumn == 2
+                        ? TextInput(
+                            enabled: widget.readOnly,
+                            suffix: IconButton(
+                              icon: const Icon(FluentIcons.cancel),
+                              onPressed: () {
+                                textController[indexRow + 20].clear();
+                              },
+                            ),
+                            placholder: placeholder,
+                            controller: textController[indexRow + 20],
+                            boxDecoration: boxDecoration,
+                          )
+                        : indexColumn == 3
+                            ? TextInput(
+                                enabled: widget.readOnly,
+                                suffix: IconButton(
+                                  icon: const Icon(FluentIcons.cancel),
+                                  onPressed: () {
+                                    textController[indexRow + 30].clear();
+                                  },
+                                ),
+                                placholder: placeholder,
+                                controller: textController[indexRow + 30],
+                                boxDecoration: boxDecoration,
+                              )
+                            : indexColumn == 4
+                                ? TextInput(
+                                    enabled: widget.readOnly,
+                                    suffix: IconButton(
+                                      icon: const Icon(FluentIcons.cancel),
+                                      onPressed: () {
+                                        textController[indexRow + 40].clear();
+                                      },
+                                    ),
+                                    placholder: placeholder,
+                                    controller: textController[indexRow + 40],
+                                    boxDecoration: boxDecoration,
+                                  )
+                                : indexColumn == 5
+                                    ? TextInput(
+                                        enabled: widget.readOnly,
+                                        suffix: IconButton(
+                                          icon: const Icon(FluentIcons.cancel),
+                                          onPressed: () {
+                                            textController[indexRow + 50]
+                                                .clear();
+                                          },
+                                        ),
+                                        placholder: placeholder,
+                                        controller:
+                                            textController[indexRow + 50],
+                                        boxDecoration: boxDecoration,
+                                      )
+                                    : indexColumn == 6
+                                        ? TextInput(
+                                            enabled: widget.readOnly,
+                                            suffix: IconButton(
+                                              icon: const Icon(
+                                                  FluentIcons.cancel),
+                                              onPressed: () {
+                                                textController[indexRow + 60]
+                                                    .clear();
+                                              },
+                                            ),
+                                            placholder: placeholder,
+                                            controller:
+                                                textController[indexRow + 60],
+                                            boxDecoration: boxDecoration,
+                                          )
+                                        : TextInput(
+                                            enabled: widget.readOnly,
+                                            suffix: IconButton(
+                                              icon: const Icon(
+                                                  FluentIcons.cancel),
+                                              onPressed: () {
+                                                textController[indexRow + 70]
+                                                    .clear();
+                                              },
+                                            ),
+                                            placholder: placeholder,
+                                            controller:
+                                                textController[indexRow + 70],
+                                            boxDecoration: boxDecoration,
+                                          ),
+          ),
         ),
-        TextInput(
-          suffix: suffix[1],
-          placholder: placeholder,
-          controller: textController[1],
-          boxDecoration: boxDecoration,
-          enabled: readOnly,
-        ),
-        TextInput(
-          suffix: suffix[2],
-          placholder: placeholder,
-          controller: textController[2],
-          boxDecoration: boxDecoration,
-          enabled: readOnly,
-        ),
-        TextInput(
-          suffix: suffix[3],
-          placholder: placeholder,
-          controller: textController[3],
-          boxDecoration: boxDecoration,
-          enabled: readOnly,
-        ),
-        TextInput(
-          suffix: suffix[4],
-          placholder: placeholder,
-          controller: textController[4],
-          boxDecoration: boxDecoration,
-          enabled: readOnly,
-        ),
-        TextInput(
-          suffix: suffix[5],
-          placholder: placeholder,
-          controller: textController[5],
-          boxDecoration: boxDecoration,
-          enabled: readOnly,
-        ),
-        TextInput(
-          suffix: suffix[6],
-          placholder: placeholder,
-          controller: textController[6],
-          boxDecoration: boxDecoration,
-          enabled: readOnly,
-        ),
-        TextInput(
-          suffix: suffix[7],
-          placholder: placeholder,
-          controller: textController[7],
-          boxDecoration: boxDecoration,
-          enabled: readOnly,
-        ),
-        TextInput(
-          suffix: suffix[8],
-          placholder: placeholder,
-          controller: textController[8],
-          boxDecoration: boxDecoration,
-          enabled: readOnly,
-        ),
-        TextInput(
-          suffix: suffix[9],
-          placholder: placeholder,
-          controller: textController[9],
-          boxDecoration: boxDecoration,
-          enabled: readOnly,
-        ),
-      ],
+      ),
     );
   }
 }
