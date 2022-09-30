@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   bool testd = false;
   String flashText = "flash program";
   int lengthOutput = 80;
+  int lengthColumn = 8;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,13 @@ class _HomePageState extends State<HomePage> {
       lengthOutput,
       (index) => TextEditingController(
         text: h.decsInjector[index][2].toString(),
+      ),
+    );
+
+    List textColumn = List.generate(
+      lengthColumn,
+      (index) => TextEditingController(
+        text: h.decsInjector[index].toString(),
       ),
     );
 
@@ -111,41 +119,6 @@ class _HomePageState extends State<HomePage> {
                           textC:
                               List.generate(80, (index) => textOutput[index]),
                         ),
-                        // GridInput(
-                        //   readOnly: readOnlyInput,
-                        //   textC: List.generate(
-                        //       10, (index) => textOutput[(index + 10)]),
-                        // ),
-                        // GridInput(
-                        //   readOnly: readOnlyInput,
-                        //   textC: List.generate(
-                        //       10, (index) => textOutput[(index + 20)]),
-                        // ),
-                        // GridInput(
-                        //   readOnly: readOnlyInput,
-                        //   textC: List.generate(
-                        //       10, (index) => textOutput[(index + 30)]),
-                        // ),
-                        // GridInput(
-                        //   readOnly: readOnlyInput,
-                        //   textC: List.generate(
-                        //       10, (index) => textOutput[(index + 40)]),
-                        // ),
-                        // GridInput(
-                        //   readOnly: readOnlyInput,
-                        //   textC: List.generate(
-                        //       10, (index) => textOutput[(index + 50)]),
-                        // ),
-                        // GridInput(
-                        //   readOnly: readOnlyInput,
-                        //   textC: List.generate(
-                        //       10, (index) => textOutput[(index + 60)]),
-                        // ),
-                        // GridInput(
-                        //   readOnly: readOnlyInput,
-                        //   textC: List.generate(
-                        //       10, (index) => textOutput[(index + 70)]),
-                        // ),
                       ],
                     ),
                   ],

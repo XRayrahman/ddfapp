@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 class LabelColumn extends StatelessWidget {
   LabelColumn({super.key, required this.enabled, this.boxDecor});
+  final List _textController =
+      List.generate(8, (index) => TextEditingController());
   // final _textController = TextEditingController();
   final bool enabled;
   final BoxDecoration? boxDecor;
@@ -29,7 +31,7 @@ class LabelColumn extends StatelessWidget {
           placholder: placeHolder[index],
           boxDecoration: boxDecor,
           textcolor: textcolor,
-          // controller: _textController,
+          controller: _textController[index],
         ),
       ),
     );
