@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:ddfapp/home/home_controller.dart';
 import 'package:ddfapp/widgets/side_view.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -33,7 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List textOutput = List.generate(
+    List<TextEditingController> textOutput = List.generate(
       lengthOutput,
       (index) => TextEditingController(
         text: h.listPoint[index][2].toString(),
@@ -250,49 +252,64 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Row(
                                 children: [
+                                  Button(
+                                    child: const Text("Clear All TPS Value"),
+                                    onPressed: () {
+                                      setState(
+                                        () {
+                                          h.onClearRow();
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
                                   FilledButton(
                                     child: const Text("refresh"),
                                     onPressed: () {
                                       setState(() {
-                                        // textColumn = List.generate(
-                                        //   8,
-                                        //   (index) => textControllerColumn,
-                                        // );
-                                        // textRow = List.generate(
-                                        //   10,
-                                        //   (index) => textControllerRow,
-                                        // );
                                         textColumn = List.generate(
                                           8,
                                           (index) => TextEditingController(
-                                              text: index == 0
-                                                  ? h.hexRPM[index].toString()
-                                                  : index == 1
-                                                      ? h.hexRPM[10].toString()
-                                                      : index == 2
-                                                          ? h.hexRPM[20]
-                                                              .toString()
-                                                          : index == 3
-                                                              ? h.hexRPM[30]
-                                                                  .toString()
-                                                              : index == 4
-                                                                  ? h.hexRPM[40]
-                                                                      .toString()
-                                                                  : index == 5
-                                                                      ? h.hexRPM[
-                                                                              50]
-                                                                          .toString()
-                                                                      : index ==
-                                                                              6
-                                                                          ? h.hexRPM[60]
-                                                                              .toString()
-                                                                          : h.hexRPM[70]
-                                                                              .toString()),
+                                            text: h.decRPM.toString(),
+                                          ),
                                         );
+                                        // textColumn = List.generate(
+                                        //   8,
+                                        //   (index) => TextEditingController(
+                                        //       text: index == 0
+                                        //           ? h.hexRPM[index].toString()
+                                        //           : index == 1
+                                        //               ? h.hexRPM[10].toString()
+                                        //               : index == 2
+                                        //                   ? h.hexRPM[20]
+                                        //                       .toString()
+                                        //                   : index == 3
+                                        //                       ? h.hexRPM[30]
+                                        //                           .toString()
+                                        //                       : index == 4
+                                        //                           ? h.hexRPM[40]
+                                        //                               .toString()
+                                        //                           : index == 5
+                                        //                               ? h.hexRPM[
+                                        //                                       50]
+                                        //                                   .toString()
+                                        //                               : index ==
+                                        //                                       6
+                                        //                                   ? h.hexRPM[60]
+                                        //                                       .toString()
+                                        //                                   : h.hexRPM[70]
+                                        //                                       .toString()),
+                                        // );
                                         textRow = List.generate(
                                           10,
                                           (index) => TextEditingController(
-                                            text: h.hexTPS[index].toString(),
+                                            text: h.decTPS.toString(),
                                           ),
                                         );
                                         textOutput = List.generate(
@@ -310,10 +327,47 @@ class _HomePageState extends State<HomePage> {
                               const SizedBox(
                                 height: 5,
                               ),
+                              // Row(
+                              //   children: [
+                              //     Text(
+                              //       h.hexInjector[0].toString(),
+                              //     ),
+                              //   ],
+                              // ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 25,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 5,
+                              ),
                               Row(
                                 children: [
-                                  Text(
-                                    h.hexInjector[0].toString(),
+                                  FilledButton(
+                                    child: const Text("Save Value"),
+                                    onPressed: () {
+                                      setState(() {
+                                        final hexOutput =
+                                            h.strToHex(textOutput, "injector");
+                                        final hexRPM =
+                                            h.strToHex(textColumn, "RPM");
+                                        final hexTPS =
+                                            h.strToHex(textRow, "TPS");
+                                        h.onSaveHex(
+                                          hexTPS,
+                                          hexRPM,
+                                          hexOutput,
+                                        );
+                                      });
+                                    },
+                                    //   style: ButtonStyle(
+                                    //       backgroundColor: ,
+                                    // ),
                                   ),
                                 ],
                               ),
@@ -330,7 +384,13 @@ class _HomePageState extends State<HomePage> {
                             if (h.hexInjector == null) {
                             } else {
                               testd = true;
-                              Process.run('ls', ['-al']).then(
+                              final hexOutput =
+                                  h.strToHex(textOutput, "injector");
+                              final hexRPM = h.strToHex(textColumn, "RPM");
+                              final hexTPS = h.strToHex(textRow, "TPS");
+                              Process.run('echo', [
+                                "RPM : $hexRPM \nTPS : $hexTPS \nInjector : $hexOutput"
+                              ]).then(
                                 (ProcessResult results) {
                                   showContentDialog(context, results.stdout,
                                       textOutput, textColumn, textRow);
@@ -407,9 +467,9 @@ void showContentDialog(
   // final List intOutput = [];
   // final List<String> strOutput = [output.text.toString()];
   final HomeController h = Get.put(HomeController());
-  final hexOutput = h.strToHex(outputData, "injector");
-  final hexRPM = h.strToHex(columnData, "RPM");
-  final hexTPS = h.strToHex(rowData, "TPS");
+  final hexOutput = h.strToHexList(outputData, "injector");
+  final hexRPM = h.strToHexList(columnData, "RPM");
+  final hexTPS = h.strToHexList(rowData, "TPS");
 
   // with 0x prefix
   // final hexOutput = intOutput.map((e) => "0x${e.toRadixString(16)}").toList();
@@ -420,13 +480,13 @@ void showContentDialog(
       constraints: const BoxConstraints(maxWidth: 330),
       title: const Text('Save value to ECU?'),
       content: Text(
-        "RPM Value :\n" +
-            hexRPM.toString() +
-            "\nThrottle Value :\n" +
-            hexTPS.toString() +
-            "\nInjection Data :\n" +
-            hexOutput.toString(),
-      ),
+          // "RPM Value :\n" +
+          //     hexRPM.toString() +
+          //     "\nThrottle Value :\n" +
+          //     hexTPS.toString() +
+          //     "\nInjection Data :\n" +
+          //     hexOutput.toString(),
+          resultText),
       actions: [
         Button(
           child: const Text('Cancel'),
@@ -446,5 +506,5 @@ void showContentDialog(
       ],
     ),
   );
-  print(result);
+  print(resultText);
 }
