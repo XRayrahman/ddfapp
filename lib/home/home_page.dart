@@ -1,9 +1,9 @@
 import 'package:ddfapp/home/home_controller.dart';
+import 'package:ddfapp/widgets/side_view.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/widgets/grid_input.dart';
 import 'package:ddfapp/widgets/label_column.dart';
 import 'package:ddfapp/widgets/label_row.dart';
-import 'package:ddfapp/side_widget.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 
@@ -29,21 +29,39 @@ class _HomePageState extends State<HomePage> {
   String flashText = "flash program";
   int lengthOutput = 80;
   int lengthColumn = 8;
+  int lengthRow = 10;
 
   @override
   Widget build(BuildContext context) {
     List textOutput = List.generate(
       lengthOutput,
       (index) => TextEditingController(
-        text: h.decsInjector[index][2].toString(),
+        text: h.listPoint[index][2].toString(),
       ),
     );
 
     List textColumn = List.generate(
       lengthColumn,
       (index) => TextEditingController(
-        text: h.decsInjector[index][1].toString(),
+        text: h.listPoint[index][0].toString(),
       ),
+    );
+
+    List textRow = List.generate(
+      lengthRow,
+      (index) => TextEditingController(
+        text: h.listPoint[index][1].toString(),
+      ),
+    );
+
+    List textControllerColumn = List.generate(
+      lengthColumn,
+      (index) => textColumn[index],
+    );
+
+    List textControllerRow = List.generate(
+      lengthRow,
+      (index) => textRow[index],
     );
 
     return Container(
@@ -79,10 +97,11 @@ class _HomePageState extends State<HomePage> {
                           height: 10,
                         ),
                         LabelRow(
-                          enabled: readOnlyRow,
-                          boxDecor: BoxDecoration(
-                              color: checkedRow ? colorEnabled : colorDisabled),
-                        ),
+                            enabled: readOnlyRow,
+                            boxDecor: BoxDecoration(
+                              color: checkedRow ? colorEnabled : colorDisabled,
+                            ),
+                            textController: textControllerRow),
                         const SizedBox(
                           height: 10,
                         ),
@@ -101,25 +120,26 @@ class _HomePageState extends State<HomePage> {
                       boxDecor: BoxDecoration(
                         color: checkedColumn ? colorEnabled : colorDisabled,
                       ),
-                      textController: List.generate(
-                          lengthColumn, (index) => textColumn[index]),
+                      textController: textControllerColumn,
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                    const Divider(size: 320, direction: Axis.vertical),
+                    const Divider(
+                      size: 320,
+                      direction: Axis.vertical,
+                    ),
                     const SizedBox(
                       width: 10,
                     ),
                     Column(
                       children: [
-                        // Divider(
-                        //   size: 700,
-                        // ),
                         GridInput(
                           readOnly: readOnlyInput,
-                          textC:
-                              List.generate(80, (index) => textOutput[index]),
+                          textC: List.generate(
+                            80,
+                            (index) => textOutput[index],
+                          ),
                         ),
                       ],
                     ),
@@ -234,6 +254,47 @@ class _HomePageState extends State<HomePage> {
                                     child: const Text("refresh"),
                                     onPressed: () {
                                       setState(() {
+                                        // textColumn = List.generate(
+                                        //   8,
+                                        //   (index) => textControllerColumn,
+                                        // );
+                                        // textRow = List.generate(
+                                        //   10,
+                                        //   (index) => textControllerRow,
+                                        // );
+                                        textColumn = List.generate(
+                                          8,
+                                          (index) => TextEditingController(
+                                              text: index == 0
+                                                  ? h.hexRPM[index].toString()
+                                                  : index == 1
+                                                      ? h.hexRPM[10].toString()
+                                                      : index == 2
+                                                          ? h.hexRPM[20]
+                                                              .toString()
+                                                          : index == 3
+                                                              ? h.hexRPM[30]
+                                                                  .toString()
+                                                              : index == 4
+                                                                  ? h.hexRPM[40]
+                                                                      .toString()
+                                                                  : index == 5
+                                                                      ? h.hexRPM[
+                                                                              50]
+                                                                          .toString()
+                                                                      : index ==
+                                                                              6
+                                                                          ? h.hexRPM[60]
+                                                                              .toString()
+                                                                          : h.hexRPM[70]
+                                                                              .toString()),
+                                        );
+                                        textRow = List.generate(
+                                          10,
+                                          (index) => TextEditingController(
+                                            text: h.hexTPS[index].toString(),
+                                          ),
+                                        );
                                         textOutput = List.generate(
                                           80,
                                           (index) => TextEditingController(
@@ -241,11 +302,6 @@ class _HomePageState extends State<HomePage> {
                                                 h.hexInjector[index].toString(),
                                           ),
                                         );
-                                        // textColumn = List.generate(
-                                        //   8,
-                                        //   (index) => TextEditingController(
-                                        //       text: intRPM),
-                                        // );
                                       });
                                     },
                                   ),
@@ -277,7 +333,7 @@ class _HomePageState extends State<HomePage> {
                               Process.run('ls', ['-al']).then(
                                 (ProcessResult results) {
                                   showContentDialog(context, results.stdout,
-                                      textOutput, textColumn);
+                                      textOutput, textColumn, textRow);
                                 },
                               );
                             }
@@ -335,43 +391,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Expanded(
-                  child: ListView(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      SideWidget(
-                        title: "TPS",
-                        dataValue: "0 %",
-                        titleIcon: FluentIcons.chart_y_angle,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SideWidget(
-                        title: "RPM",
-                        dataValue: "0",
-                        titleIcon: FluentIcons.speed_high,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SideWidget(
-                        title: "MAP",
-                        dataValue: "0 V",
-                        titleIcon: FluentIcons.duststorm,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SideWidget(
-                        title: "TEMP",
-                        dataValue: "0 °C",
-                        titleIcon: FluentIcons.frigid,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ],
-                  ),
+                  child: SideView(),
                 ),
               ],
             ),
@@ -382,12 +402,14 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-void showContentDialog(BuildContext context, resultText, output, column) async {
+void showContentDialog(
+    BuildContext context, resultText, outputData, columnData, rowData) async {
   // final List intOutput = [];
   // final List<String> strOutput = [output.text.toString()];
   final HomeController h = Get.put(HomeController());
-  final hexOutput = h.strToHex(output, "injector");
-  final hexRPM = h.strToHex(column, "RPM");
+  final hexOutput = h.strToHex(outputData, "injector");
+  final hexRPM = h.strToHex(columnData, "RPM");
+  final hexTPS = h.strToHex(rowData, "TPS");
 
   // with 0x prefix
   // final hexOutput = intOutput.map((e) => "0x${e.toRadixString(16)}").toList();
@@ -399,8 +421,10 @@ void showContentDialog(BuildContext context, resultText, output, column) async {
       title: const Text('Save value to ECU?'),
       content: Text(
         "RPM Value :\n" +
-            "Throttle Value :\n" +
-            "Injection Data :\n" +
+            hexRPM.toString() +
+            "\nThrottle Value :\n" +
+            hexTPS.toString() +
+            "\nInjection Data :\n" +
             hexOutput.toString(),
       ),
       actions: [
@@ -414,9 +438,9 @@ void showContentDialog(BuildContext context, resultText, output, column) async {
         FilledButton(
           child: const Text('Accept'),
           onPressed: () {
-            h.onSaveHex(hexOutput, hexRPM, hexOutput);
+            h.onSaveHex(hexRPM, hexTPS, hexOutput);
             // Navigator.pop(context, hexOutput.toString());
-            Navigator.pop(context, h.decsInjector.toString());
+            Navigator.pop(context, h.listPoint.toString());
           },
         ),
       ],

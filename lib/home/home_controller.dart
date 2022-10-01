@@ -6,6 +6,8 @@ class HomeController extends GetxController {
   var ix = 80.obs;
   List intRPM = [].obs;
   List hexInjector = List.generate(80, (index) => "").obs;
+  List hexRPM = List.generate(8, (index) => "").obs;
+  List hexTPS = List.generate(10, (index) => "").obs;
   // List strRPM = List.generate(80, (index) => "").obs;
   List decInjector = List.generate(
       80,
@@ -22,16 +24,15 @@ class HomeController extends GetxController {
       (index) => [
             [""]
           ]).obs;
-  List decsInjector = List.generate(80, (index) => ["", "", ""]).obs;
+  List listPoint = List.generate(80, (index) => ["", "", ""]).obs;
 
-  onSaveHex(List tps, List rpm, List output) {
-    hexInjector = output;
+  onSaveHex(List hexRPM, List hexTPS, List hexInjector) {
     decInjector = hexInjector.map((e) => HEX.decode(e)).toList();
-    decRPM = rpm.map((y) => HEX.decode(y)).toList();
-    decTPS = tps.map((x) => HEX.decode(x)).toList();
-    // decsInjector = List.generate(80, (index) => [decInjector[index][1]]);
-    decsInjector = List.generate(80,
-        (index) => [decTPS[index][0], decRPM[index][0], decInjector[index][0]]);
+    decRPM = hexRPM.map((y) => HEX.decode(y)).toList();
+    decTPS = hexTPS.map((x) => HEX.decode(x)).toList();
+    // listPoint = List.generate(80, (index) => [decInjector[index][1]]);
+    listPoint = List.generate(80,
+        (index) => [decRPM[index][0], decTPS[index][0], decInjector[index][0]]);
     // HEX.decode(hexInjector.map.toString()).toList();
     update();
   }
@@ -44,9 +45,14 @@ class HomeController extends GetxController {
 
   onClearInjector() {
     hexInjector = List.generate(indx.value, (index) => "0");
+    hexRPM = List.generate(80, (index) => "0");
+    hexTPS = List.generate(80, (index) => "0");
     decInjector = hexInjector.map((e) => HEX.decode(e)).toList();
-    decsInjector = List.generate(80,
-        (index) => [decTPS[index][0], decRPM[index][0], decInjector[index][0]]);
+    decRPM = hexRPM.map((e) => HEX.decode(e)).toList();
+    decTPS = hexTPS.map((e) => HEX.decode(e)).toList();
+
+    listPoint = List.generate(80,
+        (index) => [decRPM[index][0], decTPS[index][0], decInjector[index][0]]);
     update();
   }
 
@@ -64,6 +70,7 @@ class HomeController extends GetxController {
     if (choice == "injector") {
       hexData = intData.map((e) => e.toRadixString(16)).toList();
     } else if (choice == "RPM") {
+      intRPM = List.generate(8, (index) => intData[index]);
       List int8Data = List.generate(
           80,
           (index) => index < 10
@@ -82,32 +89,31 @@ class HomeController extends GetxController {
                                       ? intData[6]
                                       : intData[7]);
       hexData = int8Data.map((e) => e.toRadixString(16)).toList();
+    } else {
+      List int10Data = List.generate(
+          80,
+          (index) => index == 0 || (index - 0) % 10 == 0
+              ? intData[0]
+              : index == 1 || (index - 1) % 10 == 0
+                  ? intData[1]
+                  : index == 2 || (index - 2) % 10 == 0
+                      ? intData[2]
+                      : index == 3 || (index - 3) % 10 == 0
+                          ? intData[3]
+                          : index == 4 || (index - 4) % 10 == 0
+                              ? intData[4]
+                              : index == 5 || (index - 5) % 10 == 0
+                                  ? intData[5]
+                                  : index == 6 || (index - 6) % 10 == 0
+                                      ? intData[6]
+                                      : index == 7 || (index - 7) % 10 == 0
+                                          ? intData[7]
+                                          : index == 8 || (index - 8) % 10 == 0
+                                              ? intData[8]
+                                              : intData[9]);
+      hexData = int10Data.map((e) => e.toRadixString(16)).toList();
     }
-    // else {
-    //   List int10Data = List.generate(
-    //       80,
-    //       (index) => index < 8
-    //           ? intData[0]
-    //           : index < 16
-    //               ? intData[1]
-    //               : index < 24
-    //                   ? intData[2]
-    //                   : index < 32
-    //                       ? intData[3]
-    //                       : index < 40
-    //                           ? intData[4]
-    //                           : index < 48
-    //                               ? intData[5]
-    //                               : index < 56
-    //                                   ? intData[6]
-    //                                   : index < 64
-    //                                       ? intData[7]
-    //                                       : index < 72
-    //                                           ? intData[8]
-    //                                           : index < 56
-    //                                               ? intData[6]
-    //                                               : intData[7]);
-    //   hexData = int8Data.map((e) => e.toRadixString(16)).toList();
+
     // }
     return hexData;
   }

@@ -2,9 +2,12 @@ import 'package:ddfapp/text_input.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 class LabelRow extends StatelessWidget {
-  LabelRow({super.key, required this.enabled, this.boxDecor});
-  final List _textController =
-      List.generate(10, (index) => TextEditingController());
+  LabelRow(
+      {super.key,
+      required this.enabled,
+      this.boxDecor,
+      required this.textController});
+  List textController = List.generate(10, (index) => TextEditingController());
   final bool enabled;
   final BoxDecoration? boxDecor;
   List placeHolder = [
@@ -31,7 +34,7 @@ class LabelRow extends StatelessWidget {
           placholder: placeHolder[index],
           boxDecoration: boxDecor,
           textcolor: textcolor,
-          controller: _textController[index],
+          controller: textController[index],
         ),
       ),
     );
