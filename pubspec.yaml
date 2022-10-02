@@ -43,6 +43,7 @@ dependencies:
       path: plugins/window_size
   get: ^4.6.5
   hex: ^0.2.0
+  file_picker: ^5.2.0+1
 
 dev_dependencies:
   flutter_test:

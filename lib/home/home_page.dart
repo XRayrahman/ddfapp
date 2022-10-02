@@ -1,6 +1,7 @@
 import 'package:ddfapp/home/home_controller.dart';
 import 'package:ddfapp/text_input.dart';
 import 'package:ddfapp/widgets/side_view.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/widgets/grid_input.dart';
 import 'package:ddfapp/widgets/label_column.dart';
@@ -78,6 +79,16 @@ class _HomePageState extends State<HomePage> {
       lengthRow,
       (index) => textRow[index],
     );
+
+    void _pickFile() async {
+      FilePickerResult? result = await FilePicker.platform
+          .pickFiles(dialogTitle: "Select a saved Data Value");
+
+      if (result == null) return;
+
+      PlatformFile file = result.files.single;
+      print(file.path);
+    }
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -242,6 +253,27 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   const SizedBox(
                                     height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text("Set ALL value to       :"),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Button(
+                                        child: Container(
+                                            width: 115,
+                                            child: const Text("LOAD DATA")),
+                                        onPressed: () {
+                                          setState(() {
+                                            _pickFile();
+                                          });
+                                        },
+                                        //   style: ButtonStyle(
+                                        //       backgroundColor: ,
+                                        // ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -412,6 +444,12 @@ class _HomePageState extends State<HomePage> {
                                     //     h.ctrlToHex(textColumn, "RPM");
                                     // final String hexTPS =
                                     //     h.ctrlToHex(textRow, "TPS");
+                                    final outputData =
+                                        h.ctrlToString(textOutput, "injector");
+                                    final columnData =
+                                        h.ctrlToString(textColumn, "RPM");
+                                    final rowData =
+                                        h.ctrlToString(textRow, "TPS");
                                     Process.run(
                                       r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
                                       [
@@ -419,7 +457,9 @@ class _HomePageState extends State<HomePage> {
                                         '5',
                                         '/baudrate',
                                         '115200',
-                                        "hexOutput"
+                                        outputData,
+                                        columnData,
+                                        rowData
                                       ],
                                     ).then(
                                       (ProcessResult results) {
