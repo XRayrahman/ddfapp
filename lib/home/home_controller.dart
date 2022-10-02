@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 
