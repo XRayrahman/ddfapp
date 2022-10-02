@@ -4,15 +4,16 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'dart:core';
 
 class GridInput extends StatefulWidget {
-  GridInput({
-    super.key,
-    required this.readOnly,
-    required this.textC,
-  });
+  GridInput(
+      {super.key,
+      required this.readOnly,
+      required this.textC,
+      this.boxDecoration});
 
   final bool readOnly;
   List<TextEditingController> textC =
       List.generate(80, (index) => TextEditingController());
+  final BoxDecoration? boxDecoration;
 
   @override
   State<GridInput> createState() => _GridInputState();
@@ -39,9 +40,9 @@ class _GridInputState extends State<GridInput> {
     //   ),
     // );
     String? placeholder = "";
-    BoxDecoration boxDecoration = const BoxDecoration(
-      color: Color.fromARGB(50, 100, 100, 100),
-    );
+    // BoxDecoration boxDecoration = const BoxDecoration(
+    //   color: Color.fromARGB(50, 100, 100, 100),
+    // );
     return Column(
       children: List.generate(
         8,
@@ -59,7 +60,7 @@ class _GridInputState extends State<GridInput> {
                     ),
                     placholder: placeholder,
                     controller: textController[indexRow],
-                    boxDecoration: boxDecoration,
+                    boxDecoration: widget.boxDecoration,
                   )
                 : indexColumn == 1
                     ? TextInput(
@@ -72,7 +73,7 @@ class _GridInputState extends State<GridInput> {
                         ),
                         placholder: placeholder,
                         controller: textController[indexRow + 10],
-                        boxDecoration: boxDecoration,
+                        boxDecoration: widget.boxDecoration,
                       )
                     : indexColumn == 2
                         ? TextInput(
@@ -85,7 +86,7 @@ class _GridInputState extends State<GridInput> {
                             ),
                             placholder: placeholder,
                             controller: textController[indexRow + 20],
-                            boxDecoration: boxDecoration,
+                            boxDecoration: widget.boxDecoration,
                           )
                         : indexColumn == 3
                             ? TextInput(
@@ -98,7 +99,7 @@ class _GridInputState extends State<GridInput> {
                                 ),
                                 placholder: placeholder,
                                 controller: textController[indexRow + 30],
-                                boxDecoration: boxDecoration,
+                                boxDecoration: widget.boxDecoration,
                               )
                             : indexColumn == 4
                                 ? TextInput(
@@ -111,7 +112,7 @@ class _GridInputState extends State<GridInput> {
                                     ),
                                     placholder: placeholder,
                                     controller: textController[indexRow + 40],
-                                    boxDecoration: boxDecoration,
+                                    boxDecoration: widget.boxDecoration,
                                   )
                                 : indexColumn == 5
                                     ? TextInput(
@@ -126,7 +127,7 @@ class _GridInputState extends State<GridInput> {
                                         placholder: placeholder,
                                         controller:
                                             textController[indexRow + 50],
-                                        boxDecoration: boxDecoration,
+                                        boxDecoration: widget.boxDecoration,
                                       )
                                     : indexColumn == 6
                                         ? TextInput(
@@ -142,7 +143,7 @@ class _GridInputState extends State<GridInput> {
                                             placholder: placeholder,
                                             controller:
                                                 textController[indexRow + 60],
-                                            boxDecoration: boxDecoration,
+                                            boxDecoration: widget.boxDecoration,
                                           )
                                         : TextInput(
                                             enabled: widget.readOnly,
@@ -157,7 +158,7 @@ class _GridInputState extends State<GridInput> {
                                             placholder: placeholder,
                                             controller:
                                                 textController[indexRow + 70],
-                                            boxDecoration: boxDecoration,
+                                            boxDecoration: widget.boxDecoration,
                                           ),
           ),
         ),

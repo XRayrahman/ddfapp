@@ -1,6 +1,5 @@
-import 'dart:ffi';
-
 import 'package:ddfapp/home/home_controller.dart';
+import 'package:ddfapp/text_input.dart';
 import 'package:ddfapp/widgets/side_view.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/widgets/grid_input.dart';
@@ -21,14 +20,13 @@ class _HomePageState extends State<HomePage> {
   bool checkedRow = true;
   bool checkedColumn = true;
   bool checkedInput = true;
-  bool checkedPower = false;
   bool readOnlyColumn = false;
   bool readOnlyRow = false;
   bool readOnlyInput = false;
+  bool isSaved = false;
+  bool isSended = false;
   Color colorEnabled = const Color.fromARGB(255, 0, 120, 212);
   Color colorDisabled = const Color.fromARGB(255, 101, 101, 101);
-  bool testd = false;
-  String flashText = "flash program";
   int lengthOutput = 80;
   int lengthColumn = 8;
   int lengthRow = 10;
@@ -42,11 +40,26 @@ class _HomePageState extends State<HomePage> {
       ),
     );
 
+    TextEditingController setInjectorValue = TextEditingController();
+
     List textColumn = List.generate(
-      lengthColumn,
+      8,
       (index) => TextEditingController(
-        text: h.listPoint[index][0].toString(),
-      ),
+          text: index == 0
+              ? h.listPoint[index][0].toString()
+              : index == 1
+                  ? h.listPoint[10][0].toString()
+                  : index == 2
+                      ? h.listPoint[20][0].toString()
+                      : index == 3
+                          ? h.listPoint[30][0].toString()
+                          : index == 4
+                              ? h.listPoint[40][0].toString()
+                              : index == 5
+                                  ? h.listPoint[50][0].toString()
+                                  : index == 6
+                                      ? h.listPoint[60][0].toString()
+                                      : h.listPoint[70][0].toString()),
     );
 
     List textRow = List.generate(
@@ -70,391 +83,477 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.all(20),
       child: Row(
         children: [
-          RotatedBox(
-            quarterTurns: 3,
-            child: Container(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: const Text(
-                "RPM",
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-          ),
-          Expanded(
+          SizedBox(
+            width: 1060,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                  padding: EdgeInsets.only(right: 20),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.8),
+                        offset: Offset(-6.0, -6.0),
+                        blurRadius: 16.0,
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        offset: Offset(6.0, 6.0),
+                        blurRadius: 16.0,
+                      ),
+                    ],
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Row(
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Button(
+                                        child: Container(
+                                            width: 120,
+                                            child: const Text(
+                                                "Clear Injector Value")),
+                                        onPressed: () {
+                                          setState(() {
+                                            h.onClearInjector();
+                                          });
+                                        },
+                                        //   style: ButtonStyle(
+                                        //       backgroundColor: ,
+                                        // ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Button(
+                                        child: Container(
+                                            width: 120,
+                                            child:
+                                                const Text("Clear TPS Value")),
+                                        onPressed: () {
+                                          setState(
+                                            () {
+                                              h.onClearRow();
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Button(
+                                        child: Container(
+                                            width: 120,
+                                            child:
+                                                const Text("Clear RPM Value")),
+                                        onPressed: () {
+                                          setState(
+                                            () {
+                                              h.onClearColumn();
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 60,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Text("Set Injector value to :"),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      TextInput(
+                                          enabled: false,
+                                          controller: setInjectorValue),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Button(
+                                        child: const Text("OK"),
+                                        onPressed: () {
+                                          setState(() {
+                                            h.onSetInjectorValue(
+                                                setInjectorValue.text);
+                                          });
+                                        },
+                                        //   style: ButtonStyle(
+                                        //       backgroundColor: ,
+                                        // ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text("Set ALL value to       :"),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Button(
+                                        child: Container(
+                                            width: 115,
+                                            child: const Text("DEFAULT")),
+                                        onPressed: () {
+                                          setState(() {
+                                            h.onSetAllDefaultValue();
+                                          });
+                                        },
+                                        //   style: ButtonStyle(
+                                        //       backgroundColor: ,
+                                        // ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 60,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      ToggleSwitch(
+                                        checked: checkedColumn,
+                                        onChanged: (v) => setState(
+                                          () {
+                                            checkedColumn = v;
+                                            readOnlyColumn = !v;
+                                          },
+                                        ),
+                                        content: Text(
+                                          checkedColumn
+                                              ? "Column Value : Unlocked"
+                                              : "Column Value : Locked",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 2,
+                                  ),
+                                  Row(
+                                    children: [
+                                      ToggleSwitch(
+                                        checked: checkedRow,
+                                        onChanged: (x) => setState(
+                                          () {
+                                            checkedRow = x;
+                                            readOnlyRow = !x;
+                                          },
+                                        ),
+                                        content: Text(
+                                          checkedRow
+                                              ? "Row Value : Unlocked"
+                                              : "Row Value : Locked",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 2,
+                                  ),
+                                  Row(
+                                    children: [
+                                      ToggleSwitch(
+                                        checked: checkedInput,
+                                        onChanged: (y) => setState(
+                                          () {
+                                            checkedInput = y;
+                                            readOnlyInput = !y;
+                                          },
+                                        ),
+                                        content: Text(
+                                          checkedInput
+                                              ? "Input Value : Unlocked"
+                                              : "Input Value : Locked",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        direction: Axis.vertical,
+                        size: 100,
+                      ),
+                      SizedBox(
+                        width: 35,
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        width: 180,
+                        decoration: BoxDecoration(
+                          // color: const Color.fromARGB(50, 100, 100, 100),
+                          border: isSended
+                              ? Border.all(color: Colors.green)
+                              : Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                isSaved
+                                    ? Icon(FluentIcons.skype_circle_check,
+                                        color: Colors.green)
+                                    : const Icon(
+                                        FluentIcons.sync_status_solid,
+                                        color: Color.fromARGB(90, 49, 49, 49),
+                                      ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                FilledButton(
+                                  child: const SizedBox(
+                                      width: 100, child: Text("Save Value")),
+                                  onPressed: () {
+                                    setState(() {
+                                      isSaved = true;
+                                      final valueOutput = h.ctrlToStringList(
+                                          textOutput, "injector");
+                                      final valueRPM =
+                                          h.ctrlToStringList(textColumn, "RPM");
+                                      final valueTPS =
+                                          h.ctrlToStringList(textRow, "TPS");
+                                      h.onSave(
+                                        valueTPS,
+                                        valueRPM,
+                                        valueOutput,
+                                      );
+                                    });
+                                  },
+                                  //   style: ButtonStyle(
+                                  //       backgroundColor: ,
+                                  // ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                isSended
+                                    ? Icon(FluentIcons.skype_circle_check,
+                                        color: Colors.green)
+                                    : const Icon(
+                                        FluentIcons.sync_status_solid,
+                                        color: Color.fromARGB(90, 49, 49, 49),
+                                      ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                FilledButton(
+                                  child: const SizedBox(
+                                    width: 100,
+                                    child: Text("Send Data"),
+                                  ),
+                                  onPressed: () => setState(() {
+                                    // final String hexOutput =
+                                    //     h.ctrlToHex(textOutput, "injector");
+                                    // final String hexRPM =
+                                    //     h.ctrlToHex(textColumn, "RPM");
+                                    // final String hexTPS =
+                                    //     h.ctrlToHex(textRow, "TPS");
+                                    Process.run(
+                                      r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
+                                      [
+                                        '/devnum',
+                                        '5',
+                                        '/baudrate',
+                                        '115200',
+                                        "hexOutput"
+                                      ],
+                                    ).then(
+                                      (ProcessResult results) {
+                                        showContentDialog(
+                                          context,
+                                          results.stdout,
+                                          results.stderr,
+                                          textOutput,
+                                          textColumn,
+                                          textRow,
+                                        );
+                                        print("Data : ${results.stderr}");
+                                        setState(() {
+                                          results.stderr == null
+                                              ? isSended = false
+                                              : isSended = true;
+                                        });
+                                        // print("out :" + results.stdout);
+                                      },
+                                    );
+                                    // }
+                                  }),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      // const SizedBox(
+                      //   width: 80,
+                      // ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Row(
                   children: [
-                    const SizedBox(
-                      width: 111,
-                    ),
-                    Column(
-                      children: [
-                        const Text(
-                          "THROTTLE POSITION (%)",
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: Container(
+                        padding: const EdgeInsets.only(bottom: 10, right: 70),
+                        child: const Text(
+                          "RPM",
                           style: TextStyle(fontSize: 18),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        LabelRow(
-                            enabled: readOnlyRow,
-                            boxDecor: BoxDecoration(
-                              color: checkedRow ? colorEnabled : colorDisabled,
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            const SizedBox(
+                              width: 111,
                             ),
-                            textController: textControllerRow),
+                            Column(
+                              children: [
+                                const Text(
+                                  "THROTTLE POSITION (mV)",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                LabelRow(
+                                    enabled: readOnlyRow,
+                                    boxDecor: BoxDecoration(
+                                      color: checkedRow
+                                          ? colorEnabled
+                                          : colorDisabled,
+                                    ),
+                                    textController: textControllerRow),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Divider(size: 1000),
                         const SizedBox(
-                          height: 10,
+                          height: 5,
+                        ),
+                        Row(
+                          children: [
+                            LabelColumn(
+                              enabled: readOnlyColumn,
+                              boxDecor: BoxDecoration(
+                                color: checkedColumn
+                                    ? colorEnabled
+                                    : colorDisabled,
+                              ),
+                              textController: textControllerColumn,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const Divider(
+                              size: 320,
+                              direction: Axis.vertical,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              children: [
+                                GridInput(
+                                  readOnly: readOnlyInput,
+                                  boxDecoration: BoxDecoration(
+                                      color: checkedInput
+                                          ? Color.fromARGB(49, 110, 110, 110)
+                                          : colorDisabled),
+                                  textC: List.generate(
+                                    80,
+                                    (index) => textOutput[index],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ],
                 ),
-                const Divider(size: 1000),
-                const SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  children: [
-                    LabelColumn(
-                      enabled: readOnlyColumn,
-                      boxDecor: BoxDecoration(
-                        color: checkedColumn ? colorEnabled : colorDisabled,
-                      ),
-                      textController: textControllerColumn,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const Divider(
-                      size: 320,
-                      direction: Axis.vertical,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      children: [
-                        GridInput(
-                          readOnly: readOnlyInput,
-                          textC: List.generate(
-                            80,
-                            (index) => textOutput[index],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  ToggleSwitch(
-                                    checked: checkedColumn,
-                                    onChanged: (v) => setState(
-                                      () {
-                                        checkedColumn = v;
-                                        readOnlyColumn = !v;
-                                      },
-                                    ),
-                                    content: Text(
-                                      checkedColumn
-                                          ? "Column Value : Unlocked"
-                                          : "Column Value : Locked",
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  ToggleSwitch(
-                                    checked: checkedRow,
-                                    onChanged: (x) => setState(
-                                      () {
-                                        checkedRow = x;
-                                        readOnlyRow = !x;
-                                      },
-                                    ),
-                                    content: Text(
-                                      checkedRow
-                                          ? "Row Value : Unlocked"
-                                          : "Row Value : Locked",
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  ToggleSwitch(
-                                    checked: checkedInput,
-                                    onChanged: (y) => setState(
-                                      () {
-                                        checkedInput = y;
-                                        readOnlyInput = !y;
-                                      },
-                                    ),
-                                    content: Text(
-                                      checkedInput
-                                          ? "Input Value : Unlocked"
-                                          : "Input Value : Locked",
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 25,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  Button(
-                                    child:
-                                        const Text("Clear All Injector Value"),
-                                    onPressed: () {
-                                      setState(() {
-                                        h.onClearInjector();
-                                      });
-                                    },
-                                    //   style: ButtonStyle(
-                                    //       backgroundColor: ,
-                                    // ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  Button(
-                                    child: const Text("Clear All TPS Value"),
-                                    onPressed: () {
-                                      setState(
-                                        () {
-                                          h.onClearRow();
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  FilledButton(
-                                    child: const Text("refresh"),
-                                    onPressed: () {
-                                      setState(() {
-                                        textColumn = List.generate(
-                                          8,
-                                          (index) => TextEditingController(
-                                            text: h.decRPM.toString(),
-                                          ),
-                                        );
-                                        // textColumn = List.generate(
-                                        //   8,
-                                        //   (index) => TextEditingController(
-                                        //       text: index == 0
-                                        //           ? h.hexRPM[index].toString()
-                                        //           : index == 1
-                                        //               ? h.hexRPM[10].toString()
-                                        //               : index == 2
-                                        //                   ? h.hexRPM[20]
-                                        //                       .toString()
-                                        //                   : index == 3
-                                        //                       ? h.hexRPM[30]
-                                        //                           .toString()
-                                        //                       : index == 4
-                                        //                           ? h.hexRPM[40]
-                                        //                               .toString()
-                                        //                           : index == 5
-                                        //                               ? h.hexRPM[
-                                        //                                       50]
-                                        //                                   .toString()
-                                        //                               : index ==
-                                        //                                       6
-                                        //                                   ? h.hexRPM[60]
-                                        //                                       .toString()
-                                        //                                   : h.hexRPM[70]
-                                        //                                       .toString()),
-                                        // );
-                                        textRow = List.generate(
-                                          10,
-                                          (index) => TextEditingController(
-                                            text: h.decTPS.toString(),
-                                          ),
-                                        );
-                                        textOutput = List.generate(
-                                          80,
-                                          (index) => TextEditingController(
-                                            text:
-                                                h.hexInjector[index].toString(),
-                                          ),
-                                        );
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              // Row(
-                              //   children: [
-                              //     Text(
-                              //       h.hexInjector[0].toString(),
-                              //     ),
-                              //   ],
-                              // ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 25,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  FilledButton(
-                                    child: const Text("Save Value"),
-                                    onPressed: () {
-                                      setState(() {
-                                        final hexOutput =
-                                            h.strToHex(textOutput, "injector");
-                                        final hexRPM =
-                                            h.strToHex(textColumn, "RPM");
-                                        final hexTPS =
-                                            h.strToHex(textRow, "TPS");
-                                        h.onSaveHex(
-                                          hexTPS,
-                                          hexRPM,
-                                          hexOutput,
-                                        );
-                                      });
-                                    },
-                                    //   style: ButtonStyle(
-                                    //       backgroundColor: ,
-                                    // ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        FilledButton(
-                          child: Text(flashText),
-                          onPressed: () => setState(() {
-                            if (h.hexInjector == null) {
-                            } else {
-                              testd = true;
-                              final hexOutput =
-                                  h.strToHex(textOutput, "injector");
-                              final hexRPM = h.strToHex(textColumn, "RPM");
-                              final hexTPS = h.strToHex(textRow, "TPS");
-                              Process.run('echo', [
-                                "RPM : $hexRPM \nTPS : $hexTPS \nInjector : $hexOutput"
-                              ]).then(
-                                (ProcessResult results) {
-                                  showContentDialog(context, results.stdout,
-                                      textOutput, textColumn, textRow);
-                                },
-                              );
-                            }
-                          }),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        // testd
-                        //     ? const SizedBox(
-                        //         width: 15,
-                        //         height: 15,
-                        //         child: ProgressRing(),
-                        //       )
-                        //     : const SizedBox(),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                  ],
-                )
               ],
             ),
           ),
-          Container(
-            width: 150,
-            // color: Color.fromARGB(255, 243, 243, 243),
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(50, 100, 100, 100),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  width: 200,
-                  height: 180,
-                  child: ToggleButton(
-                    onChanged: (v) {
-                      setState(() {
-                        checkedPower = v;
-                      });
-                    },
-                    checked: checkedPower,
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: const Icon(
-                        FluentIcons.power_button,
-                        size: 60,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: SideView(),
-                ),
-              ],
-            ),
+          SizedBox(
+            width: 20,
+          ),
+          const Expanded(
+            child: SideView(),
           )
         ],
       ),
@@ -462,14 +561,22 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-void showContentDialog(
-    BuildContext context, resultText, outputData, columnData, rowData) async {
+void showContentDialog(BuildContext context, resultText, errorText, outputData,
+    columnData, rowData) async {
   // final List intOutput = [];
   // final List<String> strOutput = [output.text.toString()];
   final HomeController h = Get.put(HomeController());
-  final hexOutput = h.strToHexList(outputData, "injector");
-  final hexRPM = h.strToHexList(columnData, "RPM");
-  final hexTPS = h.strToHexList(rowData, "TPS");
+  final hexOutput = h.ctrlToHexList(outputData, "injector");
+  final hexRPM = h.ctrlToHexList(columnData, "RPM");
+  final hexTPS = h.ctrlToHexList(rowData, "TPS");
+
+  final textOutputList = h.ctrlToStringList(outputData, "injector");
+  final textRPMList = h.ctrlToStringList(columnData, "RPM");
+  final textTPSList = h.ctrlToStringList(rowData, "TPS");
+
+  final textOutput = h.ctrlToString(outputData, "injector");
+  final textRPM = h.ctrlToString(columnData, "RPM");
+  final textTPS = h.ctrlToString(rowData, "TPS");
 
   // with 0x prefix
   // final hexOutput = intOutput.map((e) => "0x${e.toRadixString(16)}").toList();
@@ -478,15 +585,8 @@ void showContentDialog(
     context: context,
     builder: (context) => ContentDialog(
       constraints: const BoxConstraints(maxWidth: 330),
-      title: const Text('Save value to ECU?'),
-      content: Text(
-          // "RPM Value :\n" +
-          //     hexRPM.toString() +
-          //     "\nThrottle Value :\n" +
-          //     hexTPS.toString() +
-          //     "\nInjection Data :\n" +
-          //     hexOutput.toString(),
-          resultText),
+      title: const Text('Send value to ECU?'),
+      content: Text(errorText.toString()),
       actions: [
         Button(
           child: const Text('Cancel'),
@@ -498,13 +598,14 @@ void showContentDialog(
         FilledButton(
           child: const Text('Accept'),
           onPressed: () {
-            h.onSaveHex(hexRPM, hexTPS, hexOutput);
-            // Navigator.pop(context, hexOutput.toString());
+            h.onSave(textTPSList, textRPMList, textOutputList);
+            // Navigator.pop(context, [textOutput, textRPM, textTPS].toString());
             Navigator.pop(context, h.listPoint.toString());
           },
         ),
       ],
     ),
   );
-  print(resultText);
+  print(h.listPoint.toString());
+  print(textRPM + textTPS + textOutput);
 }

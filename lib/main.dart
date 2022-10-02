@@ -9,8 +9,8 @@ import 'package:window_size/window_size.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    setWindowMinSize(const Size(1380, 800));
-    setWindowMaxSize(const Size(1380, 840));
+    setWindowMinSize(const Size(1320, 740));
+    // setWindowMaxSize(const Size(1380, 840));
   }
   runApp(const MyApp());
 }
@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: const [
           Text(
-            "ECU DDF PROGRAMMER",
+            "ECU DDF CONFIGURATION",
             style: TextStyle(
               fontSize: 24,
             ),
