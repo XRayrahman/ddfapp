@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/side_widget.dart';
 
@@ -111,7 +109,7 @@ class _SideViewState extends State<SideView> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Expanded(

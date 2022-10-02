@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
       (index) => textRow[index],
     );
 
-    void _pickFile() async {
+    void pickFile() async {
       FilePickerResult? result = await FilePicker.platform
           .pickFiles(dialogTitle: "Select a saved Data Value");
 
@@ -100,21 +100,21 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.only(right: 20),
+                  padding: const EdgeInsets.only(right: 20),
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
                         color: Colors.white.withOpacity(0.8),
-                        offset: Offset(-6.0, -6.0),
+                        offset: const Offset(-6.0, -6.0),
                         blurRadius: 16.0,
                       ),
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
-                        offset: Offset(6.0, 6.0),
+                        offset: const Offset(6.0, 6.0),
                         blurRadius: 16.0,
                       ),
                     ],
-                    color: Color.fromARGB(255, 255, 255, 255),
+                    color: const Color.fromARGB(255, 255, 255, 255),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Row(
@@ -134,10 +134,10 @@ class _HomePageState extends State<HomePage> {
                                   Row(
                                     children: [
                                       Button(
-                                        child: Container(
+                                        child: const SizedBox(
                                             width: 120,
-                                            child: const Text(
-                                                "Clear Injector Value")),
+                                            child:
+                                                Text("Clear Injector Value")),
                                         onPressed: () {
                                           setState(() {
                                             h.onClearInjector();
@@ -155,10 +155,9 @@ class _HomePageState extends State<HomePage> {
                                   Row(
                                     children: [
                                       Button(
-                                        child: Container(
+                                        child: const SizedBox(
                                             width: 120,
-                                            child:
-                                                const Text("Clear TPS Value")),
+                                            child: Text("Clear TPS Value")),
                                         onPressed: () {
                                           setState(
                                             () {
@@ -175,10 +174,9 @@ class _HomePageState extends State<HomePage> {
                                   Row(
                                     children: [
                                       Button(
-                                        child: Container(
+                                        child: const SizedBox(
                                             width: 120,
-                                            child:
-                                                const Text("Clear RPM Value")),
+                                            child: Text("Clear RPM Value")),
                                         onPressed: () {
                                           setState(
                                             () {
@@ -237,9 +235,8 @@ class _HomePageState extends State<HomePage> {
                                         width: 5,
                                       ),
                                       Button(
-                                        child: Container(
-                                            width: 115,
-                                            child: const Text("DEFAULT")),
+                                        child: const SizedBox(
+                                            width: 115, child: Text("DEFAULT")),
                                         onPressed: () {
                                           setState(() {
                                             h.onSetAllDefaultValue();
@@ -261,12 +258,12 @@ class _HomePageState extends State<HomePage> {
                                         width: 5,
                                       ),
                                       Button(
-                                        child: Container(
+                                        child: const SizedBox(
                                             width: 115,
-                                            child: const Text("LOAD DATA")),
+                                            child: Text("LOAD DATA")),
                                         onPressed: () {
                                           setState(() {
-                                            _pickFile();
+                                            pickFile();
                                           });
                                         },
                                         //   style: ButtonStyle(
@@ -356,11 +353,11 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         direction: Axis.vertical,
                         size: 100,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 35,
                       ),
                       Container(
@@ -571,7 +568,8 @@ class _HomePageState extends State<HomePage> {
                                   readOnly: readOnlyInput,
                                   boxDecoration: BoxDecoration(
                                       color: checkedInput
-                                          ? Color.fromARGB(49, 110, 110, 110)
+                                          ? const Color.fromARGB(
+                                              49, 110, 110, 110)
                                           : colorDisabled),
                                   textC: List.generate(
                                     80,
@@ -589,7 +587,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           ),
           const Expanded(
@@ -646,6 +644,6 @@ void showContentDialog(BuildContext context, resultText, errorText, outputData,
       ],
     ),
   );
-  print(h.listPoint.toString());
+  print(result);
   print(textRPM + textTPS + textOutput);
 }
