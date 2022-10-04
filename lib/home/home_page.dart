@@ -227,8 +227,43 @@ class _HomePageState extends State<HomePage> {
                                         child: const Text("OK"),
                                         onPressed: () {
                                           setState(() {
-                                            h.onSetInjectorValue(
-                                                setInjectorValue.text);
+                                            if (int.parse(
+                                                    setInjectorValue.text) <
+                                                255) {
+                                              h.onSetInjectorValue(
+                                                  setInjectorValue.text);
+                                            } else {
+                                              showSnackbar(
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  alignment: Alignment.topRight,
+                                                  context,
+                                                  Container(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            11,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            4,
+                                                    child: const Padding(
+                                                      padding:
+                                                          EdgeInsets.all(10.0),
+                                                      child: InfoBar(
+                                                        // isLong: true,
+                                                        title: Text("ERROR"),
+                                                        content: Text(
+                                                            " Value is more than maximum"),
+                                                        severity:
+                                                            InfoBarSeverity
+                                                                .error,
+                                                      ),
+                                                    ),
+                                                  ));
+                                            }
                                           });
                                         },
                                         //   style: ButtonStyle(
@@ -654,7 +689,7 @@ void showContentDialog(BuildContext context, resultText, errorText, outputData,
           },
         ),
         FilledButton(
-          child: const Text('Accept'),
+          child: const Text('OK'),
           onPressed: () {
             h.onSave(textTPSList, textRPMList, textOutputList);
             // Navigator.pop(context, [textOutput, textRPM, textTPS].toString());

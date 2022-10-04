@@ -27,6 +27,7 @@ class HomeController extends GetxController {
             // [""]
           ]).obs;
   List listPoint = List.generate(80, (index) => ["", "", ""]).obs;
+  Map map = {"injector": 80, "RPM": 8, "TPS": 10};
 
   onSave(List valueTPS, List valueRPM, List valueInjector) {
     listPoint = List.generate(80,
@@ -149,12 +150,9 @@ class HomeController extends GetxController {
     List<String> strData =
         List.generate(data.length, (index) => data[index].text);
 
+    x = map[choice] ?? 0;
+
     List<int> intData = strData.map(int.parse).toList();
-    choice == "injector"
-        ? x = 80
-        : choice == "RPM"
-            ? x = 8
-            : x = 10;
     for (var i = 0; i < x; i++) {
       dataStr = "$dataStr ${intData[i].toRadixString(16)}";
     }
@@ -166,12 +164,9 @@ class HomeController extends GetxController {
     var x = 0;
     List<String> strData =
         List.generate(data.length, (index) => data[index].text);
+
+    x = map[choice] ?? 0;
     Int64List intData = Int64List.fromList(strData.map(int.parse).toList());
-    choice == "injector"
-        ? x = 80
-        : choice == "RPM"
-            ? x = 8
-            : x = 10;
     for (var i = 0; i < x; i++) {
       dataStr = "$dataStr ${intData[i].toString()}";
     }

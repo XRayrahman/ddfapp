@@ -50,92 +50,90 @@ class _SideViewState extends State<SideView> {
                 ),
               ],
             ),
-            if (MediaQuery.of(context).size.width < 1500)
-              Expanded(
-                child: ListView(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    SideWidget(
-                      title: "TPS",
-                      dataValue: "0 %",
-                      titleIcon: FluentIcons.chart_y_angle,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SideWidget(
-                      title: "RPM",
-                      dataValue: "0",
-                      titleIcon: FluentIcons.speed_high,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SideWidget(
-                      title: "MAP",
-                      dataValue: "0 V",
-                      titleIcon: FluentIcons.duststorm,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SideWidget(
-                      title: "TEMP",
-                      dataValue: "0 °C",
-                      titleIcon: FluentIcons.frigid,
-                    ),
-                  ],
-                ),
-              )
-            else
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: const [
-                        SideWidget(
-                          title: "TPS",
-                          dataValue: "0 V",
-                          titleIcon: FluentIcons.chart_y_angle,
+            Container(
+              child: MediaQuery.of(context).size.width < 1450
+                  ? Expanded(
+                      child: ListView(
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          SideWidget(
+                            title: "TPS",
+                            dataValue: "0 %",
+                            titleIcon: FluentIcons.chart_y_angle,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SideWidget(
+                            title: "RPM",
+                            dataValue: "0",
+                            titleIcon: FluentIcons.speed_high,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SideWidget(
+                            title: "MAP",
+                            dataValue: "0 V",
+                            titleIcon: FluentIcons.duststorm,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SideWidget(
+                            title: "TEMP",
+                            dataValue: "0 °C",
+                            titleIcon: FluentIcons.frigid,
+                          ),
+                        ],
+                      ),
+                    )
+                  : Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: const [
+                              SideWidget(
+                                title: "TPS",
+                                dataValue: "0 V",
+                                titleIcon: FluentIcons.chart_y_angle,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              SideWidget(
+                                title: "RPM",
+                                dataValue: "0",
+                                titleIcon: FluentIcons.speed_high,
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          height: 10,
+                        const SizedBox(
+                          width: 10,
                         ),
-                        SideWidget(
-                          title: "RPM",
-                          dataValue: "0",
-                          titleIcon: FluentIcons.speed_high,
-                        ),
+                        Expanded(
+                          child: Column(
+                            children: const [
+                              SideWidget(
+                                title: "MAP",
+                                dataValue: "0 V",
+                                titleIcon: FluentIcons.duststorm,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              SideWidget(
+                                title: "TEMP",
+                                dataValue: "0 °C",
+                                titleIcon: FluentIcons.frigid,
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: const [
-                        SideWidget(
-                          title: "MAP",
-                          dataValue: "0 V",
-                          titleIcon: FluentIcons.duststorm,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        SideWidget(
-                          title: "TEMP",
-                          dataValue: "0 °C",
-                          titleIcon: FluentIcons.frigid,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            const SizedBox(
-              height: 10,
-            )
+            ),
           ],
         ),
       ),
