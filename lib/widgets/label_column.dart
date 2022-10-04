@@ -12,16 +12,17 @@ class LabelColumn extends StatelessWidget {
   // final _textController = TextEditingController();
   final bool enabled;
   final BoxDecoration? boxDecor;
-  List placeHolder = [
-    "1000",
-    "1500",
-    "2000",
-    "2500",
-    "3000",
-    "3500",
-    "4000",
-    "4500",
-  ];
+  // List placeHolder = [
+  //   "1000",
+  //   "1500",
+  //   "2000",
+  //   "2500",
+  //   "3000",
+  //   "3500",
+  //   "4000",
+  //   "4500",
+  // ];
+  String? placeHolder = "";
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class LabelColumn extends StatelessWidget {
         8,
         (index) => TextInput(
           enabled: enabled,
-          placholder: placeHolder[index],
+          placholder: placeHolder,
           boxDecoration: boxDecor,
           textcolor: textcolor,
           controller: textController[index],

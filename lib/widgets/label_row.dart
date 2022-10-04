@@ -10,18 +10,19 @@ class LabelRow extends StatelessWidget {
   List textController = List.generate(10, (index) => TextEditingController());
   final bool enabled;
   final BoxDecoration? boxDecor;
-  List placeHolder = [
-    "10",
-    "20",
-    "30",
-    "40",
-    "50",
-    "60",
-    "70",
-    "80",
-    "90",
-    "100",
-  ];
+  // List placeHolder = [
+  //   "10",
+  //   "20",
+  //   "30",
+  //   "40",
+  //   "50",
+  //   "60",
+  //   "70",
+  //   "80",
+  //   "90",
+  //   "100",
+  // ];
+  String? placeHolder = "";
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class LabelRow extends StatelessWidget {
         10,
         (index) => TextInput(
           enabled: enabled,
-          placholder: placeHolder[index],
+          placholder: placeHolder,
           boxDecoration: boxDecor,
           textcolor: textcolor,
           controller: textController[index],

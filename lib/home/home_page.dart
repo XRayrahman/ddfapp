@@ -8,6 +8,7 @@ import 'package:ddfapp/widgets/label_column.dart';
 import 'package:ddfapp/widgets/label_row.dart';
 import 'package:get/get.dart';
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,6 +32,17 @@ class _HomePageState extends State<HomePage> {
   int lengthOutput = 80;
   int lengthColumn = 8;
   int lengthRow = 10;
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  Future<File> get _localSerialSend async {
+    final path = await _localPath;
+    return File('$path/lib/assets/programs/SerialSend.exe');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -441,22 +453,30 @@ class _HomePageState extends State<HomePage> {
                                     //     h.ctrlToHex(textColumn, "RPM");
                                     // final String hexTPS =
                                     //     h.ctrlToHex(textRow, "TPS");
-                                    final outputData =
-                                        h.ctrlToString(textOutput, "injector");
-                                    final columnData =
-                                        h.ctrlToString(textColumn, "RPM");
-                                    final rowData =
-                                        h.ctrlToString(textRow, "TPS");
+                                    final outputData = h.ctrlToStringList(
+                                        textOutput, "injector");
+                                    // final columnData =
+                                    //     h.ctrlToString(textColumn, "RPM");
+                                    // final rowData =
+                                    //     h.ctrlToString(textRow, "TPS");
+                                    String sembilanData = "";
+
+                                    for (var i = 0; i < 9; i++) {
+                                      sembilanData =
+                                          "$sembilanData ${outputData[i].toString()}";
+                                    }
+                                    print(sembilanData);
                                     Process.run(
                                       r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
                                       [
                                         '/devnum',
                                         '5',
                                         '/baudrate',
-                                        '115200',
-                                        outputData,
-                                        columnData,
-                                        rowData
+                                        '9600',
+                                        sembilanData
+                                        // outputData,
+                                        // columnData,
+                                        // rowData
                                       ],
                                     ).then(
                                       (ProcessResult results) {
