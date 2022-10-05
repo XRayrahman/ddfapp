@@ -39,6 +39,19 @@ class _HomePageState extends State<HomePage> {
     return directory.path;
   }
 
+  Future<File> get _pickFile async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      dialogTitle: "Select a saved Data Value",
+      type: FileType.custom,
+      allowedExtensions: ['txt', 'log'],
+    );
+
+    if (result == null) return File("");
+
+    PlatformFile file = result.files.single;
+    return File(file.path.toString());
+  }
+
   Future<File> get _localSerialSend async {
     final path = await _localPath;
     return File('$path/lib/assets/programs/SerialSend.exe');
@@ -46,6 +59,17 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Future<String> loadData() async {
+      try {
+        final file = await _pickFile;
+        final contents = await file.readAsString();
+        print(contents);
+        return contents;
+      } catch (e) {
+        return "";
+      }
+    }
+
     List<TextEditingController> textOutput = List.generate(
       lengthOutput,
       (index) => TextEditingController(
@@ -91,16 +115,6 @@ class _HomePageState extends State<HomePage> {
       lengthRow,
       (index) => textRow[index],
     );
-
-    void pickFile() async {
-      FilePickerResult? result = await FilePicker.platform
-          .pickFiles(dialogTitle: "Select a saved Data Value");
-
-      if (result == null) return;
-
-      PlatformFile file = result.files.single;
-      print(file.path);
-    }
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -310,7 +324,12 @@ class _HomePageState extends State<HomePage> {
                                             child: Text("LOAD DATA")),
                                         onPressed: () {
                                           setState(() {
-                                            pickFile();
+                                            final dataBuffer = loadData();
+                                            final test = dataBuffer
+                                                .toString()
+                                                .split(' ');
+                                            // final List splitData = dataBuffer.map(int.parse);
+                                            print(test);
                                           });
                                         },
                                         //   style: ButtonStyle(

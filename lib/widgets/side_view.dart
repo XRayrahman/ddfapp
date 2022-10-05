@@ -85,6 +85,9 @@ class _SideViewState extends State<SideView> {
                             dataValue: "0 °C",
                             titleIcon: FluentIcons.frigid,
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
                         ],
                       ),
                     )
