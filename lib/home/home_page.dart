@@ -9,6 +9,7 @@ import 'package:ddfapp/widgets/label_row.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:ddfapp/widgets/notification.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,7 +27,6 @@ class _HomePageState extends State<HomePage> {
   bool readOnlyRow = false;
   bool readOnlyInput = false;
   bool isSaved = false;
-  bool isSended = false;
   Color colorEnabled = const Color.fromARGB(255, 0, 120, 212);
   Color colorDisabled = const Color.fromARGB(255, 101, 101, 101);
   int lengthOutput = 80;
@@ -62,11 +62,36 @@ class _HomePageState extends State<HomePage> {
     Future<String> loadData() async {
       try {
         final file = await _pickFile;
-        final contents = await file.readAsString();
-        print(contents);
-        return contents;
+        final load = await file.readAsString();
+        final loadSplit = load.split(' ');
+        List valueOutput = [];
+        List valueTPS = [];
+        List valueRPM = [];
+        h.loadData = List.generate(
+          80,
+          (index) => loadSplit[index],
+        );
+        print(h.loadData);
+
+        for (var i = 0; i < 8; i++) {
+          valueOutput = h.ctrlToStringList(h.loadData[i], "injector", "string");
+        }
+
+        for (var i = 0; i < 10; i++) {
+          valueRPM = h.ctrlToStringList(h.loadData[i + 8], "RPM", "string");
+        }
+
+        for (var i = 0; i < 10; i++) {
+          valueTPS = h.ctrlToStringList(h.loadData[i + 18], "TPS", "string");
+        }
+        h.onSave(
+          valueTPS,
+          valueRPM,
+          valueOutput,
+        );
+        return h.loadData[0];
       } catch (e) {
-        return "";
+        return e.toString();
       }
     }
 
@@ -240,45 +265,46 @@ class _HomePageState extends State<HomePage> {
                                       Button(
                                         child: const Text("OK"),
                                         onPressed: () {
-                                          setState(() {
-                                            if (int.parse(
-                                                    setInjectorValue.text) <
-                                                255) {
-                                              h.onSetInjectorValue(
-                                                  setInjectorValue.text);
-                                            } else {
-                                              showSnackbar(
+                                          setState(
+                                            () {
+                                              if (int.parse(
+                                                      setInjectorValue.text) ==
+                                                  "") {
+                                                showSnackbar(
                                                   duration: const Duration(
                                                       seconds: 3),
                                                   alignment: Alignment.topRight,
                                                   context,
-                                                  Container(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            11,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width /
-                                                            4,
-                                                    child: const Padding(
-                                                      padding:
-                                                          EdgeInsets.all(10.0),
-                                                      child: InfoBar(
-                                                        // isLong: true,
-                                                        title: Text("ERROR"),
-                                                        content: Text(
-                                                            " Value is more than maximum"),
-                                                        severity:
-                                                            InfoBarSeverity
-                                                                .error,
-                                                      ),
+                                                  NotificationBar(
+                                                    contextRoot: context,
+                                                    type: "ERROR",
+                                                    content: const Text(
+                                                      "Value is Empty",
                                                     ),
-                                                  ));
-                                            }
-                                          });
+                                                  ),
+                                                );
+                                              } else if (int.parse(
+                                                      setInjectorValue.text) <
+                                                  255) {
+                                                h.onSetInjectorValue(
+                                                    setInjectorValue.text);
+                                              } else {
+                                                showSnackbar(
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  alignment: Alignment.topRight,
+                                                  context,
+                                                  NotificationBar(
+                                                    contextRoot: context,
+                                                    type: "ERROR",
+                                                    content: const Text(
+                                                      "Value is more than maximum",
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                          );
                                         },
                                         //   style: ButtonStyle(
                                         //       backgroundColor: ,
@@ -329,7 +355,6 @@ class _HomePageState extends State<HomePage> {
                                                 .toString()
                                                 .split(' ');
                                             // final List splitData = dataBuffer.map(int.parse);
-                                            print(test);
                                           });
                                         },
                                         //   style: ButtonStyle(
@@ -426,137 +451,191 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(
                         width: 35,
                       ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          // color: const Color.fromARGB(50, 100, 100, 100),
-                          border: isSended
-                              ? Border.all(color: Colors.green)
-                              : Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                isSaved
-                                    ? Icon(FluentIcons.skype_circle_check,
-                                        color: Colors.green)
-                                    : const Icon(
-                                        FluentIcons.sync_status_solid,
-                                        color: Color.fromARGB(90, 49, 49, 49),
-                                      ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                FilledButton(
-                                  child: const SizedBox(
-                                      width: 100, child: Text("Save Value")),
-                                  onPressed: () {
-                                    setState(() {
-                                      isSaved = true;
-                                      final valueOutput = h.ctrlToStringList(
-                                          textOutput, "injector");
-                                      final valueRPM =
-                                          h.ctrlToStringList(textColumn, "RPM");
-                                      final valueTPS =
-                                          h.ctrlToStringList(textRow, "TPS");
-                                      h.onSave(
-                                        valueTPS,
-                                        valueRPM,
-                                        valueOutput,
-                                      );
-                                    });
-                                  },
-                                  //   style: ButtonStyle(
-                                  //       backgroundColor: ,
-                                  // ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                isSended
-                                    ? Icon(FluentIcons.skype_circle_check,
-                                        color: Colors.green)
-                                    : const Icon(
-                                        FluentIcons.sync_status_solid,
-                                        color: Color.fromARGB(90, 49, 49, 49),
-                                      ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                FilledButton(
-                                  child: const SizedBox(
-                                    width: 100,
-                                    child: Text("Send Data"),
+                      Obx(
+                        () => Container(
+                          alignment: Alignment.centerRight,
+                          width: 180,
+                          decoration: BoxDecoration(
+                            // color: const Color.fromARGB(50, 100, 100, 100),
+                            border: h.isSended.value
+                                ? Border.all(color: Colors.green)
+                                : Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  isSaved
+                                      ? Icon(FluentIcons.skype_circle_check,
+                                          color: Colors.green)
+                                      : const Icon(
+                                          FluentIcons.sync_status_solid,
+                                          color: Color.fromARGB(90, 49, 49, 49),
+                                        ),
+                                  const SizedBox(
+                                    width: 15,
                                   ),
-                                  onPressed: () => setState(() {
-                                    // final String hexOutput =
-                                    //     h.ctrlToHex(textOutput, "injector");
-                                    // final String hexRPM =
-                                    //     h.ctrlToHex(textColumn, "RPM");
-                                    // final String hexTPS =
-                                    //     h.ctrlToHex(textRow, "TPS");
-                                    final outputData = h.ctrlToStringList(
-                                        textOutput, "injector");
-                                    // final columnData =
-                                    //     h.ctrlToString(textColumn, "RPM");
-                                    // final rowData =
-                                    //     h.ctrlToString(textRow, "TPS");
-                                    String sembilanData = "";
+                                  FilledButton(
+                                    child: const SizedBox(
+                                        width: 100, child: Text("Save Value")),
+                                    onPressed: () {
+                                      setState(
+                                        () {
+                                          try {
+                                            final valueOutput =
+                                                h.ctrlToStringList(textOutput,
+                                                    "injector", "controller");
+                                            final valueRPM = h.ctrlToStringList(
+                                                textColumn,
+                                                "RPM",
+                                                "controller");
+                                            final valueTPS = h.ctrlToStringList(
+                                                textRow, "TPS", "controller");
+                                            for (var i = 0;
+                                                i < lengthOutput;
+                                                i++) {
+                                              if (valueOutput[i] >= 100) {
+                                                showSnackbar(
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  alignment: Alignment.topRight,
+                                                  context,
+                                                  NotificationBar(
+                                                    height: 13,
+                                                    contextRoot: context,
+                                                    type: "ERROR",
+                                                    content: Text(
+                                                        "Value(s) is more than maximum value settings"),
+                                                  ),
+                                                );
+                                              } else {
+                                                h.onSave(
+                                                  valueTPS,
+                                                  valueRPM,
+                                                  valueOutput,
+                                                );
+                                              }
+                                            }
+                                            isSaved = true;
+                                          } catch (e) {
+                                            showSnackbar(
+                                              duration:
+                                                  const Duration(seconds: 3),
+                                              alignment: Alignment.topRight,
+                                              context,
+                                              NotificationBar(
+                                                contextRoot: context,
+                                                type: "ERROR",
+                                                content: Text(
+                                                    "${e}value is invalid or still empty"),
+                                              ),
+                                            );
+                                            isSaved = false;
+                                          }
+                                        },
+                                      );
+                                    },
+                                    //   style: ButtonStyle(
+                                    //       backgroundColor: ,
+                                    // ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  h.isSended.value && isSaved
+                                      ? Icon(FluentIcons.skype_circle_check,
+                                          color: Colors.green)
+                                      : const Icon(
+                                          FluentIcons.sync_status_solid,
+                                          color: Color.fromARGB(90, 49, 49, 49),
+                                        ),
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  FilledButton(
+                                    child: const SizedBox(
+                                      width: 100,
+                                      child: Text("Send Data"),
+                                    ),
+                                    onPressed: () => setState(
+                                      () {
+                                        // final String hexOutput =
+                                        //     h.ctrlToHex(textOutput, "injector");
+                                        // final String hexRPM =
+                                        //     h.ctrlToHex(textColumn, "RPM");
+                                        // final String hexTPS =
+                                        //     h.ctrlToHex(textRow, "TPS");
+                                        try {
+                                          final outputData = h.ctrlToStringList(
+                                              textOutput,
+                                              "injector",
+                                              "controller");
+                                          // final columnData =
+                                          //     h.ctrlToString(textColumn, "RPM");
+                                          // final rowData =
+                                          //     h.ctrlToString(textRow, "TPS");
+                                          // String sembilanData = "";
 
-                                    for (var i = 0; i < 9; i++) {
-                                      sembilanData =
-                                          "$sembilanData ${outputData[i].toString()}";
-                                    }
-                                    print(sembilanData);
-                                    Process.run(
-                                      r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
-                                      [
-                                        '/devnum',
-                                        '5',
-                                        '/baudrate',
-                                        '9600',
-                                        sembilanData
-                                        // outputData,
-                                        // columnData,
-                                        // rowData
-                                      ],
-                                    ).then(
-                                      (ProcessResult results) {
-                                        showContentDialog(
-                                          context,
-                                          results.stdout,
-                                          results.stderr,
-                                          textOutput,
-                                          textColumn,
-                                          textRow,
-                                        );
-                                        print("Data : ${results.stderr}");
-                                        setState(() {
-                                          results.stderr == null
-                                              ? isSended = false
-                                              : isSended = true;
-                                        });
-                                        // print("out :" + results.stdout);
+                                          // for (var i = 0; i < 9; i++) {
+                                          //   sembilanData =
+                                          //       "$sembilanData ${outputData[i].toString()}";
+                                          // }
+                                          // print(sembilanData);
+                                          showContentDialog(
+                                            context,
+                                            outputData,
+                                            textOutput,
+                                            textColumn,
+                                            textRow,
+                                          );
+                                        } catch (e) {
+                                          showSnackbar(
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            alignment: Alignment.topRight,
+                                            context,
+                                            Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  4,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  4,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: InfoBar(
+                                                  isLong: true,
+                                                  title: const Text("ERROR"),
+                                                  content: Text(
+                                                      "${e}value is invalid or still empty"),
+                                                  severity:
+                                                      InfoBarSeverity.error,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        // }
                                       },
-                                    );
-                                    // }
-                                  }),
-                                ),
-                              ],
-                            ),
-                          ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       // const SizedBox(
@@ -673,18 +752,21 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-void showContentDialog(BuildContext context, resultText, errorText, outputData,
-    columnData, rowData) async {
+void showContentDialog(
+    BuildContext context, dataParsed, outputData, columnData, rowData) async {
   // final List intOutput = [];
   // final List<String> strOutput = [output.text.toString()];
   final HomeController h = Get.put(HomeController());
+  final TextEditingController slotController =
+      TextEditingController(text: "80");
   final hexOutput = h.ctrlToHexList(outputData, "injector");
   final hexRPM = h.ctrlToHexList(columnData, "RPM");
   final hexTPS = h.ctrlToHexList(rowData, "TPS");
 
-  final textOutputList = h.ctrlToStringList(outputData, "injector");
-  final textRPMList = h.ctrlToStringList(columnData, "RPM");
-  final textTPSList = h.ctrlToStringList(rowData, "TPS");
+  final textOutputList =
+      h.ctrlToStringList(outputData, "injector", "controller");
+  final textRPMList = h.ctrlToStringList(columnData, "RPM", "controller");
+  final textTPSList = h.ctrlToStringList(rowData, "TPS", "controller");
 
   final textOutput = h.ctrlToString(outputData, "injector");
   final textRPM = h.ctrlToString(columnData, "RPM");
@@ -696,9 +778,27 @@ void showContentDialog(BuildContext context, resultText, errorText, outputData,
   final result = await showDialog<String>(
     context: context,
     builder: (context) => ContentDialog(
-      constraints: const BoxConstraints(maxWidth: 330),
+      constraints: const BoxConstraints(maxWidth: 380, maxHeight: 440),
       title: const Text('Send value to ECU?'),
-      content: Text(errorText.toString()),
+      content: Column(
+        children: [
+          Text(
+            "RPM :\n$textRPM\n\nTPS :\n$textTPS\n\nInjector :\n$textOutput",
+          ),
+          Row(
+            children: [
+              const Text("Total data to send (MAX = 80) :"),
+              const SizedBox(
+                width: 10,
+              ),
+              TextInput(
+                enabled: false,
+                controller: slotController,
+              )
+            ],
+          )
+        ],
+      ),
       actions: [
         Button(
           child: const Text('Cancel'),
@@ -710,7 +810,65 @@ void showContentDialog(BuildContext context, resultText, errorText, outputData,
         FilledButton(
           child: const Text('OK'),
           onPressed: () {
-            h.onSave(textTPSList, textRPMList, textOutputList);
+            try {
+              String sembilanData = "";
+              var slotData = int.parse(slotController.text);
+
+              for (var i = 0; i < slotData; i++) {
+                sembilanData = "$sembilanData ${dataParsed[i].toString()}";
+              }
+              print(sembilanData);
+              Process.run(
+                r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
+                [
+                  '/devnum',
+                  '5',
+                  '/baudrate',
+                  '9600',
+                  sembilanData
+                  // outputData,
+                  // columnData,
+                  // rowData
+                ],
+              ).then(
+                (ProcessResult results) {
+                  results.stderr == null
+                      ? h.isSended.value = false
+                      : {
+                          h.isSended.value = true,
+                          showSnackbar(
+                            duration: const Duration(seconds: 3),
+                            alignment: Alignment.topRight,
+                            context,
+                            NotificationBar(
+                              height: 11,
+                              contextRoot: context,
+                              type: "SUCCESS",
+                              content: const Text(
+                                "Values sended to Microcontroller",
+                              ),
+                            ),
+                          ),
+                        };
+                  // print("out :" + results.stdout);
+                },
+              );
+              h.onSave(textTPSList, textRPMList, textOutputList);
+            } catch (e) {
+              showSnackbar(
+                duration: const Duration(seconds: 3),
+                alignment: Alignment.topRight,
+                context,
+                NotificationBar(
+                  height: 11,
+                  contextRoot: context,
+                  type: "ERROR",
+                  content: const Text(
+                    "There is a value(s) that empty or invalid)",
+                  ),
+                ),
+              );
+            }
             // Navigator.pop(context, [textOutput, textRPM, textTPS].toString());
             Navigator.pop(context, h.listPoint.toString());
           },
@@ -718,6 +876,6 @@ void showContentDialog(BuildContext context, resultText, errorText, outputData,
       ],
     ),
   );
-  print(result);
-  print(textRPM + textTPS + textOutput);
+  // print(result);
+  // print(textRPM + textTPS + textOutput);
 }

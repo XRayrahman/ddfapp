@@ -6,6 +6,8 @@ import 'package:hex/hex.dart';
 class HomeController extends GetxController {
   var indx = 80.obs;
   var ix = 80.obs;
+  RxBool isSended = false.obs;
+  List loadData = List.generate(80, (index) => "").obs;
   // List intRPM = [].obs;
   List hexInjector = List.generate(80, (index) => "").obs;
   List hexRPM = List.generate(80, (index) => "").obs;
@@ -173,11 +175,16 @@ class HomeController extends GetxController {
     return dataStr;
   }
 
-  ctrlToStringList(List data, var choice) {
+  intToStringList(List data, var choice) {}
+
+  ctrlToStringList(List data, var choice, var originType) {
     List dataStr = List.generate(80, (index) => "");
+    List<String> strData = [];
     // var x = 0;
-    List<String> strData =
-        List.generate(data.length, (index) => data[index].text);
+    Map origin = {
+      "controller": strData =
+          List.generate(data.length, (index) => data[index].text),
+    };
     Int64List intData = Int64List.fromList(strData.map(int.parse).toList());
     if (choice == "injector") {
       dataStr = intData;
