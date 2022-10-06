@@ -267,9 +267,7 @@ class _HomePageState extends State<HomePage> {
                                         onPressed: () {
                                           setState(
                                             () {
-                                              if (int.parse(
-                                                      setInjectorValue.text) ==
-                                                  "") {
+                                              if (setInjectorValue.text == "") {
                                                 showSnackbar(
                                                   duration: const Duration(
                                                       seconds: 3),
@@ -350,10 +348,7 @@ class _HomePageState extends State<HomePage> {
                                             child: Text("LOAD DATA")),
                                         onPressed: () {
                                           setState(() {
-                                            final dataBuffer = loadData();
-                                            final test = dataBuffer
-                                                .toString()
-                                                .split(' ');
+                                            loadData();
                                             // final List splitData = dataBuffer.map(int.parse);
                                           });
                                         },
@@ -877,5 +872,5 @@ void showContentDialog(
     ),
   );
   // print(result);
-  // print(textRPM + textTPS + textOutput);
+  // print(hexRPM + hexTPS + hexOutput);
 }

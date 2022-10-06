@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:get/get.dart';
-import 'package:hex/hex.dart';
 
 class HomeController extends GetxController {
   var indx = 80.obs;
