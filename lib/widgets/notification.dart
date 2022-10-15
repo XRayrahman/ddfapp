@@ -7,6 +7,7 @@ class NotificationBar extends StatelessWidget {
     this.type,
     this.height,
     this.width,
+    this.isLong,
     required this.content,
   });
 
@@ -15,11 +16,17 @@ class NotificationBar extends StatelessWidget {
   double? width = 4;
   Widget content = const Text("");
   String? type = "";
+  bool? isLong = false;
+  bool isLongConst = false;
 
   @override
   Widget build(BuildContext context) {
     height ??= 9;
     width ??= 16;
+    if (isLong == true) {
+      isLongConst = true;
+    }
+    ;
 
     return SizedBox(
       height: MediaQuery.of(contextRoot).size.height / (20 - height!),
@@ -28,6 +35,7 @@ class NotificationBar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: InfoBar(
+            isLong: isLongConst,
             // isLong: true,
             title: Text(type == null ? "INFO" : type.toString()),
             content: content,

@@ -486,22 +486,38 @@ class _HomePageState extends State<HomePage> {
                                                 showSnackbar(
                                                   duration: const Duration(
                                                       seconds: 3),
-                                                  alignment: Alignment.topRight,
+                                                  alignment:
+                                                      Alignment.topCenter,
                                                   context,
                                                   NotificationBar(
                                                     height: 13,
                                                     contextRoot: context,
                                                     type: "ERROR",
-                                                    content: const Text(
-                                                        "Value(s) is more than maximum value settings"),
+                                                    content: Text(
+                                                        "Value(s) is more than maximum value settings at $i"),
                                                   ),
                                                 );
-                                              } else {
+                                              } else if (valueOutput[
+                                                      lengthOutput - 1] <=
+                                                  h.maxInjectorValue.value) {
                                                 h.onSave(
                                                   valueTPS,
                                                   valueRPM,
                                                   valueOutput,
                                                 );
+                                                // showSnackbar(
+                                                //   duration: const Duration(
+                                                //       seconds: 3),
+                                                //   alignment: Alignment.topRight,
+                                                //   context,
+                                                //   NotificationBar(
+                                                //     height: 14,
+                                                //     contextRoot: context,
+                                                //     type: "SUCCESS",
+                                                //     content:
+                                                //         Text("Value saved"),
+                                                //   ),
+                                                // );
                                               }
                                             }
                                             isSaved = true;
@@ -797,55 +813,64 @@ void showContentDialog(
                 slotData = "$slotData ${dataParsed[i].toString()}";
               }
               print(slotData);
-              Process.run(
-                r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
-                [
-                  '/devnum',
-                  '5',
-                  '/baudrate',
-                  '9600',
-                  '/hex',
-                  r'[sembilanData]'
-                  // outputData,
-                  // columnData,
-                  // rowData
-                ],
-              ).then(
-                (ProcessResult results) {
-                  List stringSplit = [];
-                  List tryingSplit = [];
-                  String tests = "";
-                  print("out :" + results.stderr);
-                  print("err :" + results.stdout);
-                  results.stderr == null
-                      ? h.isSended.value = false
-                      : {
-                          h.isSended.value = true,
-                          stringSplit = results.stderr.toString().split('\n'),
-                          // tryingSplit = stringSplit[5].toString().split('...'),
-                          tests = stringSplit[5],
-                          tests = tests.replaceAll(RegExp('[^A-Za-z0-9]'), ''),
-                          // print(stringSplit[5]),
-                          print(tests),
-                          h.logSended =
-                              "${stringSplit[2]} \n ${stringSplit[3]} \n ${stringSplit[4]} \n ${tests}",
-                          showSnackbar(
-                            duration: const Duration(seconds: 3),
-                            alignment: Alignment.topRight,
-                            context,
-                            NotificationBar(
-                              height: 17,
-                              width: 17.5,
-                              contextRoot: context,
-                              type: "INFO",
-                              content: Text(
-                                "Values sended to Microcontroller \n${h.logSended}",
+              try {
+                Process.run(
+                  r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
+                  [
+                    '/devnum',
+                    '5',
+                    '/baudrate',
+                    '9600',
+                    '/hex',
+                    r'sembilanData'
+                    // outputData,
+                    // columnData,
+                    // rowData
+                  ],
+                ).then(
+                  (ProcessResult results) async {
+                    List stringSplit = [];
+                    List tryingSplit = [];
+                    String tests = "";
+                    print("out :" + results.stderr);
+                    print("err :" + results.stdout);
+                    results.stderr == null
+                        ? h.isSended.value = false
+                        : {
+                            h.isSended.value = true,
+                            stringSplit = results.stderr.toString().split('\n'),
+                            // tryingSplit = stringSplit[5].toString().split('...'),
+                            tests = stringSplit[5],
+                            tests =
+                                tests.replaceAll(RegExp('[^A-Za-z0-9 ]'), ' '),
+                            tryingSplit = tests
+                                .toString()
+                                .split('                             '),
+                            // print(stringSplit[5]),
+                            print(tests),
+                            h.logSended =
+                                "${stringSplit[2]} \n ${stringSplit[3]} \n ${stringSplit[4]} \n ${tryingSplit[tryingSplit.length - 2]} \n ${tryingSplit[tryingSplit.length - 1]}",
+                            showSnackbar(
+                              duration: const Duration(seconds: 3),
+                              alignment: Alignment.topRight,
+                              context,
+                              NotificationBar(
+                                height: 16.5,
+                                width: 16.5,
+                                isLong: true,
+                                contextRoot: context,
+                                type: "INFO",
+                                content: Text(
+                                  "------------------- \n${h.logSended}",
+                                ),
                               ),
                             ),
-                          ),
-                        };
-                },
-              );
+                          };
+                  },
+                );
+              } catch (e) {
+                print(e.toString());
+              }
               // h.onSave(textTPSList, textRPMList, textOutputList);
             } catch (e) {
               showSnackbar(
