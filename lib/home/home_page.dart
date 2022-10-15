@@ -494,7 +494,8 @@ class _HomePageState extends State<HomePage> {
                                             for (var i = 0;
                                                 i < lengthOutput;
                                                 i++) {
-                                              if (valueOutput[i] >= 100) {
+                                              if (valueOutput[i] >=
+                                                  h.maxInjectorValue.value) {
                                                 showSnackbar(
                                                   duration: const Duration(
                                                       seconds: 3),
@@ -504,7 +505,7 @@ class _HomePageState extends State<HomePage> {
                                                     height: 13,
                                                     contextRoot: context,
                                                     type: "ERROR",
-                                                    content: Text(
+                                                    content: const Text(
                                                         "Value(s) is more than maximum value settings"),
                                                   ),
                                                 );
@@ -524,6 +525,7 @@ class _HomePageState extends State<HomePage> {
                                               alignment: Alignment.topRight,
                                               context,
                                               NotificationBar(
+                                                height: 16,
                                                 contextRoot: context,
                                                 type: "ERROR",
                                                 content: Text(
@@ -571,15 +573,11 @@ class _HomePageState extends State<HomePage> {
                                         // final String hexTPS =
                                         //     h.ctrlToHex(textRow, "TPS");
                                         try {
-                                          final outputData = h.ctrlToStringList(
-                                              textOutput,
-                                              "injector",
-                                              "controller");
-                                          // final columnData =
-                                          //     h.ctrlToString(textColumn, "RPM");
-                                          // final rowData =
-                                          //     h.ctrlToString(textRow, "TPS");
-                                          // String sembilanData = "";
+                                          final outputData = h.ctrlToHexListAll(
+                                            textRow,
+                                            textColumn,
+                                            textOutput,
+                                          );
 
                                           // for (var i = 0; i < 9; i++) {
                                           //   sembilanData =
@@ -599,7 +597,7 @@ class _HomePageState extends State<HomePage> {
                                                 const Duration(seconds: 3),
                                             alignment: Alignment.topRight,
                                             context,
-                                            Container(
+                                            SizedBox(
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height /
@@ -758,10 +756,10 @@ void showContentDialog(
   final hexRPM = h.ctrlToHexList(columnData, "RPM");
   final hexTPS = h.ctrlToHexList(rowData, "TPS");
 
-  final textOutputList =
-      h.ctrlToStringList(outputData, "injector", "controller");
-  final textRPMList = h.ctrlToStringList(columnData, "RPM", "controller");
-  final textTPSList = h.ctrlToStringList(rowData, "TPS", "controller");
+  // final textOutputList =
+  //     h.ctrlToStringList(outputData, "injector", "controller");
+  // final textRPMList = h.ctrlToStringList(columnData, "RPM", "controller");
+  // final textTPSList = h.ctrlToStringList(rowData, "TPS", "controller");
 
   final textOutput = h.ctrlToString(outputData, "injector");
   final textRPM = h.ctrlToString(columnData, "RPM");
@@ -773,7 +771,7 @@ void showContentDialog(
   final result = await showDialog<String>(
     context: context,
     builder: (context) => ContentDialog(
-      constraints: const BoxConstraints(maxWidth: 380, maxHeight: 440),
+      constraints: const BoxConstraints(maxWidth: 380, maxHeight: 480),
       title: const Text('Send value to ECU?'),
       content: Column(
         children: [
@@ -807,9 +805,9 @@ void showContentDialog(
           onPressed: () {
             try {
               String sembilanData = "";
-              var slotData = int.parse(slotController.text);
+              h.slotData.value = int.parse(slotController.text);
 
-              for (var i = 0; i < slotData; i++) {
+              for (var i = 0; i < h.slotData.value; i++) {
                 sembilanData = "$sembilanData ${dataParsed[i].toString()}";
               }
               print(sembilanData);
@@ -820,35 +818,38 @@ void showContentDialog(
                   '5',
                   '/baudrate',
                   '9600',
-                  sembilanData
+                  '/hex',
+                  r'[sembilanData]'
                   // outputData,
                   // columnData,
                   // rowData
                 ],
               ).then(
                 (ProcessResult results) {
+                  print("out :" + results.stderr);
+                  print("err :" + results.stdout);
                   results.stderr == null
                       ? h.isSended.value = false
                       : {
                           h.isSended.value = true,
+                          h.logSended = results.stderr,
                           showSnackbar(
                             duration: const Duration(seconds: 3),
                             alignment: Alignment.topRight,
                             context,
                             NotificationBar(
-                              height: 11,
+                              height: 18,
                               contextRoot: context,
                               type: "SUCCESS",
-                              content: const Text(
-                                "Values sended to Microcontroller",
+                              content: Text(
+                                "Values sended to Microcontroller \n${h.logSended}",
                               ),
                             ),
                           ),
                         };
-                  // print("out :" + results.stdout);
                 },
               );
-              h.onSave(textTPSList, textRPMList, textOutputList);
+              // h.onSave(textTPSList, textRPMList, textOutputList);
             } catch (e) {
               showSnackbar(
                 duration: const Duration(seconds: 3),
@@ -865,7 +866,7 @@ void showContentDialog(
               );
             }
             // Navigator.pop(context, [textOutput, textRPM, textTPS].toString());
-            Navigator.pop(context, h.listPoint.toString());
+            Navigator.pop(context, h.slotData.value.toString());
           },
         ),
       ],

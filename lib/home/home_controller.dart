@@ -6,6 +6,9 @@ class HomeController extends GetxController {
   var indx = 80.obs;
   var ix = 80.obs;
   RxBool isSended = false.obs;
+  var logSended = "";
+  var slotData = 80.obs;
+  var maxInjectorValue = 255.obs;
   List loadData = List.generate(80, (index) => "").obs;
   // List intRPM = [].obs;
   List hexInjector = List.generate(80, (index) => "").obs;
@@ -31,10 +34,15 @@ class HomeController extends GetxController {
   Map map = {"injector": 80, "RPM": 8, "TPS": 10};
 
   onSave(List valueTPS, List valueRPM, List valueInjector) {
-    listPoint = List.generate(80,
+    listPoint = List.generate(slotData.value,
         (index) => [valueRPM[index], valueTPS[index], valueInjector[index]]);
+    print(listPoint);
     update();
   }
+
+  // onSend(List valueTPS, List valueRPM, List valueInjector){
+
+  // }
 
   // onSaveHex(List hexTPS, List hexRPM, List hexInjector) {
   //   // decINJ = hexInjector.map((e) => HEX.decode(e)).toList();
@@ -179,11 +187,11 @@ class HomeController extends GetxController {
   ctrlToStringList(List data, var choice, var originType) {
     List dataStr = List.generate(80, (index) => "");
     List<String> strData = [];
-    // var x = 0;
-    Map origin = {
-      "controller": strData =
-          List.generate(data.length, (index) => data[index].text),
-    };
+    strData = List.generate(data.length, (index) => data[index].text);
+    // Map origin = {
+    //   "controller": strData =
+    //       List.generate(data.length, (index) => data[index].text),
+    // };
     Int64List intData = Int64List.fromList(strData.map(int.parse).toList());
     if (choice == "injector") {
       dataStr = intData;
@@ -231,6 +239,29 @@ class HomeController extends GetxController {
     return dataStr;
   }
 
+  listToHex(List data) {
+    List hexData = [];
+    List<String> strData =
+        List.generate(data.length, (index) => data[index].text);
+    Int64List intData = Int64List.fromList(strData.map(int.parse).toList());
+    hexData = intData.map((e) => e.toRadixString(16)).toList();
+
+    return hexData;
+  }
+
+  ctrlToHexListAll(List isTPS, List isRPM, List isInjector) {
+    List hexData = [];
+    List hexTPS = ctrlToHexList(isTPS, "");
+    List hexRPM = ctrlToHexList(isRPM, "RPM");
+    List hexInjector = ctrlToHexList(isInjector, "injector");
+    hexData = List.generate(
+        slotData.value,
+        (index) =>
+            hexTPS[index] + " " + hexRPM[index] + " " + hexInjector[index]);
+
+    return hexData;
+  }
+
   ctrlToHexList(List data, var choice) {
     List hexData = [];
     List<String> strData =
@@ -238,10 +269,8 @@ class HomeController extends GetxController {
 
     Int64List intData = Int64List.fromList(strData.map(int.parse).toList());
     if (choice == "injector") {
-      // List hex datatype
       hexData = intData.map((e) => e.toRadixString(16)).toList();
     } else if (choice == "RPM") {
-      // List hex datatype
       // intRPM = List.generate(8, (index) => intData[index]);
       List int8Data = List.generate(
           80,
@@ -287,7 +316,6 @@ class HomeController extends GetxController {
       hexData = int10Data.map((e) => e.toRadixString(16)).toList();
     }
 
-    // List hex datatype
     return hexData;
   }
 }
