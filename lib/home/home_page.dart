@@ -33,12 +33,6 @@ class _HomePageState extends State<HomePage> {
   int lengthColumn = 8;
   int lengthRow = 10;
 
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
-  }
-
   Future<File> get _pickFile async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       dialogTitle: "Select a saved Data Value",
@@ -50,11 +44,6 @@ class _HomePageState extends State<HomePage> {
 
     PlatformFile file = result.files.single;
     return File(file.path.toString());
-  }
-
-  Future<File> get _localSerialSend async {
-    final path = await _localPath;
-    return File('$path/lib/assets/programs/SerialSend.exe');
   }
 
   @override
@@ -74,15 +63,15 @@ class _HomePageState extends State<HomePage> {
         print(h.loadData);
 
         for (var i = 0; i < 8; i++) {
-          valueOutput = h.ctrlToStringList(h.loadData[i], "injector", "string");
+          valueOutput = h.ctrlToStringList(h.loadData[i], "injector");
         }
 
         for (var i = 0; i < 10; i++) {
-          valueRPM = h.ctrlToStringList(h.loadData[i + 8], "RPM", "string");
+          valueRPM = h.ctrlToStringList(h.loadData[i + 8], "RPM");
         }
 
         for (var i = 0; i < 10; i++) {
-          valueTPS = h.ctrlToStringList(h.loadData[i + 18], "TPS", "string");
+          valueTPS = h.ctrlToStringList(h.loadData[i + 18], "TPS");
         }
         h.onSave(
           valueTPS,
@@ -483,14 +472,12 @@ class _HomePageState extends State<HomePage> {
                                         () {
                                           try {
                                             final valueOutput =
-                                                h.ctrlToStringList(textOutput,
-                                                    "injector", "controller");
+                                                h.ctrlToStringList(
+                                                    textOutput, "injector");
                                             final valueRPM = h.ctrlToStringList(
-                                                textColumn,
-                                                "RPM",
-                                                "controller");
+                                                textColumn, "RPM");
                                             final valueTPS = h.ctrlToStringList(
-                                                textRow, "TPS", "controller");
+                                                textRow, "TPS");
                                             for (var i = 0;
                                                 i < lengthOutput;
                                                 i++) {
@@ -756,10 +743,9 @@ void showContentDialog(
   final hexRPM = h.ctrlToHexList(columnData, "RPM");
   final hexTPS = h.ctrlToHexList(rowData, "TPS");
 
-  // final textOutputList =
-  //     h.ctrlToStringList(outputData, "injector", "controller");
-  // final textRPMList = h.ctrlToStringList(columnData, "RPM", "controller");
-  // final textTPSList = h.ctrlToStringList(rowData, "TPS", "controller");
+  // final textOutputList = h.ctrlToStringList(outputData, "injector");
+  // final textRPMList = h.ctrlToStringList(columnData, "RPM");
+  // final textTPSList = h.ctrlToStringList(rowData, "TPS");
 
   final textOutput = h.ctrlToString(outputData, "injector");
   final textRPM = h.ctrlToString(columnData, "RPM");
@@ -804,13 +790,13 @@ void showContentDialog(
           child: const Text('OK'),
           onPressed: () {
             try {
-              String sembilanData = "";
+              String slotData = "";
               h.slotData.value = int.parse(slotController.text);
 
               for (var i = 0; i < h.slotData.value; i++) {
-                sembilanData = "$sembilanData ${dataParsed[i].toString()}";
+                slotData = "$slotData ${dataParsed[i].toString()}";
               }
-              print(sembilanData);
+              print(slotData);
               Process.run(
                 r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
                 [
@@ -826,21 +812,32 @@ void showContentDialog(
                 ],
               ).then(
                 (ProcessResult results) {
+                  List stringSplit = [];
+                  List tryingSplit = [];
+                  String tests = "";
                   print("out :" + results.stderr);
                   print("err :" + results.stdout);
                   results.stderr == null
                       ? h.isSended.value = false
                       : {
                           h.isSended.value = true,
-                          h.logSended = results.stderr,
+                          stringSplit = results.stderr.toString().split('\n'),
+                          // tryingSplit = stringSplit[5].toString().split('...'),
+                          tests = stringSplit[5],
+                          tests = tests.replaceAll(RegExp('[^A-Za-z0-9]'), ''),
+                          // print(stringSplit[5]),
+                          print(tests),
+                          h.logSended =
+                              "${stringSplit[2]} \n ${stringSplit[3]} \n ${stringSplit[4]} \n ${tests}",
                           showSnackbar(
                             duration: const Duration(seconds: 3),
                             alignment: Alignment.topRight,
                             context,
                             NotificationBar(
-                              height: 18,
+                              height: 17,
+                              width: 17.5,
                               contextRoot: context,
-                              type: "SUCCESS",
+                              type: "INFO",
                               content: Text(
                                 "Values sended to Microcontroller \n${h.logSended}",
                               ),

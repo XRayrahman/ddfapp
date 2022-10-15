@@ -184,7 +184,7 @@ class HomeController extends GetxController {
 
   intToStringList(List data, var choice) {}
 
-  ctrlToStringList(List data, var choice, var originType) {
+  ctrlToStringList(List data, var choice) {
     List dataStr = List.generate(80, (index) => "");
     List<String> strData = [];
     strData = List.generate(data.length, (index) => data[index].text);
