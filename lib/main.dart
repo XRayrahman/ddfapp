@@ -9,7 +9,7 @@ import 'package:window_size/window_size.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    setWindowMinSize(const Size(1300, 740));
+    setWindowMinSize(const Size(1300, 700));
   }
   runApp(const MyApp());
 }
@@ -44,18 +44,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return NavigationView(
-      appBar: NavigationAppBar(
-          title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
-          Text(
-            "ECU DDF CONFIGURATION",
-            style: TextStyle(
-              fontSize: 24,
-            ),
-          ),
-        ],
-      )),
+      // appBar: NavigationAppBar(
+      //   // title: Row(
+      //   //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   //   children: const [
+      //   //     Text(
+      //   //       "ECU DDF CONFIGURATION",
+      //   //       style: TextStyle(
+      //   //         fontSize: 24,
+      //   //       ),
+      //   //     ),
+      //   //   ],
+      //   // ),
+      // ),
       pane: NavigationPane(
         selected: indexPage,
         size: const NavigationPaneSize(openMaxWidth: 50),

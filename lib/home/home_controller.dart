@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
@@ -40,9 +38,20 @@ class HomeController extends GetxController {
     update();
   }
 
-  // onSend(List valueTPS, List valueRPM, List valueInjector){
+  logData(var results) {
+    List logSplit = [];
+    List trySplit = [];
+    String tryString = "";
+    logSplit = results.toString().split('\n');
 
-  // }
+    tryString = logSplit[logSplit.length - 1];
+    tryString = tryString.replaceAll(RegExp('[^A-Za-z0-9 ]'), ' ');
+    trySplit = tryString.toString().split('                             ');
+
+    // return "${logSplit[2]} \n ${logSplit[3]} \n ${logSplit[4]} \n ${trySplit[trySplit.length - 2]} \n ${trySplit[trySplit.length - 1]}";
+
+    return "${logSplit[2]} \n ${logSplit[3]} \n ${logSplit[4]} \n ${trySplit[0]}";
+  }
 
   // onSaveHex(List hexTPS, List hexRPM, List hexInjector) {
   //   // decINJ = hexInjector.map((e) => HEX.decode(e)).toList();
@@ -161,7 +170,7 @@ class HomeController extends GetxController {
 
     x = map[choice] ?? 0;
 
-    List<int> intData = strData.map(int.parse).toList();
+    List intData = strData.map(int.parse).toList();
     for (var i = 0; i < x; i++) {
       dataStr = "$dataStr ${intData[i].toRadixString(16)}";
     }
@@ -175,7 +184,7 @@ class HomeController extends GetxController {
         List.generate(data.length, (index) => data[index].text);
 
     x = map[choice] ?? 0;
-    Int64List intData = Int64List.fromList(strData.map(int.parse).toList());
+    List intData = List.from(strData.map(int.parse).toList());
     for (var i = 0; i < x; i++) {
       dataStr = "$dataStr ${intData[i].toString()}";
     }
@@ -192,7 +201,7 @@ class HomeController extends GetxController {
     //   "controller": strData =
     //       List.generate(data.length, (index) => data[index].text),
     // };
-    Int64List intData = Int64List.fromList(strData.map(int.parse).toList());
+    List intData = List.from(strData.map(int.parse).toList());
     if (choice == "injector") {
       dataStr = intData;
     } else if (choice == "RPM") {
@@ -243,7 +252,8 @@ class HomeController extends GetxController {
     List hexData = [];
     List<String> strData =
         List.generate(data.length, (index) => data[index].text);
-    Int64List intData = Int64List.fromList(strData.map(int.parse).toList());
+    List intData = List.from(strData.map(int.parse).toList());
+    // Int64List intData = Int64List.fromList(strData.map(int.parse).toList());
     hexData = intData.map((e) => e.toRadixString(16)).toList();
 
     return hexData;
@@ -257,7 +267,12 @@ class HomeController extends GetxController {
     hexData = List.generate(
         slotData.value,
         (index) =>
-            hexTPS[index] + " " + hexRPM[index] + " " + hexInjector[index]);
+            r"\x" +
+            hexTPS[index] +
+            r"\x" +
+            hexRPM[index] +
+            r"\x" +
+            hexInjector[index]);
 
     return hexData;
   }
@@ -267,7 +282,7 @@ class HomeController extends GetxController {
     List<String> strData =
         List.generate(data.length, (index) => data[index].text);
 
-    Int64List intData = Int64List.fromList(strData.map(int.parse).toList());
+    List intData = List.from(strData.map(int.parse).toList());
     if (choice == "injector") {
       hexData = intData.map((e) => e.toRadixString(16)).toList();
     } else if (choice == "RPM") {

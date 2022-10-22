@@ -26,7 +26,7 @@ class _GridInputState extends State<GridInput> {
   // final TEController1 = TextEditingController;
   @override
   Widget build(BuildContext context) {
-    const int dataLength = 80;
+    int dataLength = h.slotData.value;
     final textController =
         List.generate(dataLength, (index) => widget.textC[index]);
 
