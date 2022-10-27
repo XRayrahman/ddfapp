@@ -570,55 +570,69 @@ class _HomePageState extends State<HomePage> {
                                         //     h.ctrlToHex(textColumn, "RPM");
                                         // final String hexTPS =
                                         //     h.ctrlToHex(textRow, "TPS");
-                                        try {
-                                          final outputData = h.ctrlToHexListAll(
-                                            textRow,
-                                            textColumn,
-                                            textOutput,
-                                          );
+                                        List<String> outputData =
+                                            h.ctrlToHexListAll(
+                                          textRow,
+                                          textColumn,
+                                          textOutput,
+                                        );
+                                        showContentDialog(
+                                          context,
+                                          outputData,
+                                          textOutput,
+                                          textColumn,
+                                          textRow,
+                                        );
+                                        // try {
+                                        //   String outputData =
+                                        //       h.ctrlToHexListAll(
+                                        //     textRow,
+                                        //     textColumn,
+                                        //     textOutput,
+                                        //   );
 
-                                          // for (var i = 0; i < 9; i++) {
-                                          //   sembilanData =
-                                          //       "$sembilanData ${outputData[i].toString()}";
-                                          // }
-                                          // print(sembilanData);
-                                          showContentDialog(
-                                            context,
-                                            outputData,
-                                            textOutput,
-                                            textColumn,
-                                            textRow,
-                                          );
-                                        } catch (e) {
-                                          showSnackbar(
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            alignment: Alignment.topRight,
-                                            context,
-                                            SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  4,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  4,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: InfoBar(
-                                                  isLong: true,
-                                                  title: const Text("ERROR"),
-                                                  content: Text(
-                                                      "${e}value is invalid or still empty"),
-                                                  severity:
-                                                      InfoBarSeverity.error,
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        }
+                                        //   // for (var i = 0; i < 9; i++) {
+                                        //   //   sembilanData =
+                                        //   //       "$sembilanData ${outputData[i].toString()}";
+                                        //   // }
+                                        //   // print(sembilanData);
+                                        //   showContentDialog(
+                                        //     context,
+                                        //     outputData,
+                                        //     textOutput,
+                                        //     textColumn,
+                                        //     textRow,
+                                        //   );
+                                        // } catch (e) {
+                                        //   showSnackbar(
+                                        //     duration:
+                                        //         const Duration(seconds: 3),
+                                        //     alignment: Alignment.topRight,
+                                        //     context,
+                                        //     SizedBox(
+                                        //       height: MediaQuery.of(context)
+                                        //               .size
+                                        //               .height /
+                                        //           4,
+                                        //       width: MediaQuery.of(context)
+                                        //               .size
+                                        //               .width /
+                                        //           4,
+                                        //       child: Padding(
+                                        //         padding:
+                                        //             const EdgeInsets.all(10.0),
+                                        //         child: InfoBar(
+                                        //           isLong: true,
+                                        //           title: const Text("ERROR"),
+                                        //           content: Text(
+                                        //               "${e}value is invalid or still empty"),
+                                        //           severity:
+                                        //               InfoBarSeverity.error,
+                                        //         ),
+                                        //       ),
+                                        //     ),
+                                        //   );
+                                        // }
                                         isSaved = false;
                                         // }
                                       },
@@ -801,7 +815,7 @@ void showContentDialog(
         ),
         FilledButton(
           child: const Text('OK'),
-          onPressed: () {
+          onPressed: () async {
             try {
               String slotData = "";
               // for (var i = 0; i < h.slotData.value; i++) {
@@ -865,7 +879,7 @@ void showContentDialog(
                     r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
                     [
                       '/devnum',
-                      '5',
+                      '11',
                       '/baudrate',
                       '115200',
                       '/hex',
@@ -904,6 +918,7 @@ void showContentDialog(
                             };
                     },
                   );
+                  await Future.delayed(const Duration(seconds: 1));
                 }
               } catch (e) {
                 print(e.toString());

@@ -57,7 +57,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           children: [
                             Row(
                               children: [
-                                const Text("Set Injector value to :"),
+                                const Text("Set default TPS value to :"),
                                 const SizedBox(
                                   width: 5,
                                 ),
@@ -82,19 +82,23 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                             Row(
                               children: [
-                                const Text("Set ALL value to       :"),
+                                const Text("Set default RPM value to :"),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                TextInput(
+                                    enabled: false,
+                                    controller: TextEditingController()),
                                 const SizedBox(
                                   width: 5,
                                 ),
                                 Button(
-                                  child: const SizedBox(
-                                      width: 115, child: Text("DEFAULT")),
+                                  child: const Text("OK"),
                                   onPressed: () {
-                                    setState(() {});
+                                    setState(
+                                      () {},
+                                    );
                                   },
-                                  //   style: ButtonStyle(
-                                  //       backgroundColor: ,
-                                  // ),
                                 ),
                               ],
                             ),
@@ -103,23 +107,23 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                             Row(
                               children: [
-                                const Text("Set ALL value to       :"),
+                                const Text("Set default Injector value to :"),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                TextInput(
+                                    enabled: false,
+                                    controller: TextEditingController()),
                                 const SizedBox(
                                   width: 5,
                                 ),
                                 Button(
-                                  child: const SizedBox(
-                                      width: 115, child: Text("LOAD DATA")),
+                                  child: const Text("OK"),
                                   onPressed: () {
                                     setState(
-                                      () {
-                                        // final List splitData = dataBuffer.map(int.parse);
-                                      },
+                                      () {},
                                     );
                                   },
-                                  //   style: ButtonStyle(
-                                  //       backgroundColor: ,
-                                  // ),
                                 ),
                               ],
                             ),
