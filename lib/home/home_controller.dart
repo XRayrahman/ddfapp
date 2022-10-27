@@ -329,13 +329,32 @@ class HomeController extends GetxController {
     //             r"\x" "${hexRawInjector[index]}"
     //         : r"\x0" "${hexRawTPS[index]}" "${hexRawRPM[index]}" +
     //             r"\x0" "${hexRawInjector[index]}");
-
+    int x = 0;
     hexData = List.generate(
         // slotData.value,
         slotData.value,
-        (index) => "${hexLittleTPS[index]}"
-            "${hexLittleRPM[index]}"
-            "${hexLittleInjector[index]}");
+        (index) => index == 0
+            ? "${hexLittleTPS[0]}"
+            : index % 3 == 0
+                ? "${hexLittleTPS[(index / 2).round()]}"
+                : index == 1 || (index - 1) % 3 == 0
+                    ? "${hexLittleRPM[((index - 1) / 2).round()]}"
+                    : index == 2
+                        ? "${hexLittleInjector[index - 2]}"
+                        : "${hexLittleInjector[((index - 2) / 2).round()]}");
+    // hexData = List.generate(
+    //     // slotData.value,
+    //     slotData.value,
+    //     (index) => index == 0
+    //         ? "${hexLittleTPS[0]}"
+    //         : index % 3 == 0
+    //             ? "${hexLittleTPS[index]}"
+    //             : index == 1 || (index - 1) % 3 == 0
+    //                 ? "${hexLittleRPM[index + index + 1]}"
+    //                 : index == 2
+    //                     ? "${hexLittleInjector[index - 2]}"
+    //                     : "${hexLittleInjector[index + index + 2]}");
+    // print(hexData); bagi dua kurang satu
 
     return hexData;
   }

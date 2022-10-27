@@ -831,7 +831,7 @@ void showContentDialog(
 
                 showSnackbar(
                   context,
-                  duration: Duration(seconds: 5),
+                  duration: Duration(seconds: 7),
                   alignment: Alignment.topRight,
                   NotificationBar(
                     height: 12.5,
@@ -853,6 +853,7 @@ void showContentDialog(
                     ),
                   ),
                   onDismiss: () async {
+                    Navigator.pop(context, h.slotData.value.toString());
                     // showSnackbar(
                     //   duration: const Duration(seconds: 3),
                     //   alignment: Alignment.topRight,
@@ -881,7 +882,7 @@ void showContentDialog(
                       '/devnum',
                       '11',
                       '/baudrate',
-                      '115200',
+                      '9600',
                       '/hex',
                       slotData
                       // outputData,
@@ -918,7 +919,7 @@ void showContentDialog(
                             };
                     },
                   );
-                  await Future.delayed(const Duration(seconds: 1));
+                  await Future.delayed(const Duration(milliseconds: 2200));
                 }
               } catch (e) {
                 print(e.toString());
@@ -940,8 +941,8 @@ void showContentDialog(
               );
             }
             // Navigator.pop(context, [textOutput, textRPM, textTPS].toString());
-            Navigator.pop(context, h.slotData.value.toString());
             h.isSended.value = false;
+            // Navigator.pop(context, h.slotData.value.toString());
           },
         ),
       ],
