@@ -9,7 +9,7 @@ class HomeController extends GetxController {
   RxBool isSended = false.obs;
   var logSended = "";
   var slotData = 80.obs;
-  var maxInjectorValue = 255.obs;
+  var maxInjectorValue = 65000.obs;
   List loadData = List.generate(80, (index) => "").obs;
   // List intRPM = [].obs;
   List hexInjector = List.generate(80, (index) => "").obs;
@@ -100,39 +100,39 @@ class HomeController extends GetxController {
     for (int i = 0; i < 80; i++) {
       listPoint[i][2] = "0";
       listPoint[i][1] = i == 0 || (i - 0) % 10 == 0
-          ? "500"
+          ? "100"
           : i == 1 || (i - 1) % 10 == 0
-              ? "1000"
+              ? "200"
               : i == 2 || (i - 2) % 10 == 0
-                  ? "1500"
+                  ? "300"
                   : i == 3 || (i - 3) % 10 == 0
-                      ? "2000"
+                      ? "400"
                       : i == 4 || (i - 4) % 10 == 0
-                          ? "2500"
+                          ? "500"
                           : i == 5 || (i - 5) % 10 == 0
-                              ? "3000"
+                              ? "600"
                               : i == 6 || (i - 6) % 10 == 0
-                                  ? "3500"
+                                  ? "700"
                                   : i == 7 || (i - 7) % 10 == 0
-                                      ? "4000"
+                                      ? "800"
                                       : i == 8 || (i - 8) % 10 == 0
-                                          ? "4500"
-                                          : "5000";
+                                          ? "900"
+                                          : "1000";
       listPoint[i][0] = i < 10
-          ? "500"
+          ? "300"
           : i < 20
-              ? "1000"
+              ? "600"
               : i < 30
-                  ? "1500"
+                  ? "900"
                   : i < 40
-                      ? "2000"
+                      ? "1200"
                       : i < 50
-                          ? "2500"
+                          ? "1500"
                           : i < 60
-                              ? "3000"
+                              ? "1800"
                               : i < 70
-                                  ? "3500"
-                                  : "4000";
+                                  ? "2100"
+                                  : "2400";
     }
 
     update();
@@ -330,18 +330,35 @@ class HomeController extends GetxController {
     //         : r"\x0" "${hexRawTPS[index]}" "${hexRawRPM[index]}" +
     //             r"\x0" "${hexRawInjector[index]}");
     int x = 0;
+    // hexData = List.generate(
+    //     // slotData.value,
+    //     slotData.value,
+    //     (index) => index == 0
+    //         ? "${hexLittleTPS[0]}"
+    //         : index % 3 == 0
+    //             ? "${hexLittleTPS[(index / 2).round()]}"
+    //             : index == 1
+    //                 ? "${hexLittleRPM[((index - 1) / 2).round()]}"
+    //                 : (index - 1) % 3 == 0
+    //                     ? "${hexLittleRPM[((index - 1) / 2).round()]}"
+    //                     : index == 2
+    //                         ? "${hexLittleInjector[index - 2]}"
+    //                         : "${hexLittleInjector[((index - 2) / 2).round()]}");
     hexData = List.generate(
         // slotData.value,
         slotData.value,
         (index) => index == 0
             ? "${hexLittleTPS[0]}"
             : index % 3 == 0
-                ? "${hexLittleTPS[(index / 2).round()]}"
-                : index == 1 || (index - 1) % 3 == 0
-                    ? "${hexLittleRPM[((index - 1) / 2).round()]}"
-                    : index == 2
-                        ? "${hexLittleInjector[index - 2]}"
-                        : "${hexLittleInjector[((index - 2) / 2).round()]}");
+                ? "${hexLittleTPS[(index / 3).round()]}"
+                : index == 1
+                    ? "${hexLittleRPM[index - 1]}"
+                    : (index - 1) % 3 == 0
+                        ? "${hexLittleRPM[((index - 1) / 3).round() + 8]}"
+                        : index == 2
+                            ? "${hexLittleInjector[index - 2]}"
+                            : "${hexLittleInjector[((index - 2) / 3).round()]}");
+
     // hexData = List.generate(
     //     // slotData.value,
     //     slotData.value,

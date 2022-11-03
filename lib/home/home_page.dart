@@ -1,3 +1,4 @@
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:ddfapp/home/home_controller.dart';
 import 'package:ddfapp/text_input.dart';
 import 'package:ddfapp/widgets/side_view.dart';
@@ -824,6 +825,7 @@ void showContentDialog(
               // print('"$slotData"');
 
               var data = '"$slotData"';
+              var timeEach = 2500;
               try {
                 // const dec2hex = AnyBase(AnyBase.dec, AnyBase.hex);
                 // var test = dec2hex.convert('512.5');
@@ -831,24 +833,44 @@ void showContentDialog(
 
                 showSnackbar(
                   context,
-                  duration: Duration(seconds: 7),
+                  duration: Duration(
+                      milliseconds: timeEach * int.parse(slotController.text)),
                   alignment: Alignment.topRight,
                   NotificationBar(
-                    height: 12.5,
-                    width: 16.5,
+                    height: 14.5,
+                    width: 14.5,
                     isLong: true,
                     contextRoot: context,
                     type: "INFO",
                     content: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Text(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: const Text(
                             "Sending ...",
+                            style: TextStyle(fontSize: 16),
                           ),
                         ),
-                        ProgressBar()
+                        // ProgressBar()
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 15, 5),
+                          child: CircularCountDownTimer(
+                            isReverse: true,
+                            width: 45,
+                            height: 45,
+                            duration: (timeEach *
+                                    int.parse(slotController.text) /
+                                    1000)
+                                .round(),
+                            fillColor: Colors.blue,
+                            // fillGradient: LinearGradient(colors: [
+                            //   Color.fromARGB(255, 1, 62, 109),
+                            //   Color.fromARGB(255, 0, 120, 212)
+                            // ]),
+                            ringColor: const Color.fromARGB(49, 110, 110, 110),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -919,7 +941,7 @@ void showContentDialog(
                             };
                     },
                   );
-                  await Future.delayed(const Duration(milliseconds: 2200));
+                  await Future.delayed(Duration(milliseconds: timeEach));
                 }
               } catch (e) {
                 print(e.toString());
