@@ -12,7 +12,7 @@ class GridInput extends StatefulWidget {
 
   final bool readOnly;
   List<TextEditingController> textC =
-      List.generate(80, (index) => TextEditingController());
+      List.generate(100, (index) => TextEditingController());
   final BoxDecoration? boxDecoration;
 
   @override
@@ -22,6 +22,8 @@ class GridInput extends StatefulWidget {
 class _GridInputState extends State<GridInput> {
   HomeController h = HomeController();
   final text = "0";
+  // widget.textC =
+  //     List.generate(80, (index) => TextEditingController());
 
   // final TEController1 = TextEditingController;
   @override
@@ -45,122 +47,163 @@ class _GridInputState extends State<GridInput> {
     // );
     return Column(
       children: List.generate(
-        8,
+        10,
         (indexColumn) => Row(
           children: List.generate(
-            10,
-            (indexRow) => indexColumn == 0
-                ? TextInput(
-                    enabled: widget.readOnly,
-                    suffix: IconButton(
-                      icon: const Icon(FluentIcons.cancel),
-                      onPressed: () {
-                        textController[indexRow].clear();
-                      },
-                    ),
-                    placholder: placeholder,
-                    controller: textController[indexRow],
-                    boxDecoration: widget.boxDecoration,
-                  )
-                : indexColumn == 1
-                    ? TextInput(
-                        enabled: widget.readOnly,
-                        suffix: IconButton(
-                          icon: const Icon(FluentIcons.cancel),
-                          onPressed: () {
-                            textController[indexRow + 10].clear();
-                          },
-                        ),
-                        placholder: placeholder,
-                        controller: textController[indexRow + 10],
-                        boxDecoration: widget.boxDecoration,
-                      )
-                    : indexColumn == 2
-                        ? TextInput(
-                            enabled: widget.readOnly,
-                            suffix: IconButton(
-                              icon: const Icon(FluentIcons.cancel),
-                              onPressed: () {
-                                textController[indexRow + 20].clear();
-                              },
-                            ),
-                            placholder: placeholder,
-                            controller: textController[indexRow + 20],
-                            boxDecoration: widget.boxDecoration,
-                          )
-                        : indexColumn == 3
-                            ? TextInput(
-                                enabled: widget.readOnly,
-                                suffix: IconButton(
-                                  icon: const Icon(FluentIcons.cancel),
-                                  onPressed: () {
-                                    textController[indexRow + 30].clear();
-                                  },
-                                ),
-                                placholder: placeholder,
-                                controller: textController[indexRow + 30],
-                                boxDecoration: widget.boxDecoration,
-                              )
-                            : indexColumn == 4
-                                ? TextInput(
-                                    enabled: widget.readOnly,
-                                    suffix: IconButton(
-                                      icon: const Icon(FluentIcons.cancel),
-                                      onPressed: () {
-                                        textController[indexRow + 40].clear();
-                                      },
-                                    ),
-                                    placholder: placeholder,
-                                    controller: textController[indexRow + 40],
-                                    boxDecoration: widget.boxDecoration,
-                                  )
-                                : indexColumn == 5
-                                    ? TextInput(
-                                        enabled: widget.readOnly,
-                                        suffix: IconButton(
-                                          icon: const Icon(FluentIcons.cancel),
-                                          onPressed: () {
-                                            textController[indexRow + 50]
-                                                .clear();
-                                          },
-                                        ),
-                                        placholder: placeholder,
-                                        controller:
-                                            textController[indexRow + 50],
-                                        boxDecoration: widget.boxDecoration,
-                                      )
-                                    : indexColumn == 6
-                                        ? TextInput(
-                                            enabled: widget.readOnly,
-                                            suffix: IconButton(
-                                              icon: const Icon(
-                                                  FluentIcons.cancel),
-                                              onPressed: () {
-                                                textController[indexRow + 60]
-                                                    .clear();
-                                              },
-                                            ),
-                                            placholder: placeholder,
-                                            controller:
-                                                textController[indexRow + 60],
-                                            boxDecoration: widget.boxDecoration,
-                                          )
-                                        : TextInput(
-                                            enabled: widget.readOnly,
-                                            suffix: IconButton(
-                                              icon: const Icon(
-                                                  FluentIcons.cancel),
-                                              onPressed: () {
-                                                textController[indexRow + 70]
-                                                    .clear();
-                                              },
-                                            ),
-                                            placholder: placeholder,
-                                            controller:
-                                                textController[indexRow + 70],
-                                            boxDecoration: widget.boxDecoration,
+              10,
+              (indexRow) => indexColumn == 0
+                  ? TextInput(
+                      enabled: widget.readOnly,
+                      suffix: IconButton(
+                        icon: const Icon(FluentIcons.cancel),
+                        onPressed: () {
+                          textController[indexRow].clear();
+                        },
+                      ),
+                      placholder: placeholder,
+                      controller: textController[indexRow],
+                      boxDecoration: widget.boxDecoration,
+                    )
+                  : indexColumn == 1
+                      ? TextInput(
+                          enabled: widget.readOnly,
+                          suffix: IconButton(
+                            icon: const Icon(FluentIcons.cancel),
+                            onPressed: () {
+                              textController[indexRow + 10].clear();
+                            },
+                          ),
+                          placholder: placeholder,
+                          controller: textController[indexRow + 10],
+                          boxDecoration: widget.boxDecoration,
+                        )
+                      : indexColumn == 2
+                          ? TextInput(
+                              enabled: widget.readOnly,
+                              suffix: IconButton(
+                                icon: const Icon(FluentIcons.cancel),
+                                onPressed: () {
+                                  textController[indexRow + 20].clear();
+                                },
+                              ),
+                              placholder: placeholder,
+                              controller: textController[indexRow + 20],
+                              boxDecoration: widget.boxDecoration,
+                            )
+                          : indexColumn == 3
+                              ? TextInput(
+                                  enabled: widget.readOnly,
+                                  suffix: IconButton(
+                                    icon: const Icon(FluentIcons.cancel),
+                                    onPressed: () {
+                                      textController[indexRow + 30].clear();
+                                    },
+                                  ),
+                                  placholder: placeholder,
+                                  controller: textController[indexRow + 30],
+                                  boxDecoration: widget.boxDecoration,
+                                )
+                              : indexColumn == 4
+                                  ? TextInput(
+                                      enabled: widget.readOnly,
+                                      suffix: IconButton(
+                                        icon: const Icon(FluentIcons.cancel),
+                                        onPressed: () {
+                                          textController[indexRow + 40].clear();
+                                        },
+                                      ),
+                                      placholder: placeholder,
+                                      controller: textController[indexRow + 40],
+                                      boxDecoration: widget.boxDecoration,
+                                    )
+                                  : indexColumn == 5
+                                      ? TextInput(
+                                          enabled: widget.readOnly,
+                                          suffix: IconButton(
+                                            icon:
+                                                const Icon(FluentIcons.cancel),
+                                            onPressed: () {
+                                              textController[indexRow + 50]
+                                                  .clear();
+                                            },
                                           ),
-          ),
+                                          placholder: placeholder,
+                                          controller:
+                                              textController[indexRow + 50],
+                                          boxDecoration: widget.boxDecoration,
+                                        )
+                                      : indexColumn == 6
+                                          ? TextInput(
+                                              enabled: widget.readOnly,
+                                              suffix: IconButton(
+                                                icon: const Icon(
+                                                    FluentIcons.cancel),
+                                                onPressed: () {
+                                                  textController[indexRow + 60]
+                                                      .clear();
+                                                },
+                                              ),
+                                              placholder: placeholder,
+                                              controller:
+                                                  textController[indexRow + 60],
+                                              boxDecoration:
+                                                  widget.boxDecoration,
+                                            )
+                                          : indexColumn == 7
+                                              ? TextInput(
+                                                  enabled: widget.readOnly,
+                                                  suffix: IconButton(
+                                                    icon: const Icon(
+                                                        FluentIcons.cancel),
+                                                    onPressed: () {
+                                                      textController[
+                                                              indexRow + 70]
+                                                          .clear();
+                                                    },
+                                                  ),
+                                                  placholder: placeholder,
+                                                  controller: textController[
+                                                      indexRow + 70],
+                                                  boxDecoration:
+                                                      widget.boxDecoration,
+                                                )
+                                              : indexColumn == 8
+                                                  ? TextInput(
+                                                      enabled: widget.readOnly,
+                                                      suffix: IconButton(
+                                                        icon: const Icon(
+                                                            FluentIcons.cancel),
+                                                        onPressed: () {
+                                                          textController[
+                                                                  indexRow + 80]
+                                                              .clear();
+                                                        },
+                                                      ),
+                                                      placholder: placeholder,
+                                                      controller:
+                                                          textController[
+                                                              indexRow + 80],
+                                                      boxDecoration:
+                                                          widget.boxDecoration,
+                                                    )
+                                                  : TextInput(
+                                                      enabled: widget.readOnly,
+                                                      suffix: IconButton(
+                                                        icon: const Icon(
+                                                            FluentIcons.cancel),
+                                                        onPressed: () {
+                                                          textController[
+                                                                  indexRow + 90]
+                                                              .clear();
+                                                        },
+                                                      ),
+                                                      placholder: placeholder,
+                                                      controller:
+                                                          textController[
+                                                              indexRow + 90],
+                                                      boxDecoration:
+                                                          widget.boxDecoration,
+                                                    )),
         ),
       ),
     );

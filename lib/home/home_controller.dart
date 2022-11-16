@@ -4,35 +4,35 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  var indx = 80.obs;
-  var ix = 80.obs;
+  var indx = 100.obs;
+  var ix = 100.obs;
   RxBool isSended = false.obs;
   var logSended = "";
-  var slotData = 80.obs;
+  var slotData = 100.obs;
   var maxInjectorValue = 65000.obs;
-  List loadData = List.generate(80, (index) => "").obs;
+  List loadData = List.generate(100, (index) => "").obs;
   // List intRPM = [].obs;
-  List hexInjector = List.generate(80, (index) => "").obs;
-  List hexRPM = List.generate(80, (index) => "").obs;
-  List hexTPS = List.generate(80, (index) => "").obs;
+  List hexInjector = List.generate(100, (index) => "").obs;
+  List hexRPM = List.generate(100, (index) => "").obs;
+  List hexTPS = List.generate(100, (index) => "").obs;
   // List strRPM = List.generate(80, (index) => "").obs;
   List decINJ = List.generate(
-      80,
+      100,
       (index) => [
             [""]
           ]).obs;
   List decRPM = List.generate(
-      80,
+      100,
       (index) => [
             [""]
           ]).obs;
   List decTPS = List.generate(
-      80,
+      100,
       (index) => [
             // [""]
           ]).obs;
-  List listPoint = List.generate(80, (index) => ["", "", ""]).obs;
-  Map map = {"injector": 80, "RPM": 8, "TPS": 10};
+  List listPoint = List.generate(100, (index) => ["", "", ""]).obs;
+  Map map = {"injector": 100, "RPM": 10, "TPS": 10};
 
   onSave(List valueTPS, List valueRPM, List valueInjector) {
     listPoint = List.generate(slotData.value,
@@ -89,7 +89,7 @@ class HomeController extends GetxController {
   }
 
   onSetInjectorValue(var data) {
-    for (int i = 0; i < 80; i++) {
+    for (int i = 0; i < 100; i++) {
       listPoint[i][2] = data;
     }
 
@@ -97,7 +97,7 @@ class HomeController extends GetxController {
   }
 
   onSetAllDefaultValue() {
-    for (int i = 0; i < 80; i++) {
+    for (int i = 0; i < 100; i++) {
       listPoint[i][2] = "0";
       listPoint[i][1] = i == 0 || (i - 0) % 10 == 0
           ? "100"
@@ -132,28 +132,32 @@ class HomeController extends GetxController {
                               ? "1800"
                               : i < 70
                                   ? "2100"
-                                  : "2400";
+                                  : i < 80
+                                      ? "2400"
+                                      : i < 90
+                                          ? "2700"
+                                          : "3000";
     }
 
     update();
   }
 
   onClearInjector() {
-    for (int i = 0; i < 80; i++) {
+    for (int i = 0; i < 100; i++) {
       listPoint[i][2] = "0";
     }
     update();
   }
 
   onClearRow() {
-    for (int i = 0; i < 80; i++) {
+    for (int i = 0; i < 100; i++) {
       listPoint[i][1] = "0";
     }
     update();
   }
 
   onClearColumn() {
-    for (int i = 0; i < 80; i++) {
+    for (int i = 0; i < 100; i++) {
       listPoint[i][0] = "0";
     }
     update();
@@ -197,7 +201,7 @@ class HomeController extends GetxController {
   intToStringList(List data, var choice) {}
 
   ctrlToStringList(List data, var choice) {
-    List dataStr = List.generate(80, (index) => "");
+    List dataStr = List.generate(100, (index) => "");
     List<String> strData = [];
     strData = List.generate(data.length, (index) => data[index].text);
     // Map origin = {
@@ -208,7 +212,7 @@ class HomeController extends GetxController {
     if (choice == "injector") {
       dataStr = intData;
     } else if (choice == "RPM") {
-      for (var index = 0; index < 80; index++) {
+      for (var index = 0; index < slotData.value; index++) {
         dataStr[index] = index < 10
             ? intData[0]
             : index < 20
@@ -223,10 +227,14 @@ class HomeController extends GetxController {
                                 ? intData[5]
                                 : index < 70
                                     ? intData[6]
-                                    : intData[7];
+                                    : index < 80
+                                        ? intData[7]
+                                        : index < 90
+                                            ? intData[8]
+                                            : intData[9];
       }
     } else {
-      for (var index = 0; index < 80; index++) {
+      for (var index = 0; index < slotData.value; index++) {
         dataStr[index] = index == 0 || (index - 0) % 10 == 0
             ? intData[0]
             : index == 1 || (index - 1) % 10 == 0
@@ -268,7 +276,7 @@ class HomeController extends GetxController {
     Uint16List uint16Data = Uint16List.fromList(hexRawData);
     ByteData byteData = ByteData.sublistView(uint16Data);
     List hexLittleData = List.generate(slotData.value, (index) => "x");
-    for (int i = 0; i < slotData.value * 2; i += 2) {
+    for (int i = 0; i < (slotData.value * 2) - 2; i += 2) {
       values = byteData.getUint16(i);
       // hexsRPM[i] = values;\
       if (values.toString().length == 1) {
@@ -387,7 +395,7 @@ class HomeController extends GetxController {
     } else if (choice == "RPM") {
       // intRPM = List.generate(8, (index) => intData[index]);
       List<int> int8Data = List.generate(
-          80,
+          slotData.value,
           (index) => index < 10
               ? intData[0]
               : index < 20
@@ -402,14 +410,18 @@ class HomeController extends GetxController {
                                   ? intData[5]
                                   : index < 70
                                       ? intData[6]
-                                      : intData[7]);
+                                      : index < 80
+                                          ? intData[7]
+                                          : index < 90
+                                              ? intData[8]
+                                              : intData[7]);
       hexData = int8Data;
 
       // hexData = int8Data.map((e) => e.toRadixString(16)).toList();
     } else {
       // List hex dataype
       List<int> int10Data = List.generate(
-          80,
+          100,
           (index) => index == 0 || (index - 0) % 10 == 0
               ? intData[0]
               : index == 1 || (index - 1) % 10 == 0

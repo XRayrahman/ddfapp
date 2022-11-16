@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   Color colorEnabled = const Color.fromARGB(255, 0, 120, 212);
   Color colorDisabled = const Color.fromARGB(255, 101, 101, 101);
   int lengthOutput = 80;
-  int lengthColumn = 8;
+  int lengthColumn = 10;
   int lengthRow = 10;
 
   Future<File> get _pickFile async {
@@ -62,16 +62,16 @@ class _HomePageState extends State<HomePage> {
         );
         print(h.loadData);
 
-        for (var i = 0; i < 8; i++) {
+        for (var i = 0; i < 100; i++) {
           valueOutput = h.ctrlToStringList(h.loadData[i], "injector");
         }
 
         for (var i = 0; i < 10; i++) {
-          valueRPM = h.ctrlToStringList(h.loadData[i + 8], "RPM");
+          valueRPM = h.ctrlToStringList(h.loadData[i + 10], "RPM");
         }
 
         for (var i = 0; i < 10; i++) {
-          valueTPS = h.ctrlToStringList(h.loadData[i + 18], "TPS");
+          valueTPS = h.ctrlToStringList(h.loadData[i + 20], "TPS");
         }
         h.onSave(
           valueTPS,
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
     TextEditingController setInjectorValue = TextEditingController();
 
     List textColumn = List.generate(
-      8,
+      10,
       (index) => TextEditingController(
           text: index == 0
               ? h.listPoint[index][0].toString()
@@ -110,7 +110,11 @@ class _HomePageState extends State<HomePage> {
                                   ? h.listPoint[50][0].toString()
                                   : index == 6
                                       ? h.listPoint[60][0].toString()
-                                      : h.listPoint[70][0].toString()),
+                                      : index == 6
+                                          ? h.listPoint[70][0].toString()
+                                          : index == 6
+                                              ? h.listPoint[80][0].toString()
+                                              : h.listPoint[90][0].toString()),
     );
 
     List textRow = List.generate(
@@ -120,7 +124,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
 
-    List textControllerColumn = List.generate(
+    List<TextEditingController> textControllerColumn = List.generate(
       lengthColumn,
       (index) => textColumn[index],
     );
@@ -785,7 +789,7 @@ void showContentDialog(
   final result = await showDialog<String>(
     context: contexts,
     builder: (context) => ContentDialog(
-      constraints: const BoxConstraints(maxWidth: 380, maxHeight: 480),
+      constraints: const BoxConstraints(maxWidth: 400, maxHeight: 500),
       title: const Text('Send value to ECU?'),
       content: Column(
         children: [
@@ -902,7 +906,7 @@ void showContentDialog(
                     r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
                     [
                       '/devnum',
-                      '11',
+                      '15',
                       '/baudrate',
                       '9600',
                       '/hex',

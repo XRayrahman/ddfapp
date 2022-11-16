@@ -1,39 +1,42 @@
+import 'package:ddfapp/home/data_controller.dart';
 import 'package:ddfapp/text_input.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 
-class LabelColumn extends StatelessWidget {
+class LabelColumn extends StatefulWidget {
   LabelColumn(
       {super.key,
       required this.enabled,
       this.boxDecor,
       required this.textController});
-  List textController = List.generate(8, (index) => TextEditingController());
+  final List<TextEditingController> textController;
   // final _textController = TextEditingController();
   final bool enabled;
   final BoxDecoration? boxDecor;
+
+  @override
+  State<LabelColumn> createState() => _LabelColumnState();
+}
+
+class _LabelColumnState extends State<LabelColumn> {
   // List placeHolder = [
-  //   "1000",
-  //   "1500",
-  //   "2000",
-  //   "2500",
-  //   "3000",
-  //   "3500",
-  //   "4000",
-  //   "4500",
-  // ];
   String? placeHolder = "";
+
+  HomeController h = HomeController();
 
   @override
   Widget build(BuildContext context) {
+    final textController =
+        List.generate(10, (index) => widget.textController[index]);
+
     Color? textcolor = const Color.fromARGB(255, 255, 255, 255);
     return Column(
       children: List.generate(
-        8,
+        10,
         (index) => TextInput(
-          enabled: enabled,
+          enabled: widget.enabled,
           placholder: placeHolder,
-          boxDecoration: boxDecor,
+          boxDecoration: widget.boxDecor,
           textcolor: textcolor,
           controller: textController[index],
         ),
