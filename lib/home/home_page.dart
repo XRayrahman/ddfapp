@@ -766,7 +766,10 @@ void showContentDialog(
   final HomeController h = Get.put(HomeController());
   final TextEditingController slotController =
       TextEditingController(text: "80");
-
+  final TextEditingController baudrateController =
+      TextEditingController(text: h.baudrate.toString());
+  final TextEditingController maxCOMController =
+      TextEditingController(text: h.maxCOM.toString());
   // final hexOutput = h.ctrlToHexList(outputData, "injector");
   // final hexRPM = h.ctrlToHexList(columnData, "RPM");
   // final hexTPS = h.ctrlToHexList(rowData, "TPS");
@@ -791,6 +794,30 @@ void showContentDialog(
         children: [
           Text(
             "RPM :\n$textRPM\n\nTPS :\n$textTPS\n\nInjector :\n$textOutput",
+          ),
+          Row(
+            children: [
+              const Text("MAX COM DEVICE ID :"),
+              const SizedBox(
+                width: 10,
+              ),
+              TextInput(
+                enabled: false,
+                controller: maxCOMController,
+              )
+            ],
+          ),
+          Row(
+            children: [
+              const Text("Baudrate :"),
+              const SizedBox(
+                width: 10,
+              ),
+              TextInput(
+                enabled: false,
+                controller: baudrateController,
+              )
+            ],
           ),
           Row(
             children: [
@@ -902,9 +929,9 @@ void showContentDialog(
                     r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
                     [
                       '/devnum',
-                      '11',
+                      h.maxCOM.toString(),
                       '/baudrate',
-                      '9600',
+                      h.baudrate.toString(),
                       '/hex',
                       slotData
                       // outputData,
