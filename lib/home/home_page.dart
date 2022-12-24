@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
           h.slotData.value,
           (index) => loadSplit[index],
         );
-        print(h.loadData);
+        // print(h.loadData);
 
         for (var i = 0; i < 8; i++) {
           valueOutput = h.ctrlToStringList(h.loadData[i], "injector");
@@ -851,87 +851,25 @@ void showContentDialog(
               // }
               // print('"$slotData"');
 
-              var data = '"$slotData"';
+              // var data = '"$slotData"';
               var timeEach = 2500;
               try {
                 // const dec2hex = AnyBase(AnyBase.dec, AnyBase.hex);
                 // var test = dec2hex.convert('512.5');
                 // print(test);
 
-                showSnackbar(
-                  context,
-                  duration: Duration(
-                      milliseconds: timeEach * int.parse(slotController.text)),
-                  alignment: Alignment.topRight,
-                  NotificationBar(
-                    height: 14.5,
-                    width: 14.5,
-                    isLong: true,
-                    contextRoot: context,
-                    type: "INFO",
-                    content: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: const Text(
-                            "Sending ...",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                        // ProgressBar()
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 15, 5),
-                          child: CircularCountDownTimer(
-                            isReverse: true,
-                            width: 45,
-                            height: 45,
-                            duration: (timeEach *
-                                    int.parse(slotController.text) /
-                                    1000)
-                                .round(),
-                            fillColor: Colors.blue,
-                            // fillGradient: LinearGradient(colors: [
-                            //   Color.fromARGB(255, 1, 62, 109),
-                            //   Color.fromARGB(255, 0, 120, 212)
-                            // ]),
-                            ringColor: const Color.fromARGB(49, 110, 110, 110),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  onDismiss: () async {
-                    Navigator.pop(context, h.slotData.value.toString());
-                    // showSnackbar(
-                    //   duration: const Duration(seconds: 3),
-                    //   alignment: Alignment.topRight,
-                    //   context,
-                    //   NotificationBar(
-                    //     height: 16.5,
-                    //     width: 16.5,
-                    //     isLong: true,
-                    //     contextRoot: context,
-                    //     type: "INFO",
-                    //     content: Text(
-                    //       "------------------- ",
-                    //     ),
-                    //   ),
-                    // );
-                  },
-                );
                 for (var i = 0; i < int.parse(slotController.text); i++) {
                   slotData = dataParsed[i].toString();
                   // "${dataParsed[i].toString()}${dataParsed[i + 1].toString()}${dataParsed[i + 2].toString()}";
                   print(slotData);
 
                   Process.run(
-                    r'C:\Users\Administrator\Downloads\Programs\SerialSend.exe',
+                    r'lib/assets/programs/SerialSend.exe',
                     [
                       '/devnum',
-                      h.maxCOM.toString(),
+                      maxCOMController.text,
                       '/baudrate',
-                      h.baudrate.toString(),
+                      baudrateController.text,
                       '/hex',
                       slotData
                       // outputData,
@@ -940,30 +878,85 @@ void showContentDialog(
                     ],
                   ).then(
                     (ProcessResult results) async {
-                      List stringSplit = [];
-                      List tryingSplit = [];
-                      String tests = "";
+                      // List stringSplit = [];
+                      // List tryingSplit = [];
+                      // String tests = "";
                       print("out :" + results.stderr);
-                      print("err :" + results.stdout);
+                      // print("err :" + results.stdout);
+
                       results.stderr == null
                           ? h.isSended.value = false
                           : {
                               h.logSended = h.logData(results.stderr),
-                              // showSnackbar(
-                              //   duration: const Duration(seconds: 3),
-                              //   alignment: Alignment.topRight,
-                              //   context,
-                              //   NotificationBar(
-                              //     height: 16.5,
-                              //     width: 16.5,
-                              //     isLong: true,
-                              //     contextRoot: context,
-                              //     type: "INFO",
-                              //     content: Text(
-                              //       "------------------- \n${h.logSended}",
-                              //     ),
-                              //   ),
-                              // ),
+                              showSnackbar(
+                                context,
+                                duration: Duration(
+                                    milliseconds: timeEach *
+                                        int.parse(slotController.text)),
+                                alignment: Alignment.topRight,
+                                NotificationBar(
+                                  height: 14.5,
+                                  width: 14.5,
+                                  isLong: true,
+                                  contextRoot: context,
+                                  type: "INFO",
+                                  content: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 0, 0),
+                                        child: const Text(
+                                          "Sending ...",
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                      // ProgressBar()
+                                      Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 15, 5),
+                                        child: CircularCountDownTimer(
+                                          isReverse: true,
+                                          width: 45,
+                                          height: 45,
+                                          duration: (timeEach *
+                                                  int.parse(
+                                                      slotController.text) /
+                                                  1000)
+                                              .round(),
+                                          fillColor: Colors.blue,
+                                          // fillGradient: LinearGradient(colors: [
+                                          //   Color.fromARGB(255, 1, 62, 109),
+                                          //   Color.fromARGB(255, 0, 120, 212)
+                                          // ]),
+                                          ringColor: const Color.fromARGB(
+                                              49, 110, 110, 110),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onDismiss: () async {
+                                  Navigator.pop(
+                                      context, h.slotData.value.toString());
+                                  // showSnackbar(
+                                  //   duration: const Duration(seconds: 3),
+                                  //   alignment: Alignment.topRight,
+                                  //   context,
+                                  //   NotificationBar(
+                                  //     height: 16.5,
+                                  //     width: 16.5,
+                                  //     isLong: true,
+                                  //     contextRoot: context,
+                                  //     type: "INFO",
+                                  //     content: Text(
+                                  //       "------------------- ",
+                                  //     ),
+                                  //   ),
+                                  // );
+                                },
+                              ),
                               h.isSended.value = true
                             };
                     },
@@ -971,7 +964,19 @@ void showContentDialog(
                   await Future.delayed(Duration(milliseconds: timeEach));
                 }
               } catch (e) {
-                print(e.toString());
+                showSnackbar(
+                  duration: const Duration(seconds: 3),
+                  alignment: Alignment.topRight,
+                  context,
+                  NotificationBar(
+                    height: 11,
+                    contextRoot: context,
+                    type: "ERROR",
+                    content: Text(
+                      e.toString(),
+                    ),
+                  ),
+                );
               }
               // h.onSave(textTPSList, textRPMList, textOutputList);
             } catch (e) {

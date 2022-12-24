@@ -39,7 +39,7 @@ class HomeController extends GetxController {
   onSave(List valueTPS, List valueRPM, List valueInjector) {
     listPoint = List.generate(slotData.value,
         (index) => [valueRPM[index], valueTPS[index], valueInjector[index]]);
-    print(listPoint);
+    // print(listPoint);
     update();
   }
 
@@ -297,9 +297,11 @@ class HomeController extends GetxController {
     List hexLittleTPS = rawToHexLittle(hexRawTPS);
     List hexLittleRPM = rawToHexLittle(hexRawRPM);
     List hexLittleInjector = rawToHexLittle(hexRawInjector);
-    print(hexLittleTPS);
-    print(hexLittleRPM);
-    print(hexLittleInjector);
+
+    // print(hexLittleTPS);
+    // print(hexLittleRPM);
+    // print(hexLittleInjector);
+
     // Uint16List hexRPM = Uint16List.fromList(hexRawRPM);
     // ByteData byteData = ByteData.sublistView(hexRPM);
     // List hexsRPM = List.generate(slotData.value, (index) => "x");
@@ -331,7 +333,6 @@ class HomeController extends GetxController {
     //             r"\x" "${hexRawInjector[index]}"
     //         : r"\x0" "${hexRawTPS[index]}" "${hexRawRPM[index]}" +
     //             r"\x0" "${hexRawInjector[index]}");
-    int x = 0;
     // hexData = List.generate(
     //     // slotData.value,
     //     slotData.value,

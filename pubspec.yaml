@@ -77,8 +77,9 @@ flutter:
         - asset: lib/assets/fonts/Segoe-UI-Italic.ttf
         - asset: lib/assets/fonts/Segoe-UI-Bold-Italic.ttf
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - lib/assets/Subtract.png
+  assets:
+    - lib/assets/
+    # - lib/assets/programs/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

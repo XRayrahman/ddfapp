@@ -18,8 +18,8 @@ class _SettingsPageState extends State<SettingsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(20),
-            child: Text(
+            padding: const EdgeInsets.all(20),
+            child: const Text(
               "MAP SETTINGS",
               style: TextStyle(fontSize: 24),
             ),

@@ -26,7 +26,6 @@ class NotificationBar extends StatelessWidget {
     if (isLong == true) {
       isLongConst = true;
     }
-    ;
 
     return SizedBox(
       height: MediaQuery.of(contextRoot).size.height / (20 - height!),
