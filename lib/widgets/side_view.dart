@@ -59,12 +59,14 @@ class _SideViewState extends State<SideView> {
                       child: ListView(
                         // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SideWidget(
-                            title: "TPS",
-                            dataValue: "0 %",
-                            titleIcon: FluentIcons.chart_y_angle,
+                          Obx(
+                            () => SideWidget(
+                              title: "TPS",
+                              dataValue: "${sC.readTPS.toString()} V",
+                              titleIcon: FluentIcons.chart_y_angle,
+                            ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Obx(() => SideWidget(
@@ -72,23 +74,27 @@ class _SideViewState extends State<SideView> {
                                 dataValue: sC.readRPM.toString(),
                                 titleIcon: FluentIcons.speed_high,
                               )),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
-                          SideWidget(
-                            title: "MAP",
-                            dataValue: "0 V",
-                            titleIcon: FluentIcons.duststorm,
+                          Obx(
+                            () => SideWidget(
+                              title: "MAP",
+                              dataValue: "${sC.readMAP.toString()} V",
+                              titleIcon: FluentIcons.duststorm,
+                            ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
-                          SideWidget(
-                            title: "TEMP",
-                            dataValue: "0 °C",
-                            titleIcon: FluentIcons.frigid,
+                          Obx(
+                            () => SideWidget(
+                              title: "TEMP",
+                              dataValue: "${sC.readTEMP.toString()} °C",
+                              titleIcon: FluentIcons.frigid,
+                            ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                         ],

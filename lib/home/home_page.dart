@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:ddfapp/home/home_controller.dart';
 import 'package:ddfapp/widgets/side_controller.dart';
@@ -576,29 +574,45 @@ class _HomePageState extends State<HomePage> {
                                         h.ports =
                                             SerialPort.getAvailablePorts();
                                         print(h.ports[0]);
-                                        final port = SerialPort(h.ports[0]);
-                                        port.readBytesOnListen(8, (value) {
-                                          var split = value.toString();
-                                          final splitted = split.split(",");
-                                          sC.readRPM.value = int.parse(
-                                              splitted[1].replaceAll("[", ""));
-                                          print(
-                                              splitted[1].replaceAll("[", ""));
-                                        });
-                                        // final String hexOutput =
-                                        //     h.ctrlToHex(textOutput, "injector");
-                                        // final String hexRPM =
-                                        //     h.ctrlToHex(textColumn, "RPM");
-                                        // final String hexTPS =
-                                        //     h.ctrlToHex(textRow, "TPS");
-                                        List<String> outputData =
-                                            h.ctrlToHexListAll(
-                                          textRow,
-                                          textColumn,
-                                          textOutput,
-                                        );
-
                                         if (h.ports.isNotEmpty) {
+                                          final port = SerialPort(h.ports[0]);
+                                          port.readBytesOnListen(8, (value) {
+                                            var split = value.toString();
+                                            final splitted = split.split(",");
+
+                                            for (var x = 0;
+                                                x < splitted.length;
+                                                x++) {
+                                              splitted[x] = splitted[x]
+                                                  .replaceAll("[", " ");
+                                              splitted[x] = splitted[x]
+                                                  .replaceAll("]", " ");
+                                            }
+                                            sC.readRPM.value =
+                                                int.parse(splitted[0]);
+                                            // sC.readRPM.value = int.parse(
+                                            //     splitted[1].replaceAll("[", ""));
+                                            sC.readTPS.value =
+                                                int.parse(splitted[1]);
+                                            sC.readMAP.value =
+                                                int.parse(splitted[2]);
+                                            sC.readTEMP.value =
+                                                int.parse(splitted[3]);
+                                            print(splitted[0]
+                                                .replaceAll("[", ""));
+                                          });
+                                          // final String hexOutput =
+                                          //     h.ctrlToHex(textOutput, "injector");
+                                          // final String hexRPM =
+                                          //     h.ctrlToHex(textColumn, "RPM");
+                                          // final String hexTPS =
+                                          //     h.ctrlToHex(textRow, "TPS");
+                                          List<String> outputData =
+                                              h.ctrlToHexListAll(
+                                            textRow,
+                                            textColumn,
+                                            textOutput,
+                                          );
                                           showContentDialog(
                                             context,
                                             outputData,
