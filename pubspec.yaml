@@ -43,9 +43,10 @@ dependencies:
       path: plugins/window_size
   get: ^4.6.5
   hex: ^0.2.0
-  file_picker: ^5.2.0+1
+  # file_picker: ^5.2.0+1
   path_provider: ^2.0.11
   circular_countdown_timer: ^0.2.3
+  serial_port_win32: ^0.5.2
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +80,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/
+    - lib/assets/programs/SerialSend.exe
     # - lib/assets/programs/
   #   - images/a_dot_ham.jpeg
 

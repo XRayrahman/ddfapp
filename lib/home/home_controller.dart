@@ -12,6 +12,11 @@ class HomeController extends GetxController {
   var maxInjectorValue = 65000.obs;
   var baudrate = "115200".obs;
   var maxCOM = "15".obs;
+  List ports = [].obs;
+  var delaySend = "2500".obs;
+
+  var readRPM = "0".obs;
+
   List loadData = List.generate(80, (index) => "").obs;
   // List intRPM = [].obs;
   List hexInjector = List.generate(80, (index) => "").obs;

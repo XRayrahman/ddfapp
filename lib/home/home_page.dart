@@ -1,13 +1,17 @@
+import 'dart:ffi';
+
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:ddfapp/home/home_controller.dart';
+import 'package:ddfapp/widgets/side_controller.dart';
 import 'package:ddfapp/text_input.dart';
 import 'package:ddfapp/widgets/side_view.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/widgets/grid_input.dart';
 import 'package:ddfapp/widgets/label_column.dart';
 import 'package:ddfapp/widgets/label_row.dart';
 import 'package:get/get.dart';
+import 'package:serial_port_win32/serial_port_win32.dart';
 import 'dart:io';
 import 'package:ddfapp/widgets/notification.dart';
 
@@ -20,6 +24,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final HomeController h = Get.put(HomeController());
+  final SideController sC = Get.put(SideController());
   bool checkedRow = true;
   bool checkedColumn = true;
   bool checkedInput = true;
@@ -33,56 +38,58 @@ class _HomePageState extends State<HomePage> {
   int lengthColumn = 8;
   int lengthRow = 10;
 
-  Future<File> get _pickFile async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      dialogTitle: "Select a saved Data Value",
-      type: FileType.custom,
-      allowedExtensions: ['txt', 'log'],
-    );
+  // FOR LOAD DATA
+  // Future<File> get _pickFile async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //     dialogTitle: "Select a saved Data Value",
+  //     type: FileType.custom,
+  //     allowedExtensions: ['txt', 'log'],
+  //   );
 
-    if (result == null) return File("");
+  //   if (result == null) return File("");
 
-    PlatformFile file = result.files.single;
-    return File(file.path.toString());
-  }
+  //   PlatformFile file = result.files.single;
+  //   return File(file.path.toString());
+  // }
 
   @override
   Widget build(BuildContext context) {
-    Future<String> loadData() async {
-      try {
-        final file = await _pickFile;
-        final load = await file.readAsString();
-        final loadSplit = load.split(' ');
-        List valueOutput = [];
-        List valueTPS = [];
-        List valueRPM = [];
-        h.loadData = List.generate(
-          h.slotData.value,
-          (index) => loadSplit[index],
-        );
-        // print(h.loadData);
+    // FOR LOAD DATA
+    // Future<String> loadData() async {
+    //   try {
+    //     final file = await _pickFile;
+    //     final load = await file.readAsString();
+    //     final loadSplit = load.split(' ');
+    //     List valueOutput = [];
+    //     List valueTPS = [];
+    //     List valueRPM = [];
+    //     h.loadData = List.generate(
+    //       h.slotData.value,
+    //       (index) => loadSplit[index],
+    //     );
+    //     // print(h.loadData);
 
-        for (var i = 0; i < 8; i++) {
-          valueOutput = h.ctrlToStringList(h.loadData[i], "injector");
-        }
+    //     for (var i = 0; i < 8; i++) {
+    //       valueOutput = h.ctrlToStringList(h.loadData[i], "injector");
+    //     }
 
-        for (var i = 0; i < 10; i++) {
-          valueRPM = h.ctrlToStringList(h.loadData[i + 8], "RPM");
-        }
+    //     for (var i = 0; i < 10; i++) {
+    //       valueRPM = h.ctrlToStringList(h.loadData[i + 8], "RPM");
+    //     }
 
-        for (var i = 0; i < 10; i++) {
-          valueTPS = h.ctrlToStringList(h.loadData[i + 18], "TPS");
-        }
-        h.onSave(
-          valueTPS,
-          valueRPM,
-          valueOutput,
-        );
-        return h.loadData[0];
-      } catch (e) {
-        return e.toString();
-      }
-    }
+    //     for (var i = 0; i < 10; i++) {
+    //       valueTPS = h.ctrlToStringList(h.loadData[i + 18], "TPS");
+    //     }
+    //     h.onSave(
+    //       valueTPS,
+    //       valueRPM,
+    //       valueOutput,
+    //     );
+    //     return h.loadData[0];
+    //   } catch (e) {
+    //     return e.toString();
+    //   }
+    // }
 
     List<TextEditingController> textOutput = List.generate(
       h.slotData.value,
@@ -337,7 +344,7 @@ class _HomePageState extends State<HomePage> {
                                             child: Text("LOAD DATA")),
                                         onPressed: () {
                                           setState(() {
-                                            loadData();
+                                            // loadData();
                                           });
                                         },
                                       ),
@@ -565,6 +572,19 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     onPressed: () => setState(
                                       () {
+                                        h.ports.clear();
+                                        h.ports =
+                                            SerialPort.getAvailablePorts();
+                                        print(h.ports[0]);
+                                        final port = SerialPort(h.ports[0]);
+                                        port.readBytesOnListen(8, (value) {
+                                          var split = value.toString();
+                                          final splitted = split.split(",");
+                                          sC.readRPM.value = int.parse(
+                                              splitted[1].replaceAll("[", ""));
+                                          print(
+                                              splitted[1].replaceAll("[", ""));
+                                        });
                                         // final String hexOutput =
                                         //     h.ctrlToHex(textOutput, "injector");
                                         // final String hexRPM =
@@ -577,13 +597,16 @@ class _HomePageState extends State<HomePage> {
                                           textColumn,
                                           textOutput,
                                         );
-                                        showContentDialog(
-                                          context,
-                                          outputData,
-                                          textOutput,
-                                          textColumn,
-                                          textRow,
-                                        );
+
+                                        if (h.ports.isNotEmpty) {
+                                          showContentDialog(
+                                            context,
+                                            outputData,
+                                            textOutput,
+                                            textColumn,
+                                            textRow,
+                                          );
+                                        }
                                         // try {
                                         //   String outputData =
                                         //       h.ctrlToHexListAll(
@@ -768,6 +791,8 @@ void showContentDialog(
       TextEditingController(text: "80");
   final TextEditingController baudrateController =
       TextEditingController(text: h.baudrate.toString());
+  final TextEditingController delayController =
+      TextEditingController(text: h.delaySend.toString());
   final TextEditingController maxCOMController =
       TextEditingController(text: h.maxCOM.toString());
   // final hexOutput = h.ctrlToHexList(outputData, "injector");
@@ -782,34 +807,36 @@ void showContentDialog(
   final textRPM = h.ctrlToString(columnData, "RPM");
   final textTPS = h.ctrlToString(rowData, "TPS");
 
+  var port = h.ports[0];
+
   // with 0x prefix
   // final hexOutput = intOutput.map((e) => "0x${e.toRadixString(16)}").toList();
 
   final result = await showDialog<String>(
     context: contexts,
     builder: (context) => ContentDialog(
-      constraints: const BoxConstraints(maxWidth: 380, maxHeight: 480),
+      constraints: const BoxConstraints(maxWidth: 380, maxHeight: 540),
       title: const Text('Send value to ECU?'),
       content: Column(
         children: [
           Text(
-            "RPM :\n$textRPM\n\nTPS :\n$textTPS\n\nInjector :\n$textOutput",
+            "RPM :\n$textRPM\n\nTPS :\n$textTPS\n\nINJECTOR :\n$textOutput\n------------------------------------------------------------\nPORT        :    $port",
           ),
+          // Row(
+          //   children: [
+          //     const Text("MAX COM DEVICE ID: "),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     TextInput(
+          //       enabled: false,
+          //       controller: maxCOMController,
+          //     )
+          //   ],
+          // ),
           Row(
             children: [
-              const Text("MAX COM DEVICE ID :"),
-              const SizedBox(
-                width: 10,
-              ),
-              TextInput(
-                enabled: false,
-                controller: maxCOMController,
-              )
-            ],
-          ),
-          Row(
-            children: [
-              const Text("Baudrate :"),
+              const Text("Baudrate  :"),
               const SizedBox(
                 width: 10,
               ),
@@ -819,16 +846,32 @@ void showContentDialog(
               )
             ],
           ),
+          const Text(
+              "------------------------------------------------------------"),
           Row(
             children: [
-              const Text("Total data to send (MAX = 80) :"),
+              const Text("Delay per cell            : "),
+              const SizedBox(
+                width: 10,
+              ),
+              TextInput(
+                enabled: false,
+                controller: delayController,
+              ),
+              const Text(" ms"),
+            ],
+          ),
+          Row(
+            children: [
+              const Text("Total data to send     : "),
               const SizedBox(
                 width: 10,
               ),
               TextInput(
                 enabled: false,
                 controller: slotController,
-              )
+              ),
+              const Text("cell(s)"),
             ],
           )
         ],
@@ -844,24 +887,89 @@ void showContentDialog(
         FilledButton(
           child: const Text('OK'),
           onPressed: () async {
+            var timeEach = int.parse(delayController.text);
             try {
               String slotData = "";
+
+              showSnackbar(
+                context,
+                duration: Duration(
+                    milliseconds:
+                        timeEach * (int.parse(slotController.text) * 3)),
+                alignment: Alignment.topRight,
+                NotificationBar(
+                  height: 14.5,
+                  width: 14.5,
+                  isLong: true,
+                  contextRoot: context,
+                  type: "INFO",
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        child: const Text(
+                          "Sending ...",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      // ProgressBar()
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 15, 5),
+                        child: CircularCountDownTimer(
+                          isReverse: true,
+                          width: 45,
+                          height: 45,
+                          duration: (timeEach *
+                                  int.parse(slotController.text) *
+                                  3 /
+                                  1000)
+                              .round(),
+                          fillColor: Colors.blue,
+                          // fillGradient: LinearGradient(colors: [
+                          //   Color.fromARGB(255, 1, 62, 109),
+                          //   Color.fromARGB(255, 0, 120, 212)
+                          // ]),
+                          ringColor: const Color.fromARGB(49, 110, 110, 110),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                onDismiss: () async {
+                  Navigator.pop(context, h.slotData.value.toString());
+                  // showSnackbar(
+                  //   duration: const Duration(seconds: 3),
+                  //   alignment: Alignment.topRight,
+                  //   context,
+                  //   NotificationBar(
+                  //     height: 16.5,
+                  //     width: 16.5,
+                  //     isLong: true,
+                  //     contextRoot: context,
+                  //     type: "INFO",
+                  //     content: Text(
+                  //       "------------------- ",
+                  //     ),
+                  //   ),
+                  // );
+                },
+              );
               // for (var i = 0; i < h.slotData.value; i++) {
               //   slotData = "$slotData${dataParsed[i].toString()}";
               // }
               // print('"$slotData"');
 
               // var data = '"$slotData"';
-              var timeEach = 2500;
               try {
                 // const dec2hex = AnyBase(AnyBase.dec, AnyBase.hex);
                 // var test = dec2hex.convert('512.5');
                 // print(test);
 
-                for (var i = 0; i < int.parse(slotController.text); i++) {
+                for (var i = 0; i < int.parse(slotController.text) * 3; i++) {
                   slotData = dataParsed[i].toString();
                   // "${dataParsed[i].toString()}${dataParsed[i + 1].toString()}${dataParsed[i + 2].toString()}";
-                  print(slotData);
+                  // print(slotData);
 
                   Process.run(
                     r'lib/assets/programs/SerialSend.exe',
@@ -881,82 +989,15 @@ void showContentDialog(
                       // List stringSplit = [];
                       // List tryingSplit = [];
                       // String tests = "";
-                      print("out :" + results.stderr);
+
+                      // print("out :" + results.stderr);
+
                       // print("err :" + results.stdout);
 
                       results.stderr == null
                           ? h.isSended.value = false
                           : {
                               h.logSended = h.logData(results.stderr),
-                              showSnackbar(
-                                context,
-                                duration: Duration(
-                                    milliseconds: timeEach *
-                                        int.parse(slotController.text)),
-                                alignment: Alignment.topRight,
-                                NotificationBar(
-                                  height: 14.5,
-                                  width: 14.5,
-                                  isLong: true,
-                                  contextRoot: context,
-                                  type: "INFO",
-                                  content: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 0, 0, 0),
-                                        child: const Text(
-                                          "Sending ...",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      ),
-                                      // ProgressBar()
-                                      Container(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 0, 15, 5),
-                                        child: CircularCountDownTimer(
-                                          isReverse: true,
-                                          width: 45,
-                                          height: 45,
-                                          duration: (timeEach *
-                                                  int.parse(
-                                                      slotController.text) /
-                                                  1000)
-                                              .round(),
-                                          fillColor: Colors.blue,
-                                          // fillGradient: LinearGradient(colors: [
-                                          //   Color.fromARGB(255, 1, 62, 109),
-                                          //   Color.fromARGB(255, 0, 120, 212)
-                                          // ]),
-                                          ringColor: const Color.fromARGB(
-                                              49, 110, 110, 110),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                onDismiss: () async {
-                                  Navigator.pop(
-                                      context, h.slotData.value.toString());
-                                  // showSnackbar(
-                                  //   duration: const Duration(seconds: 3),
-                                  //   alignment: Alignment.topRight,
-                                  //   context,
-                                  //   NotificationBar(
-                                  //     height: 16.5,
-                                  //     width: 16.5,
-                                  //     isLong: true,
-                                  //     contextRoot: context,
-                                  //     type: "INFO",
-                                  //     content: Text(
-                                  //       "------------------- ",
-                                  //     ),
-                                  //   ),
-                                  // );
-                                },
-                              ),
                               h.isSended.value = true
                             };
                     },

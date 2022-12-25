@@ -1,5 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/side_widget.dart';
+import 'package:ddfapp/widgets/side_controller.dart';
+import 'package:get/get.dart';
 
 class SideView extends StatefulWidget {
   const SideView({super.key});
@@ -9,6 +11,7 @@ class SideView extends StatefulWidget {
 }
 
 class _SideViewState extends State<SideView> {
+  final SideController sC = Get.put(SideController());
   bool checkedPower = false;
   bool isMaximized = false;
   @override
@@ -55,7 +58,7 @@ class _SideViewState extends State<SideView> {
                   ? Expanded(
                       child: ListView(
                         // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           SideWidget(
                             title: "TPS",
                             dataValue: "0 %",
@@ -64,11 +67,11 @@ class _SideViewState extends State<SideView> {
                           SizedBox(
                             height: 10,
                           ),
-                          SideWidget(
-                            title: "RPM",
-                            dataValue: "0",
-                            titleIcon: FluentIcons.speed_high,
-                          ),
+                          Obx(() => SideWidget(
+                                title: "RPM",
+                                dataValue: sC.readRPM.toString(),
+                                titleIcon: FluentIcons.speed_high,
+                              )),
                           SizedBox(
                             height: 10,
                           ),
