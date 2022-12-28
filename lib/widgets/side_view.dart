@@ -1,7 +1,10 @@
+import 'package:ddfapp/home/home_controller.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/side_widget.dart';
 import 'package:ddfapp/widgets/side_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ddfapp/text_input.dart';
 
 class SideView extends StatefulWidget {
   const SideView({super.key});
@@ -16,6 +19,10 @@ class _SideViewState extends State<SideView> {
   bool isMaximized = false;
   @override
   Widget build(BuildContext context) {
+    final SideController sC = SideController();
+    final TextEditingController portController =
+        TextEditingController(text: sC.ports.toString());
+    List listPort = ["9600", "115200"];
     return Container(
       // color: Color.fromARGB(255, 243, 243, 243),
       decoration: BoxDecoration(
@@ -30,25 +37,49 @@ class _SideViewState extends State<SideView> {
             Row(
               children: [
                 Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    // width: 200,
-                    height: 180,
-                    child: ToggleButton(
-                      onChanged: (v) {
-                        setState(() {
-                          checkedPower = v;
-                        });
-                      },
-                      checked: checkedPower,
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          FluentIcons.power_button,
-                          size: 60,
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        // width: 200,
+                        height: 150,
+                        child: ToggleButton(
+                          onChanged: (v) {
+                            setState(() {
+                              checkedPower = v;
+                            });
+                          },
+                          checked: checkedPower,
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: const Icon(
+                              FluentIcons.power_button,
+                              size: 60,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      Row(children: [
+                        Expanded(
+                          child: DropDownButton(
+                              title: Text("PORT"),
+                              trailing: Text("~"),
+                              items: [
+                                MenuFlyoutItem(
+                                  text: Text(listPort[0]),
+                                  onPressed: () => null,
+                                ),
+                                MenuFlyoutItem(
+                                  text: Text(listPort[1]),
+                                  onPressed: () => null,
+                                )
+                              ]),
+                        )
+                      ]),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
                 ),
               ],

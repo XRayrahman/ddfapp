@@ -571,11 +571,28 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () => setState(
                                       () {
                                         h.ports.clear();
-                                        h.ports =
-                                            SerialPort.getAvailablePorts();
-                                        print(h.ports[0]);
+                                        try {
+                                          h.ports =
+                                              SerialPort.getAvailablePorts();
+                                        } catch (e) {
+                                          showSnackbar(
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            alignment: Alignment.topRight,
+                                            context,
+                                            NotificationBar(
+                                              contextRoot: context,
+                                              type: "ERROR",
+                                              content: const Text(
+                                                "No device connected",
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        // print(h.ports[0]);
                                         if (h.ports.isNotEmpty) {
                                           final port = SerialPort(h.ports[0]);
+                                          port.open();
                                           port.readBytesOnListen(8, (value) {
                                             var split = value.toString();
                                             final splitted = split.split(",");
@@ -796,6 +813,12 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+void _send(String data) {
+  final HomeController hC = Get.put(HomeController());
+  final port = hC.ports[0];
+  print(port.writeBytesFromString());
+}
+
 void showContentDialog(
     BuildContext contexts, dataParsed, outputData, columnData, rowData) async {
   // final List intOutput = [];
@@ -984,6 +1007,7 @@ void showContentDialog(
                   slotData = dataParsed[i].toString();
                   // "${dataParsed[i].toString()}${dataParsed[i + 1].toString()}${dataParsed[i + 2].toString()}";
                   // print(slotData);
+                  _send(slotData);
 
                   Process.run(
                     r'lib/assets/programs/SerialSend.exe',
