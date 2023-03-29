@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:get/get.dart';
+import 'package:serial_port_win32/serial_port_win32.dart';
 
 class HomeController extends GetxController {
   var indx = 80.obs;
@@ -11,8 +12,7 @@ class HomeController extends GetxController {
   var baudrate = "115200".obs;
   var maxCOM = "15".obs;
   List ports = [].obs;
-  var delaySend = "2500".obs;
-
+  var delaySend = "500".obs;
   var readRPM = "0".obs;
 
   List loadData = List.generate(80, (index) => "").obs;

@@ -7,4 +7,5 @@ class SideController extends GetxController {
   var readMAP = 0.obs;
   var readTEMP = 0.obs;
   var ports = [].obs;
+  var isConnected = false.obs;
 }
