@@ -62,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   width: 5,
                                 ),
                                 TextInput(
-                                    enabled: false,
+                                    disabled: false,
                                     controller: TextEditingController()),
                                 const SizedBox(
                                   width: 5,
@@ -87,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   width: 5,
                                 ),
                                 TextInput(
-                                    enabled: false,
+                                    disabled: false,
                                     controller: TextEditingController()),
                                 const SizedBox(
                                   width: 5,
@@ -112,7 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   width: 5,
                                 ),
                                 TextInput(
-                                    enabled: false,
+                                    disabled: false,
                                     controller: TextEditingController()),
                                 const SizedBox(
                                   width: 5,

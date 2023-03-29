@@ -1,7 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:ddfapp/home/home_controller.dart';
+import 'package:ddfapp/widgets/divide.dart';
 import 'package:ddfapp/widgets/side_controller.dart';
 import 'package:ddfapp/text_input.dart';
 import 'package:ddfapp/widgets/side_view.dart';
@@ -10,10 +9,8 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/widgets/grid_input.dart';
 import 'package:ddfapp/widgets/label_column.dart';
 import 'package:ddfapp/widgets/label_row.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:serial_port_win32/serial_port_win32.dart';
-import 'dart:io';
 import 'package:ddfapp/widgets/notification.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,14 +23,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final HomeController h = Get.put(HomeController());
   final SideController sC = Get.put(SideController());
-  bool checkedRow = true;
-  bool checkedColumn = true;
+  bool checkedRow = false;
+  bool checkedColumn = false;
   bool checkedInput = true;
-  bool readOnlyColumn = false;
-  bool readOnlyRow = false;
+  bool readOnlyColumn = true;
+  bool readOnlyRow = true;
   bool readOnlyInput = false;
   bool isSaved = false;
   Color colorEnabled = const Color.fromARGB(255, 0, 120, 212);
+  Color colorInput = const Color.fromARGB(49, 110, 110, 110);
   Color colorDisabled = const Color.fromARGB(255, 101, 101, 101);
   int lengthOutput = 80;
   int lengthColumn = 8;
@@ -55,43 +53,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // FOR LOAD DATA
-    // Future<String> loadData() async {
-    //   try {
-    //     final file = await _pickFile;
-    //     final load = await file.readAsString();
-    //     final loadSplit = load.split(' ');
-    //     List valueOutput = [];
-    //     List valueTPS = [];
-    //     List valueRPM = [];
-    //     h.loadData = List.generate(
-    //       h.slotData.value,
-    //       (index) => loadSplit[index],
-    //     );
-    //     // print(h.loadData);
-
-    //     for (var i = 0; i < 8; i++) {
-    //       valueOutput = h.ctrlToStringList(h.loadData[i], "injector");
-    //     }
-
-    //     for (var i = 0; i < 10; i++) {
-    //       valueRPM = h.ctrlToStringList(h.loadData[i + 8], "RPM");
-    //     }
-
-    //     for (var i = 0; i < 10; i++) {
-    //       valueTPS = h.ctrlToStringList(h.loadData[i + 18], "TPS");
-    //     }
-    //     h.onSave(
-    //       valueTPS,
-    //       valueRPM,
-    //       valueOutput,
-    //     );
-    //     return h.loadData[0];
-    //   } catch (e) {
-    //     return e.toString();
-    //   }
-    // }
-
     List<TextEditingController> textOutput = List.generate(
       h.slotData.value,
       (index) => TextEditingController(
@@ -100,6 +61,12 @@ class _HomePageState extends State<HomePage> {
     );
 
     TextEditingController setInjectorValue = TextEditingController();
+    TextEditingController setINJValueMin = TextEditingController();
+    TextEditingController setINJValueMax = TextEditingController();
+    TextEditingController setTPSValueMin = TextEditingController();
+    TextEditingController setTPSValueMax = TextEditingController();
+    TextEditingController setRPMValueMin = TextEditingController();
+    TextEditingController setRPMValueMax = TextEditingController();
 
     List textColumn = List.generate(
       8,
@@ -153,6 +120,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: Column(
                       children: [
+                        // Container(
+                        //   height: 35,
+                        // ),
                         Row(
                           children: [
                             Expanded(
@@ -165,21 +135,113 @@ class _HomePageState extends State<HomePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          CrossAxisAlignment.center,
                                       children: [
+                                        Container(
+                                          alignment: Alignment.center,
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          width: 100,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: const [
+                                              Text(
+                                                "CLEAR",
+                                              ),
+                                              Icon(
+                                                FluentIcons.remove_filter,
+                                                size: 14,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Button(
+                                          child: const SizedBox(
+                                              width: 80, child: Text(" TPS ")),
+                                          onPressed: () {
+                                            setState(
+                                              () {
+                                                h.onClearRow();
+                                              },
+                                            );
+                                          },
+                                        ),
                                         const SizedBox(
                                           height: 5,
+                                        ),
+                                        Button(
+                                          child: const SizedBox(
+                                              width: 80, child: Text(" RPM ")),
+                                          onPressed: () {
+                                            setState(
+                                              () {
+                                                h.onClearColumn();
+                                              },
+                                            );
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Button(
+                                          child: const SizedBox(
+                                              width: 80, child: Text(" INJ ")),
+                                          onPressed: () {
+                                            setState(() {
+                                              h.onClearInjector();
+                                            });
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                      ],
+                                    ),
+                                    const Divide(
+                                      direction: Axis.vertical,
+                                      size: 120,
+                                      marginH: 20,
+                                      marginV: 20,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        // const SizedBox(
+                                        //   height: 6,
+                                        // ),
+                                        Container(
+                                          alignment: Alignment.center,
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 10,
+                                          ),
+                                          width: 120,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: const [
+                                              Text(
+                                                "INSERT",
+                                              ),
+                                              Icon(
+                                                FluentIcons.insert,
+                                                size: 14,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         Row(
                                           children: [
                                             Button(
                                               child: const SizedBox(
-                                                  width: 120,
-                                                  child: Text(
-                                                      "Clear Injector Value")),
+                                                  width: 110,
+                                                  child: Text("DEFAULT")),
                                               onPressed: () {
                                                 setState(() {
-                                                  h.onClearInjector();
+                                                  h.onSetAllDefaultValue();
                                                 });
                                               },
                                               //   style: ButtonStyle(
@@ -193,68 +255,37 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         Row(
                                           children: [
+                                            // const Text("Import value       :"),
+                                            // const SizedBox(
+                                            //   width: 5,
+                                            // ),
                                             Button(
                                               child: const SizedBox(
-                                                  width: 120,
-                                                  child:
-                                                      Text("Clear TPS Value")),
+                                                  width: 110,
+                                                  child: Text("LOAD DATA")),
                                               onPressed: () {
-                                                setState(
-                                                  () {
-                                                    h.onClearRow();
-                                                  },
-                                                );
+                                                setState(() {
+                                                  // loadData();
+                                                });
                                               },
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
                                         Row(
                                           children: [
-                                            Button(
-                                              child: const SizedBox(
-                                                  width: 120,
-                                                  child:
-                                                      Text("Clear RPM Value")),
-                                              onPressed: () {
-                                                setState(
-                                                  () {
-                                                    h.onClearColumn();
-                                                  },
-                                                );
-                                              },
+                                            Container(
+                                              height: 38,
+                                              child: TextInput(
+                                                  boxDecoration: BoxDecoration(
+                                                      color: colorInput),
+                                                  disabled: false,
+                                                  placholder: "injector",
+                                                  controller: setInjectorValue),
                                             ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 60,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            const Text("Set Injector value :"),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            TextInput(
-                                                enabled: false,
-                                                controller: setInjectorValue),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            Button(
+                                            // const SizedBox(
+                                            //   width: 5,
+                                            // ),
+                                            FilledButton(
                                               child: const Text("OK"),
                                               onPressed: () {
                                                 setState(
@@ -277,9 +308,13 @@ class _HomePageState extends State<HomePage> {
                                                         ),
                                                       );
                                                     } else if (int.parse(
-                                                            setInjectorValue
-                                                                .text) <
-                                                        255) {
+                                                                setInjectorValue
+                                                                    .text) <
+                                                            1000 &&
+                                                        int.parse(
+                                                                setInjectorValue
+                                                                    .text) >=
+                                                            0) {
                                                       h.onSetInjectorValue(
                                                           setInjectorValue
                                                               .text);
@@ -292,10 +327,11 @@ class _HomePageState extends State<HomePage> {
                                                             Alignment.topRight,
                                                         context,
                                                         NotificationBar(
+                                                          height: 12,
                                                           contextRoot: context,
                                                           type: "ERROR",
                                                           content: const Text(
-                                                            "Value is more than maximum",
+                                                            "Value is invalid or more than maximum",
                                                           ),
                                                         ),
                                                       );
@@ -310,54 +346,333 @@ class _HomePageState extends State<HomePage> {
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 5,
+                                          height: 10,
+                                        ),
+                                      ],
+                                    ),
+                                    const Divide(
+                                      direction: Axis.vertical,
+                                      size: 120,
+                                      marginH: 20,
+                                      marginV: 20,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        // const SizedBox(
+                                        //   height: 6,
+                                        // ),
+                                        Container(
+                                          alignment: Alignment.center,
+                                          margin: const EdgeInsets.only(
+                                            top: 10,
+                                            bottom: 3,
+                                          ),
+                                          width: 300,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: const [
+                                              Text(
+                                                "INSERT BY RANGE",
+                                                // style: TextStyle(fontSize: 16),
+                                              ),
+                                              Icon(
+                                                FluentIcons.step_insert,
+                                                size: 14,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         Row(
                                           children: [
-                                            const Text("Set ALL value       :"),
-                                            const SizedBox(
+                                            Text(
+                                              "TPS > ",
+                                            ),
+                                            Container(
+                                              height: 35,
+                                              child: TextInput(
+                                                  boxDecoration: BoxDecoration(
+                                                      shape: BoxShape.rectangle,
+                                                      color: colorInput),
+                                                  disabled: false,
+                                                  placholder: "min",
+                                                  controller: setTPSValueMin),
+                                            ),
+                                            const Divider(
+                                              direction: Axis.horizontal,
+                                              size: 10,
+                                            ),
+                                            Container(
+                                              height: 35,
+                                              child: TextInput(
+                                                  boxDecoration: BoxDecoration(
+                                                      color: colorInput),
+                                                  disabled: false,
+                                                  placholder: "max",
+                                                  controller: setTPSValueMax),
+                                            ),
+                                            SizedBox(
                                               width: 5,
                                             ),
-                                            Button(
-                                              child: const SizedBox(
-                                                  width: 115,
-                                                  child: Text("DEFAULT")),
+                                            FilledButton(
+                                              child: const Text(
+                                                "OK",
+                                              ),
                                               onPressed: () {
-                                                setState(() {
-                                                  h.onSetAllDefaultValue();
-                                                });
+                                                setState(
+                                                  () {
+                                                    if (setTPSValueMin.text ==
+                                                            "" ||
+                                                        setTPSValueMax.text ==
+                                                            "") {
+                                                      showSnackbar(
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 3),
+                                                        alignment:
+                                                            Alignment.topRight,
+                                                        context,
+                                                        NotificationBar(
+                                                          contextRoot: context,
+                                                          type: "ERROR",
+                                                          content: const Text(
+                                                            "Value should not be empty",
+                                                          ),
+                                                        ),
+                                                      );
+                                                    } else if (int.parse(
+                                                            setTPSValueMin
+                                                                .text) >=
+                                                        int.parse(setTPSValueMax
+                                                            .text)) {
+                                                      showSnackbar(
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 3),
+                                                        alignment:
+                                                            Alignment.topRight,
+                                                        context,
+                                                        NotificationBar(
+                                                          contextRoot: context,
+                                                          type: "ERROR",
+                                                          content: const Text(
+                                                            "Invalid value",
+                                                          ),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      h.insertByRange(
+                                                          "TPS",
+                                                          int.parse(
+                                                              setTPSValueMin
+                                                                  .text),
+                                                          int.parse(
+                                                              setTPSValueMax
+                                                                  .text));
+                                                    }
+                                                  },
+                                                );
                                               },
-                                              //   style: ButtonStyle(
-                                              //       backgroundColor: ,
-                                              // ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "RPM > ",
+                                            ),
+                                            Container(
+                                              height: 35,
+                                              child: TextInput(
+                                                  boxDecoration: BoxDecoration(
+                                                      color: colorInput),
+                                                  disabled: false,
+                                                  placholder: "min",
+                                                  controller: setRPMValueMin),
+                                            ),
+                                            const Divider(
+                                              direction: Axis.horizontal,
+                                              size: 10,
+                                            ),
+                                            Container(
+                                              height: 35,
+                                              child: TextInput(
+                                                  boxDecoration: BoxDecoration(
+                                                      color: colorInput),
+                                                  disabled: false,
+                                                  placholder: "max",
+                                                  controller: setRPMValueMax),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            FilledButton(
+                                              child: const Text(
+                                                "OK",
+                                              ),
+                                              onPressed: () {
+                                                setState(
+                                                  () {
+                                                    if (setRPMValueMin.text ==
+                                                            "" ||
+                                                        setRPMValueMax.text ==
+                                                            "") {
+                                                      showSnackbar(
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 3),
+                                                        alignment:
+                                                            Alignment.topRight,
+                                                        context,
+                                                        NotificationBar(
+                                                          contextRoot: context,
+                                                          type: "ERROR",
+                                                          content: const Text(
+                                                            "Value should not be empty",
+                                                          ),
+                                                        ),
+                                                      );
+                                                    } else if (int.parse(
+                                                            setRPMValueMin
+                                                                .text) >=
+                                                        int.parse(setRPMValueMax
+                                                            .text)) {
+                                                      showSnackbar(
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 3),
+                                                        alignment:
+                                                            Alignment.topRight,
+                                                        context,
+                                                        NotificationBar(
+                                                          contextRoot: context,
+                                                          type: "ERROR",
+                                                          content: const Text(
+                                                            "Invalid value",
+                                                          ),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      h.insertByRange(
+                                                          "RPM",
+                                                          int.parse(
+                                                              setRPMValueMin
+                                                                  .text),
+                                                          int.parse(
+                                                              setRPMValueMax
+                                                                  .text));
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "INJ > ",
+                                            ),
+                                            Container(
+                                              height: 35,
+                                              child: TextInput(
+                                                  boxDecoration: BoxDecoration(
+                                                      color: colorInput),
+                                                  disabled: false,
+                                                  placholder: "min",
+                                                  controller: setINJValueMin),
+                                            ),
+                                            const Divider(
+                                              direction: Axis.horizontal,
+                                              size: 10,
+                                            ),
+                                            Container(
+                                              height: 35,
+                                              child: TextInput(
+                                                  boxDecoration: BoxDecoration(
+                                                      color: colorInput),
+                                                  disabled: false,
+                                                  placholder: "max",
+                                                  controller: setINJValueMax),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            FilledButton(
+                                              child: const Text(
+                                                "OK",
+                                              ),
+                                              onPressed: () {
+                                                setState(
+                                                  () {
+                                                    if (setINJValueMin.text ==
+                                                            "" ||
+                                                        setINJValueMax.text ==
+                                                            "") {
+                                                      showSnackbar(
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 3),
+                                                        alignment:
+                                                            Alignment.topRight,
+                                                        context,
+                                                        NotificationBar(
+                                                          contextRoot: context,
+                                                          type: "ERROR",
+                                                          content: const Text(
+                                                            "Value should not be empty",
+                                                          ),
+                                                        ),
+                                                      );
+                                                    } else if (int.parse(
+                                                            setINJValueMin
+                                                                .text) >=
+                                                        int.parse(setINJValueMax
+                                                            .text)) {
+                                                      showSnackbar(
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 3),
+                                                        alignment:
+                                                            Alignment.topRight,
+                                                        context,
+                                                        NotificationBar(
+                                                          contextRoot: context,
+                                                          type: "ERROR",
+                                                          content: const Text(
+                                                            "Invalid value",
+                                                          ),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      h.insertByRange(
+                                                          "INJ",
+                                                          int.parse(
+                                                              setINJValueMin
+                                                                  .text),
+                                                          int.parse(
+                                                              setINJValueMax
+                                                                  .text));
+                                                    }
+                                                  },
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Text("Import value       :"),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            Button(
-                                              child: const SizedBox(
-                                                  width: 115,
-                                                  child: Text("LOAD DATA")),
-                                              onPressed: () {
-                                                setState(() {
-                                                  // loadData();
-                                                });
-                                              },
-                                            ),
-                                          ],
+                                          height: 10,
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(
-                                      width: 60,
+                                    const Divide(
+                                      direction: Axis.vertical,
+                                      size: 120,
+                                      marginH: 20,
+                                      marginV: 20,
                                     ),
                                     Column(
                                       mainAxisAlignment:
@@ -365,29 +680,30 @@ class _HomePageState extends State<HomePage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        Container(
+                                          alignment: Alignment.center,
+                                          margin: const EdgeInsets.only(
+                                            top: 10,
+                                          ),
+                                          width: 100,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: const [
+                                              Text(
+                                                "EDIT",
+                                                // style: TextStyle(fontSize: 16),
+                                              ),
+                                              Icon(
+                                                FluentIcons
+                                                    .app_icon_default_edit,
+                                                size: 14,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         const SizedBox(
                                           height: 10,
-                                        ),
-                                        Row(
-                                          children: [
-                                            ToggleSwitch(
-                                              checked: checkedColumn,
-                                              onChanged: (v) => setState(
-                                                () {
-                                                  checkedColumn = v;
-                                                  readOnlyColumn = !v;
-                                                },
-                                              ),
-                                              content: Text(
-                                                checkedColumn
-                                                    ? "Column Value : Unlocked"
-                                                    : "Column Value : Locked",
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 2,
                                         ),
                                         Row(
                                           children: [
@@ -399,11 +715,24 @@ class _HomePageState extends State<HomePage> {
                                                   readOnlyRow = !x;
                                                 },
                                               ),
-                                              content: Text(
-                                                checkedRow
-                                                    ? "Row Value : Unlocked"
-                                                    : "Row Value : Locked",
+                                              content: Text("TPS"),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 2,
+                                        ),
+                                        Row(
+                                          children: [
+                                            ToggleSwitch(
+                                              checked: checkedColumn,
+                                              onChanged: (v) => setState(
+                                                () {
+                                                  checkedColumn = v;
+                                                  readOnlyColumn = !v;
+                                                },
                                               ),
+                                              content: Text("RPM"),
                                             ),
                                           ],
                                         ),
@@ -421,9 +750,8 @@ class _HomePageState extends State<HomePage> {
                                                 },
                                               ),
                                               content: Text(
-                                                checkedInput
-                                                    ? "Input Value : Unlocked"
-                                                    : "Input Value : Locked",
+                                                "INJ",
+                                                textAlign: TextAlign.center,
                                               ),
                                             ),
                                           ],
@@ -439,20 +767,34 @@ class _HomePageState extends State<HomePage> {
                             ),
                             const Divider(
                               direction: Axis.vertical,
-                              size: 100,
+                              size: 120,
                             ),
                             const SizedBox(
-                              width: 35,
+                              width: 50,
                             ),
                             Obx(
                               () => Container(
                                 alignment: Alignment.centerRight,
                                 width: 180,
                                 decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.white.withOpacity(0.8),
+                                      offset: const Offset(-6.0, -6.0),
+                                      blurRadius: 16.0,
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      offset: const Offset(6.0, 6.0),
+                                      blurRadius: 16.0,
+                                    ),
+                                  ],
+                                  color:
+                                      const Color.fromARGB(255, 255, 255, 255),
                                   // color: const Color.fromARGB(50, 100, 100, 100),
                                   border: h.isSended.value
                                       ? Border.all(color: Colors.green)
-                                      : Border.all(color: Colors.grey),
+                                      : Border.all(color: Colors.white),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 padding: const EdgeInsets.all(10),
@@ -536,6 +878,7 @@ class _HomePageState extends State<HomePage> {
                                                       valueRPM,
                                                       valueOutput,
                                                     );
+                                                    isSaved = true;
                                                   }
                                                 } catch (e) {
                                                   showSnackbar(
@@ -567,8 +910,8 @@ class _HomePageState extends State<HomePage> {
                                                       width: 14,
                                                       contextRoot: context,
                                                       type: "SUCCESS",
-                                                      content:
-                                                          Text("Value saved"),
+                                                      content: const Text(
+                                                          "Value saved"),
                                                     ),
                                                   );
                                                 }
@@ -667,9 +1010,9 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
-                            // const SizedBox(
-                            //   width: 80,
-                            // ),
+                            const SizedBox(
+                              width: 20,
+                            ),
                           ],
                         ),
                       ],
@@ -685,7 +1028,9 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.only(bottom: 10, right: 70),
                         child: const Text(
                           "RPM",
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),
@@ -700,13 +1045,15 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 const Text(
                                   "THROTTLE POSITION (mV)",
-                                  style: TextStyle(fontSize: 18),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
                                 LabelRow(
-                                    enabled: readOnlyRow,
+                                    disabled: readOnlyRow,
                                     boxDecor: BoxDecoration(
                                       color: checkedRow
                                           ? colorEnabled
@@ -727,7 +1074,7 @@ class _HomePageState extends State<HomePage> {
                         Row(
                           children: [
                             LabelColumn(
-                              enabled: readOnlyColumn,
+                              disabled: readOnlyColumn,
                               boxDecor: BoxDecoration(
                                 color: checkedColumn
                                     ? colorEnabled
@@ -847,7 +1194,7 @@ void showContentDialog(
                 width: 10,
               ),
               TextInput(
-                enabled: false,
+                disabled: false,
                 controller: baudrateController,
               )
             ],
@@ -861,7 +1208,7 @@ void showContentDialog(
                 width: 10,
               ),
               TextInput(
-                enabled: false,
+                disabled: false,
                 controller: delayController,
               ),
               const Text(" ms"),
@@ -874,7 +1221,7 @@ void showContentDialog(
                 width: 10,
               ),
               TextInput(
-                enabled: false,
+                disabled: false,
                 controller: slotController,
               ),
               const Text("cell(s)"),

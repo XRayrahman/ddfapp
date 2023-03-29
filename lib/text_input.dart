@@ -5,7 +5,7 @@ class TextInput extends StatelessWidget {
   final BoxDecoration? boxDecoration;
   final Widget? suffix;
   final TextEditingController? controller;
-  final bool enabled;
+  final bool disabled;
   final Color? textcolor;
   const TextInput(
       {super.key,
@@ -13,7 +13,7 @@ class TextInput extends StatelessWidget {
       this.boxDecoration,
       this.suffix,
       this.controller,
-      required this.enabled,
+      required this.disabled,
       this.textcolor});
 
   @override
@@ -28,11 +28,11 @@ class TextInput extends StatelessWidget {
         controller: controller,
         expands: false,
         placeholder: placholder,
-        style: TextStyle(fontSize: 18, color: textcolor),
-        placeholderStyle: TextStyle(fontSize: 18, color: textcolor),
+        style: TextStyle(fontSize: 16, color: textcolor),
+        placeholderStyle: TextStyle(fontSize: 16, color: textcolor),
         textAlign: TextAlign.center,
         suffix: suffix,
-        readOnly: enabled,
+        readOnly: disabled,
         suffixMode: OverlayVisibilityMode.editing,
         onSubmitted: (value) => "DONE!",
       ),

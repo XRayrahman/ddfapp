@@ -101,6 +101,36 @@ class HomeController extends GetxController {
     update();
   }
 
+  insertByRange(String choice, int start, int end) {
+    int n = 0;
+    int y = 0;
+    switch (choice) {
+      case "RPM":
+        n = 80;
+        y = 0;
+        break;
+      case "TPS":
+        n = 10;
+        y = 1;
+        break;
+      case "INJ":
+        n = 80;
+        y = 2;
+        break;
+      default:
+        print("unknown choice");
+    }
+    int x = ((end - start) / n).round();
+    for (int i = 0; i < 80; i++) {
+      if (i == 79) {
+        listPoint[i][y] = end.toString();
+      } else {
+        listPoint[i][y] = (x * i + start).toString();
+      }
+    }
+    update();
+  }
+
   onSetAllDefaultValue() {
     for (int i = 0; i < 80; i++) {
       listPoint[i][2] = "0";

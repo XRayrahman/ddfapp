@@ -51,7 +51,7 @@ class _GridInputState extends State<GridInput> {
             10,
             (indexRow) => indexColumn == 0
                 ? TextInput(
-                    enabled: widget.readOnly,
+                    disabled: widget.readOnly,
                     suffix: IconButton(
                       icon: const Icon(FluentIcons.cancel),
                       onPressed: () {
@@ -64,7 +64,7 @@ class _GridInputState extends State<GridInput> {
                   )
                 : indexColumn == 1
                     ? TextInput(
-                        enabled: widget.readOnly,
+                        disabled: widget.readOnly,
                         suffix: IconButton(
                           icon: const Icon(FluentIcons.cancel),
                           onPressed: () {
@@ -77,7 +77,7 @@ class _GridInputState extends State<GridInput> {
                       )
                     : indexColumn == 2
                         ? TextInput(
-                            enabled: widget.readOnly,
+                            disabled: widget.readOnly,
                             suffix: IconButton(
                               icon: const Icon(FluentIcons.cancel),
                               onPressed: () {
@@ -90,7 +90,7 @@ class _GridInputState extends State<GridInput> {
                           )
                         : indexColumn == 3
                             ? TextInput(
-                                enabled: widget.readOnly,
+                                disabled: widget.readOnly,
                                 suffix: IconButton(
                                   icon: const Icon(FluentIcons.cancel),
                                   onPressed: () {
@@ -103,7 +103,7 @@ class _GridInputState extends State<GridInput> {
                               )
                             : indexColumn == 4
                                 ? TextInput(
-                                    enabled: widget.readOnly,
+                                    disabled: widget.readOnly,
                                     suffix: IconButton(
                                       icon: const Icon(FluentIcons.cancel),
                                       onPressed: () {
@@ -116,7 +116,7 @@ class _GridInputState extends State<GridInput> {
                                   )
                                 : indexColumn == 5
                                     ? TextInput(
-                                        enabled: widget.readOnly,
+                                        disabled: widget.readOnly,
                                         suffix: IconButton(
                                           icon: const Icon(FluentIcons.cancel),
                                           onPressed: () {
@@ -131,7 +131,7 @@ class _GridInputState extends State<GridInput> {
                                       )
                                     : indexColumn == 6
                                         ? TextInput(
-                                            enabled: widget.readOnly,
+                                            disabled: widget.readOnly,
                                             suffix: IconButton(
                                               icon: const Icon(
                                                   FluentIcons.cancel),
@@ -146,7 +146,7 @@ class _GridInputState extends State<GridInput> {
                                             boxDecoration: widget.boxDecoration,
                                           )
                                         : TextInput(
-                                            enabled: widget.readOnly,
+                                            disabled: widget.readOnly,
                                             suffix: IconButton(
                                               icon: const Icon(
                                                   FluentIcons.cancel),

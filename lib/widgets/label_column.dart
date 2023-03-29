@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 class LabelColumn extends StatelessWidget {
   LabelColumn(
       {super.key,
-      required this.enabled,
+      required this.disabled,
       this.boxDecor,
       required this.textController});
   List textController = List.generate(8, (index) => TextEditingController());
   // final _textController = TextEditingController();
-  final bool enabled;
+  final bool disabled;
   final BoxDecoration? boxDecor;
   // List placeHolder = [
   //   "1000",
@@ -31,7 +31,7 @@ class LabelColumn extends StatelessWidget {
       children: List.generate(
         8,
         (index) => TextInput(
-          enabled: enabled,
+          disabled: disabled,
           placholder: placeHolder,
           boxDecoration: boxDecor,
           textcolor: textcolor,
