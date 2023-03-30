@@ -120,9 +120,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: Column(
                       children: [
-                        // Container(
-                        //   height: 35,
-                        // ),
                         Row(
                           children: [
                             Expanded(
@@ -210,9 +207,6 @@ class _HomePageState extends State<HomePage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        // const SizedBox(
-                                        //   height: 6,
-                                        // ),
                                         Container(
                                           alignment: Alignment.center,
                                           margin: const EdgeInsets.symmetric(
@@ -244,9 +238,6 @@ class _HomePageState extends State<HomePage> {
                                                   h.onSetAllDefaultValue();
                                                 });
                                               },
-                                              //   style: ButtonStyle(
-                                              //       backgroundColor: ,
-                                              // ),
                                             ),
                                           ],
                                         ),
@@ -255,10 +246,6 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         Row(
                                           children: [
-                                            // const Text("Import value       :"),
-                                            // const SizedBox(
-                                            //   width: 5,
-                                            // ),
                                             Button(
                                               child: const SizedBox(
                                                   width: 110,
@@ -273,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         Row(
                                           children: [
-                                            Container(
+                                            SizedBox(
                                               height: 38,
                                               child: TextInput(
                                                   boxDecoration: BoxDecoration(
@@ -282,9 +269,6 @@ class _HomePageState extends State<HomePage> {
                                                   placholder: "injector",
                                                   controller: setInjectorValue),
                                             ),
-                                            // const SizedBox(
-                                            //   width: 5,
-                                            // ),
                                             FilledButton(
                                               child: const Text("OK"),
                                               onPressed: () {
@@ -339,9 +323,6 @@ class _HomePageState extends State<HomePage> {
                                                   },
                                                 );
                                               },
-                                              //   style: ButtonStyle(
-                                              //       backgroundColor: ,
-                                              // ),
                                             ),
                                           ],
                                         ),
@@ -361,9 +342,6 @@ class _HomePageState extends State<HomePage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        // const SizedBox(
-                                        //   height: 6,
-                                        // ),
                                         Container(
                                           alignment: Alignment.center,
                                           margin: const EdgeInsets.only(
@@ -388,10 +366,10 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         Row(
                                           children: [
-                                            Text(
+                                            const Text(
                                               "TPS > ",
                                             ),
-                                            Container(
+                                            SizedBox(
                                               height: 35,
                                               child: TextInput(
                                                   boxDecoration: BoxDecoration(
@@ -405,7 +383,7 @@ class _HomePageState extends State<HomePage> {
                                               direction: Axis.horizontal,
                                               size: 10,
                                             ),
-                                            Container(
+                                            SizedBox(
                                               height: 35,
                                               child: TextInput(
                                                   boxDecoration: BoxDecoration(
@@ -414,7 +392,7 @@ class _HomePageState extends State<HomePage> {
                                                   placholder: "max",
                                                   controller: setTPSValueMax),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 5,
                                             ),
                                             FilledButton(
@@ -481,10 +459,10 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         Row(
                                           children: [
-                                            Text(
+                                            const Text(
                                               "RPM > ",
                                             ),
-                                            Container(
+                                            SizedBox(
                                               height: 35,
                                               child: TextInput(
                                                   boxDecoration: BoxDecoration(
@@ -497,7 +475,7 @@ class _HomePageState extends State<HomePage> {
                                               direction: Axis.horizontal,
                                               size: 10,
                                             ),
-                                            Container(
+                                            SizedBox(
                                               height: 35,
                                               child: TextInput(
                                                   boxDecoration: BoxDecoration(
@@ -506,7 +484,7 @@ class _HomePageState extends State<HomePage> {
                                                   placholder: "max",
                                                   controller: setRPMValueMax),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 5,
                                             ),
                                             FilledButton(
@@ -573,10 +551,10 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         Row(
                                           children: [
-                                            Text(
+                                            const Text(
                                               "INJ > ",
                                             ),
-                                            Container(
+                                            SizedBox(
                                               height: 35,
                                               child: TextInput(
                                                   boxDecoration: BoxDecoration(
@@ -589,7 +567,7 @@ class _HomePageState extends State<HomePage> {
                                               direction: Axis.horizontal,
                                               size: 10,
                                             ),
-                                            Container(
+                                            SizedBox(
                                               height: 35,
                                               child: TextInput(
                                                   boxDecoration: BoxDecoration(
@@ -598,7 +576,7 @@ class _HomePageState extends State<HomePage> {
                                                   placholder: "max",
                                                   controller: setINJValueMax),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 5,
                                             ),
                                             FilledButton(
@@ -690,10 +668,7 @@ class _HomePageState extends State<HomePage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: const [
-                                              Text(
-                                                "EDIT",
-                                                // style: TextStyle(fontSize: 16),
-                                              ),
+                                              Text("EDIT"),
                                               Icon(
                                                 FluentIcons
                                                     .app_icon_default_edit,
@@ -715,7 +690,7 @@ class _HomePageState extends State<HomePage> {
                                                   readOnlyRow = !x;
                                                 },
                                               ),
-                                              content: Text("TPS"),
+                                              content: const Text("TPS"),
                                             ),
                                           ],
                                         ),
@@ -732,7 +707,7 @@ class _HomePageState extends State<HomePage> {
                                                   readOnlyColumn = !v;
                                                 },
                                               ),
-                                              content: Text("RPM"),
+                                              content: const Text("RPM"),
                                             ),
                                           ],
                                         ),
@@ -749,7 +724,7 @@ class _HomePageState extends State<HomePage> {
                                                   readOnlyInput = !y;
                                                 },
                                               ),
-                                              content: Text(
+                                              content: const Text(
                                                 "INJ",
                                                 textAlign: TextAlign.center,
                                               ),
@@ -839,11 +814,6 @@ class _HomePageState extends State<HomePage> {
                                                     print(
                                                         "${valueTPS[i]};${valueRPM[i]};${valueOutput[i]};");
                                                   }
-                                                  // print(valueRPM);
-                                                  // for (var i = 0; i < 8; i++) {
-                                                  //   print(valueRPM[i * 10]);
-                                                  // }
-                                                  // print(valueTPS);
                                                   for (var i = 0;
                                                       i < h.slotData.value;
                                                       i++) {
@@ -918,9 +888,6 @@ class _HomePageState extends State<HomePage> {
                                               },
                                             );
                                           },
-                                          //   style: ButtonStyle(
-                                          //       backgroundColor: ,
-                                          // ),
                                         ),
                                       ],
                                     ),
@@ -970,19 +937,12 @@ class _HomePageState extends State<HomePage> {
                                               }
 
                                               if (h.ports.isNotEmpty) {
-                                                // final String hexOutput =
-                                                //     h.ctrlToHex(textOutput, "injector");
-                                                // final String hexRPM =
-                                                //     h.ctrlToHex(textColumn, "RPM");
-                                                // final String hexTPS =
-                                                //     h.ctrlToHex(textRow, "TPS");
                                                 List<String> outputData =
                                                     h.ctrlToHexListAll(
                                                   textRow,
                                                   textColumn,
                                                   textOutput,
                                                 );
-                                                print(outputData);
                                                 showContentDialog(
                                                   context,
                                                   outputData,
@@ -991,16 +951,7 @@ class _HomePageState extends State<HomePage> {
                                                   textRow,
                                                 );
                                               }
-                                              // try {
-                                              //   String outputData =
-                                              //       h.ctrlToHexListAll(
-                                              //     textRow,
-                                              //     textColumn,
-                                              //     textOutput,
-                                              //   );
-
                                               isSaved = false;
-                                              // }
                                             },
                                           ),
                                         ),
@@ -1137,8 +1088,6 @@ void _send(String data) {
 
 void showContentDialog(
     BuildContext contexts, dataParsed, outputData, columnData, rowData) async {
-  // final List intOutput = [];
-  // final List<String> strOutput = [output.text.toString()];
   final HomeController h = Get.put(HomeController());
   final TextEditingController slotController =
       TextEditingController(text: "80");
@@ -1146,15 +1095,8 @@ void showContentDialog(
       TextEditingController(text: h.baudrate.toString());
   final TextEditingController delayController =
       TextEditingController(text: h.delaySend.toString());
-  final TextEditingController maxCOMController =
-      TextEditingController(text: h.maxCOM.toString());
-  // final hexOutput = h.ctrlToHexList(outputData, "injector");
-  // final hexRPM = h.ctrlToHexList(columnData, "RPM");
-  // final hexTPS = h.ctrlToHexList(rowData, "TPS");
-
-  // final textOutputList = h.ctrlToStringList(outputData, "injector");
-  // final textRPMList = h.ctrlToStringList(columnData, "RPM");
-  // final textTPSList = h.ctrlToStringList(rowData, "TPS");
+  // final TextEditingController maxCOMController =
+  //     TextEditingController(text: h.maxCOM.toString());
 
   final textOutput = h.ctrlToString(outputData, "injector");
   final textRPM = h.ctrlToString(columnData, "RPM");
@@ -1175,18 +1117,6 @@ void showContentDialog(
           Text(
             "RPM :\n$textRPM\n\nTPS :\n$textTPS\n\nINJECTOR :\n$textOutput\n------------------------------------------------------------\nPORT        :    $port",
           ),
-          // Row(
-          //   children: [
-          //     const Text("MAX COM DEVICE ID: "),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //     TextInput(
-          //       enabled: false,
-          //       controller: maxCOMController,
-          //     )
-          //   ],
-          // ),
           Row(
             children: [
               const Text("Baudrate  :"),
@@ -1241,199 +1171,97 @@ void showContentDialog(
           child: const Text('OK'),
           onPressed: () async {
             var timeEach = int.parse(delayController.text);
-            try {
-              String slotData = "";
-
-              showSnackbar(
-                context,
-                duration: Duration(
-                    milliseconds: timeEach * (int.parse(slotController.text))),
-                alignment: Alignment.topRight,
-                NotificationBar(
-                  height: 14.5,
-                  width: 14.5,
-                  isLong: true,
-                  contextRoot: context,
-                  type: "INFO",
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        child: const Text(
-                          "Sending ...",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      // ProgressBar()
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 15, 5),
-                        child: CircularCountDownTimer(
-                          isReverse: true,
-                          width: 45,
-                          height: 45,
-                          // duration: (timeEach * 3 / 1000).round(),
-                          duration:
-                              (timeEach * int.parse(slotController.text) / 1000)
-                                  .round(),
-                          fillColor: Colors.blue,
-                          // fillGradient: LinearGradient(colors: [
-                          //   Color.fromARGB(255, 1, 62, 109),
-                          //   Color.fromARGB(255, 0, 120, 212)
-                          // ]),
-                          ringColor: const Color.fromARGB(49, 110, 110, 110),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                onDismiss: () async {
-                  Navigator.pop(context, h.slotData.value.toString());
-                  // showSnackbar(
-                  //   duration: const Duration(seconds: 3),
-                  //   alignment: Alignment.topRight,
-                  //   context,
-                  //   NotificationBar(
-                  //     height: 16.5,
-                  //     width: 16.5,
-                  //     isLong: true,
-                  //     contextRoot: context,
-                  //     type: "INFO",
-                  //     content: Text(
-                  //       "------------------- ",
-                  //     ),
-                  //   ),
-                  // );
-                },
-              );
-              // for (var i = 0; i < h.slotData.value; i++) {
-              //   slotData = "$slotData${dataParsed[i].toString()}";
-              // }
-              // print('"$slotData"');
-
-              // var data = '"$slotData"';
+            if (h.ports.isNotEmpty) {
               try {
-                final portSend = SerialPort(h.ports[0], openNow: false);
-                portSend.open();
+                // String slotData = "";
 
-                final valueOutput = h.ctrlToStringList(outputData, "injector");
-                final valueRPM = h.ctrlToStringList(columnData, "RPM");
-                final valueTPS = h.ctrlToStringList(rowData, "TPS");
-                for (var i = 0; i < int.parse(slotController.text); i++) {
-                  // print("${valueTPS[i]};${valueRPM[i]};${valueOutput[i]};");
-
-                  if (i == 0) {
-                    // portSend.wr
-                    portSend.writeBytesFromString(
-                        "wCC<${valueTPS[i]};${valueRPM[i]};${valueOutput[i]};${valueTPS[i + 1]};${valueRPM[i + 1]};${valueOutput[i + 1]};${valueTPS[i + 2]};${valueRPM[i + 2]};${valueOutput[i + 2]};${valueTPS[i + 3]};${valueRPM[i + 3]};${valueOutput[i + 3]};${valueTPS[i + 4]};${valueRPM[i + 4]};${valueOutput[i + 4]};${valueTPS[i + 5]};${valueRPM[i + 5]};${valueOutput[i + 5]};${valueTPS[i + 6]};${valueRPM[i + 6]};${valueOutput[i + 6]};${valueTPS[i + 7]};${valueRPM[i + 7]};${valueOutput[i + 7]};${valueTPS[i + 7]};${valueRPM[i + 7]};${valueOutput[i + 7]};${valueTPS[i + 7]};${valueRPM[i + 7]};${valueOutput[i + 7]};");
-                    print(
-                        "w0<${valueTPS[i]};${valueRPM[i]};${valueOutput[i]};${valueTPS[i + 1]};${valueRPM[i + 1]};${valueOutput[i + 1]}");
-                  } else {
-                    portSend.writeBytesFromString(
-                        "${valueTPS[i + 1]};${valueRPM[i + 1]};${valueOutput[i + 1]};");
-                    print("${valueTPS[i]};${valueRPM[i]};${valueOutput[i]};");
-                  }
-                  //DELAY TIME
-
-                  await Future.delayed(Duration(milliseconds: timeEach));
-                }
-                portSend.close();
-
-                // portSend.writeBytesFromString('w0<300;310;100;>');
-                // for (var i = 0; i < int.parse(slotController.text) * 3; i++) {
-                //   slotData = dataParsed[i].toString();
-                //   // "${dataParsed[i].toString()}${dataParsed[i + 1].toString()}${dataParsed[i + 2].toString()}";
-                //   // print(slotData);
-
-                //   // _send(slotData);
-
-                //   // [SERIAL_PORT32]
-                //   try {
-                //     final rep = slotData.replaceAll('\\x', '');
-                //     print(rep);
-
-                //     // portSend.writeBytesFromString(rep);
-
-                //     // uint16_t val =
-                //     //     0x1234;
-                //     // final data =
-                //     //     Uint16List
-                //     //         .fromList([
-                //     //   123,
-                //     //   456,
-                //     //   789
-                //     // ]);
-                //     // final bytez = data
-                //     //     .buffer
-                //     //     .asUint8List();
-                //     // print("test" +
-                //     //     bytez
-                //     //         .toString());
-
-                //     // final bytes = ;
-                //     var listData = [];
-                //     listData = slotData.split('\\x');
-                //     print(slotData);
-                //     // final msb = listData[2] + "00";
-                //     final uint16Data = Uint16List.fromList(
-                //         [int.parse("${listData[1]}", radix: 16), 00]);
-
-                //     final bytes = uint16Data.buffer.asUint8List();
-                //     // portSend.wr
-                //     // portSend.writeBytesFromUint8List(bytes);
-                //     portSend.writeBytesFromString('w0<30;31;32>');
-                //     print(bytes);
-                //   } catch (e) {
-                //     showSnackbar(
-                //       duration: const Duration(seconds: 3),
-                //       alignment: Alignment.topRight,
-                //       context,
-                //       NotificationBar(
-                //         contextRoot: context,
-                //         type: "ERROR",
-                //         content: Text(
-                //           "Port already opened and : $e",
-                //         ),
-                //       ),
-                //     );
-                //   }
-
-                //   //-- SerialSend.exe --//
-                //   // Process.run(
-                //   //   r'lib/assets/programs/SerialSend.exe',
-                //   //   [
-                //   //     '/devnum',
-                //   //     maxCOMController.text,
-                //   //     '/baudrate',
-                //   //     baudrateController.text,
-                //   //     '/hex',
-                //   //     slotData
-                //   //     // outputData,
-                //   //     // columnData,
-                //   //     // rowData
-                //   //   ],
-                //   // ).then(
-                //   //   (ProcessResult results) async {
-                //   //     // List stringSplit = [];
-                //   //     // List tryingSplit = [];
-                //   //     // String tests = "";
-
-                //   //     print("out :" + results.stderr);
-
-                //   //     print("err :" + results.stdout);
-
-                //   //     results.stderr == null
-                //   //         ? h.isSended.value = false
-                //   //         : {
-                //   //             h.logSended = h.logData(results.stderr),
-                //   //             h.isSended.value = true
-                //   //           };
-                //   //   },
-                //   // );
-
-                //   //DELAY TIME
-                //   await Future.delayed(Duration(milliseconds: timeEach));
+                showSnackbar(
+                  context,
+                  duration: Duration(milliseconds: timeEach * 8),
+                  alignment: Alignment.topRight,
+                  NotificationBar(
+                    height: 14.5,
+                    width: 14.5,
+                    isLong: true,
+                    contextRoot: context,
+                    type: "INFO",
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: const Text(
+                            "Sending ...",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        // ProgressBar()
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 15, 5),
+                          child: CircularCountDownTimer(
+                            isReverse: true,
+                            width: 45,
+                            height: 45,
+                            // duration: (timeEach * 3 / 1000).round(),
+                            duration: (timeEach * 8 / 1000).round(),
+                            fillColor: Colors.blue,
+                            // fillGradient: LinearGradient(colors: [
+                            //   Color.fromARGB(255, 1, 62, 109),
+                            //   Color.fromARGB(255, 0, 120, 212)
+                            // ]),
+                            ringColor: const Color.fromARGB(49, 110, 110, 110),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  onDismiss: () async {
+                    Navigator.pop(context, h.slotData.value.toString());
+                  },
+                );
+                // for (var i = 0; i < h.slotData.value; i++) {
+                //   slotData = "$slotData${dataParsed[i].toString()}";
                 // }
+                // print('"$slotData"');
+
+                // var data = '"$slotData"';
+                try {
+                  final portSend = SerialPort(h.ports[0], openNow: false);
+                  portSend.open();
+
+                  final valueOutput =
+                      h.ctrlToStringList(outputData, "injector");
+                  final valueRPM = h.ctrlToStringList(columnData, "RPM");
+                  final valueTPS = h.ctrlToStringList(rowData, "TPS");
+                  var x = 0;
+                  for (var i = 0; i < 8; i++) {
+                    portSend.writeBytesFromString(
+                        "w${i}CC<${valueTPS[x]};${valueRPM[x]};${valueOutput[x]};${valueTPS[x + 1]};${valueRPM[x + 1]};${valueOutput[x + 1]};${valueTPS[x + 2]};${valueRPM[x + 2]};${valueOutput[x + 2]};${valueTPS[x + 3]};${valueRPM[x + 3]};${valueOutput[x + 3]};${valueTPS[x + 4]};${valueRPM[x + 4]};${valueOutput[x + 4]};${valueTPS[x + 5]};${valueRPM[x + 5]};${valueOutput[x + 5]};${valueTPS[x + 6]};${valueRPM[x + 6]};${valueOutput[x + 6]};${valueTPS[x + 7]};${valueRPM[x + 7]};${valueOutput[x + 7]};${valueTPS[x + 8]};${valueRPM[x + 8]};${valueOutput[x + 8]};${valueTPS[x + 9]};${valueRPM[x + 9]};${valueOutput[x + 9]};>");
+                    print(
+                        "w${i}CC<${valueTPS[x]};${valueRPM[x]};${valueOutput[x]};${valueTPS[x + 1]};${valueRPM[x + 1]};${valueOutput[x + 1]};${valueTPS[x + 2]};${valueRPM[x + 2]};${valueOutput[x + 2]};${valueTPS[x + 3]};${valueRPM[x + 3]};${valueOutput[x + 3]};${valueTPS[x + 4]};${valueRPM[x + 4]};${valueOutput[x + 4]};${valueTPS[x + 5]};${valueRPM[x + 5]};${valueOutput[x + 5]};${valueTPS[x + 6]};${valueRPM[x + 6]};${valueOutput[x + 6]};${valueTPS[x + 7]};${valueRPM[x + 7]};${valueOutput[x + 7]};${valueTPS[x + 8]};${valueRPM[x + 8]};${valueOutput[x + 8]};${valueTPS[x + 9]};${valueRPM[x + 9]};${valueOutput[x + 9]};>");
+
+                    //DELAY TIME
+                    x += 10;
+
+                    await Future.delayed(Duration(milliseconds: timeEach));
+                  }
+                  portSend.close();
+                } catch (e) {
+                  showSnackbar(
+                    duration: const Duration(seconds: 3),
+                    alignment: Alignment.topRight,
+                    context,
+                    NotificationBar(
+                      height: 11,
+                      contextRoot: context,
+                      type: "ERROR",
+                      content: Text(
+                        e.toString(),
+                      ),
+                    ),
+                  );
+                }
+                // h.onSave(textTPSList, textRPMList, textOutputList);
               } catch (e) {
                 showSnackbar(
                   duration: const Duration(seconds: 3),
@@ -1443,14 +1271,13 @@ void showContentDialog(
                     height: 11,
                     contextRoot: context,
                     type: "ERROR",
-                    content: Text(
-                      e.toString(),
+                    content: const Text(
+                      "There is a value(s) that empty or invalid",
                     ),
                   ),
                 );
               }
-              // h.onSave(textTPSList, textRPMList, textOutputList);
-            } catch (e) {
+            } else {
               showSnackbar(
                 duration: const Duration(seconds: 3),
                 alignment: Alignment.topRight,
@@ -1460,7 +1287,7 @@ void showContentDialog(
                   contextRoot: context,
                   type: "ERROR",
                   content: const Text(
-                    "There is a value(s) that empty or invalid",
+                    "Port not connected",
                   ),
                 ),
               );
@@ -1473,6 +1300,4 @@ void showContentDialog(
       ],
     ),
   );
-  // print(result);
-  // print(hexRPM + hexTPS + hexOutput);
 }

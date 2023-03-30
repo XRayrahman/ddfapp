@@ -5,6 +5,7 @@ import 'package:ddfapp/widgets/side_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ddfapp/text_input.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:serial_port_win32/serial_port_win32.dart';
 
 class SideView extends StatefulWidget {
@@ -17,6 +18,7 @@ class SideView extends StatefulWidget {
 class _SideViewState extends State<SideView> {
   final SideController sC = Get.put(SideController());
   bool isMaximized = false;
+  var portSelected = "COM1";
   @override
   Widget build(BuildContext context) {
     final SideController sC = SideController();
@@ -51,33 +53,46 @@ class _SideViewState extends State<SideView> {
                                 sC.isConnected.value = v;
                                 h.ports = SerialPort.getAvailablePorts();
                                 print(h.ports);
+                                SerialPort port = SerialPort(h.ports[0]);
+                                try {
+                                  port.open();
+                                } catch (e) {
+                                  print("port already opened");
+                                }
 
-                                // if (sC.isConnected.value == true) {
-                                //   // while (true) {
+                                if (sC.isConnected.value == true) {
+                                  //   // while (true) {
 
-                                //   //READ PORT
-                                //   port.readBytesOnListen(8, (value) {
-                                //     var split = value.toString();
-                                //     final splitted = split.split(",");
-                                //     print(splitted);
+                                  //   //READ PORT
+                                  try {
+                                    port.readBytesOnListen(8, (value) {
+                                      var split = value.toString();
+                                      print(split);
+                                      final splitted = split.split(",");
+                                      print(splitted);
 
-                                //     for (var x = 0; x < splitted.length; x++) {
-                                //       splitted[x] =
-                                //           splitted[x].replaceAll("[", " ");
-                                //       splitted[x] =
-                                //           splitted[x].replaceAll("]", " ");
-                                //     }
-                                //     sC.readRPM.value = int.parse(splitted[0]);
-                                //     sC.readTPS.value = int.parse(splitted[1]);
-                                //     sC.readMAP.value = int.parse(splitted[2]);
-                                //     // sC.readTEMP.value =
-                                //     //     int.parse(splitted[3]);
-                                //   });
-                                //   // }
-                                //   print("done");
-                                // } else {
-                                //   port.close();
-                                // }
+                                      for (var x = 0;
+                                          x < splitted.length;
+                                          x++) {
+                                        splitted[x] =
+                                            splitted[x].replaceAll("[", " ");
+                                        splitted[x] =
+                                            splitted[x].replaceAll("]", " ");
+                                      }
+                                      sC.readRPM.value = int.parse(splitted[0]);
+                                      sC.readTPS.value = int.parse(splitted[1]);
+                                      sC.readMAP.value = int.parse(splitted[2]);
+                                      // sC.readTEMP.value =
+                                      //     int.parse(splitted[3]);
+                                    });
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                  // }
+                                  print("done");
+                                } else {
+                                  port.close();
+                                }
                               },
                               checked: sC.isConnected.value,
                               child: Container(
@@ -91,20 +106,24 @@ class _SideViewState extends State<SideView> {
                           )),
                       Row(children: [
                         Expanded(
-                          child: DropDownButton(
-                              title: Text("PORT"),
-                              trailing: Text("~"),
-                              items: [
-                                MenuFlyoutItem(
-                                  text: Text(listPort[0]),
-                                  onPressed: () => null,
-                                ),
-                                MenuFlyoutItem(
-                                  text: Text(listPort[1]),
-                                  onPressed: () => null,
-                                )
-                              ]),
-                        )
+                            child: Combobox<String>(
+                          placeholder: Text("PORT"),
+                          value: portSelected,
+                          items: listPort.map((e) {
+                            return ComboboxItem(
+                              value: e.toString(),
+                              child: Text(e.toString()),
+                              // onTap: () => setState(
+                              //   () {
+                              //     portSelected = listPort[e];
+                              //   },
+                              // ),
+                            );
+                          }).toList(),
+                          onChanged: ((value) => setState(() {
+                                portSelected = value.toString();
+                              })),
+                        ))
                       ]),
                       const SizedBox(
                         height: 10,

@@ -12,7 +12,7 @@ class HomeController extends GetxController {
   var baudrate = "115200".obs;
   var maxCOM = "15".obs;
   List ports = [].obs;
-  var delaySend = "500".obs;
+  var delaySend = "1000".obs;
   var readRPM = "0".obs;
 
   List loadData = List.generate(80, (index) => "").obs;
@@ -120,7 +120,7 @@ class HomeController extends GetxController {
       default:
         print("unknown choice");
     }
-    int x = ((end - start) / n).round();
+    int x = (end - start) ~/ n;
     for (int i = 0; i < 80; i++) {
       if (i == 79) {
         listPoint[i][y] = end.toString();
