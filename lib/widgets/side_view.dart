@@ -47,63 +47,76 @@ class _SideViewState extends State<SideView> {
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           // width: 200,
                           height: 150,
-                          child: Obx(
-                            () => ToggleButton(
-                              onChanged: (v) async {
-                                sC.isConnected.value = v;
-                                h.ports = SerialPort.getAvailablePorts();
-                                print(h.ports);
-                                SerialPort port = SerialPort(h.ports[0]);
-                                try {
-                                  port.open();
-                                } catch (e) {
-                                  print("port already opened");
-                                }
-
-                                if (sC.isConnected.value == true) {
-                                  //   // while (true) {
-
-                                  //   //READ PORT
-                                  try {
-                                    port.readBytesOnListen(8, (value) {
-                                      var split = value.toString();
-                                      print(split);
-                                      final splitted = split.split(",");
-                                      print(splitted);
-
-                                      for (var x = 0;
-                                          x < splitted.length;
-                                          x++) {
-                                        splitted[x] =
-                                            splitted[x].replaceAll("[", " ");
-                                        splitted[x] =
-                                            splitted[x].replaceAll("]", " ");
+                          child: Obx(() => ToggleButton(
+                                onChanged: (v) async {
+                                  sC.isConnected.value = v;
+                                  if (sC.isConnected.value == true) {
+                                    try {
+                                      h.ports = SerialPort.getAvailablePorts();
+                                      print(h.ports);
+                                      SerialPort port = SerialPort(h.ports[0]);
+                                      try {
+                                        port.open();
+                                      } catch (e) {
+                                        print("port already opened");
                                       }
-                                      sC.readRPM.value = int.parse(splitted[0]);
-                                      sC.readTPS.value = int.parse(splitted[1]);
-                                      sC.readMAP.value = int.parse(splitted[2]);
-                                      // sC.readTEMP.value =
-                                      //     int.parse(splitted[3]);
-                                    });
-                                  } catch (e) {
-                                    print(e);
+
+                                      if (sC.isConnected.value == true) {
+                                        //   // while (true) {
+
+                                        //   //READ PORT
+                                        try {
+                                          port.readBytesOnListen(8, (value) {
+                                            var split = value.toString();
+                                            print(split);
+                                            final splitted = split.split(",");
+                                            print(splitted);
+
+                                            for (var x = 0;
+                                                x < splitted.length;
+                                                x++) {
+                                              splitted[x] = splitted[x]
+                                                  .replaceAll("[", " ");
+                                              splitted[x] = splitted[x]
+                                                  .replaceAll("]", " ");
+                                            }
+                                            sC.readRPM.value =
+                                                int.parse(splitted[0]);
+                                            sC.readTPS.value =
+                                                int.parse(splitted[1]);
+                                            sC.readMAP.value =
+                                                int.parse(splitted[2]);
+                                            // sC.readTEMP.value =
+                                            //     int.parse(splitted[3]);
+                                          });
+                                        } catch (e) {
+                                          print(e);
+                                        }
+                                        // }
+                                        print("done");
+                                      } else {
+                                        port.close();
+                                      }
+                                    } catch (e) {
+                                      print("ERROR: {$e}");
+                                    }
+                                  } else {
+                                    h.ports = SerialPort.getAvailablePorts();
+                                    print(h.ports);
+                                    SerialPort port =
+                                        SerialPort(h.ports[0], openNow: false);
+                                    port.close();
                                   }
-                                  // }
-                                  print("done");
-                                } else {
-                                  port.close();
-                                }
-                              },
-                              checked: sC.isConnected.value,
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: const Icon(
-                                  FluentIcons.power_button,
-                                  size: 60,
+                                },
+                                checked: sC.isConnected.value,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: const Icon(
+                                    FluentIcons.power_button,
+                                    size: 60,
+                                  ),
                                 ),
-                              ),
-                            ),
-                          )),
+                              ))),
                       Row(children: [
                         Expanded(
                             child: Combobox<String>(

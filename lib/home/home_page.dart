@@ -30,12 +30,12 @@ class _HomePageState extends State<HomePage> {
   bool readOnlyRow = true;
   bool readOnlyInput = false;
   bool isSaved = false;
-  Color colorEnabled = const Color.fromARGB(255, 0, 120, 212);
-  Color colorInput = const Color.fromARGB(49, 110, 110, 110);
-  Color colorDisabled = const Color.fromARGB(255, 101, 101, 101);
   int lengthOutput = 80;
   int lengthColumn = 8;
   int lengthRow = 10;
+  Color colorEnabled = const Color.fromARGB(255, 0, 120, 212);
+  Color colorInput = const Color.fromARGB(49, 110, 110, 110);
+  Color colorDisabled = const Color.fromARGB(255, 101, 101, 101);
 
   // FOR LOAD DATA
   // Future<File> get _pickFile async {
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
 
-    TextEditingController setInjectorValue = TextEditingController();
+    TextEditingController setInjectorVal = TextEditingController();
     TextEditingController setINJValueMin = TextEditingController();
     TextEditingController setINJValueMax = TextEditingController();
     TextEditingController setTPSValueMin = TextEditingController();
@@ -267,14 +267,14 @@ class _HomePageState extends State<HomePage> {
                                                       color: colorInput),
                                                   disabled: false,
                                                   placholder: "injector",
-                                                  controller: setInjectorValue),
+                                                  controller: setInjectorVal),
                                             ),
                                             FilledButton(
                                               child: const Text("OK"),
                                               onPressed: () {
                                                 setState(
                                                   () {
-                                                    if (setInjectorValue.text ==
+                                                    if (setInjectorVal.text ==
                                                         "") {
                                                       showSnackbar(
                                                         duration:
@@ -292,16 +292,14 @@ class _HomePageState extends State<HomePage> {
                                                         ),
                                                       );
                                                     } else if (int.parse(
-                                                                setInjectorValue
+                                                                setInjectorVal
                                                                     .text) <
                                                             1000 &&
-                                                        int.parse(
-                                                                setInjectorValue
-                                                                    .text) >=
+                                                        int.parse(setInjectorVal
+                                                                .text) >=
                                                             0) {
                                                       h.onSetInjectorValue(
-                                                          setInjectorValue
-                                                              .text);
+                                                          setInjectorVal.text);
                                                     } else {
                                                       showSnackbar(
                                                         duration:
