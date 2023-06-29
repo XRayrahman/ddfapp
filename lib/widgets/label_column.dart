@@ -12,16 +12,6 @@ class LabelColumn extends StatelessWidget {
   // final _textController = TextEditingController();
   final bool disabled;
   final BoxDecoration? boxDecor;
-  // List placeHolder = [
-  //   "1000",
-  //   "1500",
-  //   "2000",
-  //   "2500",
-  //   "3000",
-  //   "3500",
-  //   "4000",
-  //   "4500",
-  // ];
   String? placeHolder = "";
 
   @override

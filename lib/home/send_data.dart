@@ -2,6 +2,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:ddfapp/text_input.dart';
 import 'package:ddfapp/widgets/notification.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:serial_port_win32/serial_port_win32.dart';
 
@@ -149,11 +150,11 @@ void showContentDialog(
 
                   var packetTPS = "";
                   const bytes8 = 2;
-                  var PACKET_STATE = "1";
-                  var CHANGE_CELL = "F";
+                  var packetState = "1";
+                  var changeCell = "F";
                   // const UNIT_SCALE = 10;
                   for (var i = 0; i < 9; i++) {
-                    var ROW_INDEX = i.toRadixString(8).padLeft(2, "0");
+                    var rowIndex = i.toRadixString(8).padLeft(2, "0");
                     // ROW_INDEX = ROW_INDEX.padLeft(3, "\\x");
                     if (i == 8) {
                       for (var n = 0; n < 9; n++) {
@@ -163,9 +164,11 @@ void showContentDialog(
                       portSend.writeBytesFromString(
                         packetTPS,
                       );
-                      print("$packetTPS${packetTPS.length + 2}");
+                      if (kDebugMode) {
+                        print("$packetTPS${packetTPS.length + 2}");
+                      }
                     } else {
-                      String packetData = "$PACKET_STATE$CHANGE_CELL$ROW_INDEX"
+                      String packetData = "$packetState$changeCell$rowIndex"
                           "${h.toHEX(valueRPM[x])}"
                           "${h.toHEX(valueOutput[x])}"
                           "${h.toHEX(valueOutput[x + 1])}"
@@ -177,7 +180,7 @@ void showContentDialog(
                           "${h.toHEX(valueOutput[x + 7])}"
                           "${h.toHEX(valueOutput[x + 8])}"
                           "${h.toHEX(valueOutput[x + 9])}";
-                      String packetData_SIZE = (packetData.length + bytes8)
+                      String packetdataSize = (packetData.length + bytes8)
                           .toRadixString(8)
                           .padLeft(2, "0");
                       portSend.WriteTotalTimeoutMultiplier = 1;
@@ -185,7 +188,9 @@ void showContentDialog(
                         // "first is baris, kemudian data + check manual "
                         packetData,
                       );
-                      print("$packetData$packetData_SIZE");
+                      if (kDebugMode) {
+                        print("$packetData$packetdataSize");
+                      }
                       // print("${dataParsed}");
                       x += 10;
                     }

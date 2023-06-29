@@ -1,9 +1,5 @@
 import 'package:ddfapp/text_input.dart';
-import 'package:ddfapp/widgets/side_view.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:ddfapp/widgets/grid_input.dart';
-import 'package:ddfapp/widgets/label_column.dart';
-import 'package:ddfapp/widgets/label_row.dart';
 import 'package:ddfapp/widgets/notification.dart';
 import "home_controller.dart";
 import 'package:ddfapp/widgets/divide.dart';
@@ -76,9 +72,9 @@ class _ConfigBarState extends State<ConfigBar> {
                   alignment: Alignment.center,
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   width: 100,
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         "CLEAR",
                       ),
@@ -147,9 +143,9 @@ class _ConfigBarState extends State<ConfigBar> {
                     vertical: 10,
                   ),
                   width: 120,
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         "INSERT",
                         // style: TextStyle(fontSize: 16),
@@ -279,9 +275,9 @@ class _ConfigBarState extends State<ConfigBar> {
                     vertical: 10,
                   ),
                   width: 150,
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         "INSERT BY RANGE",
                         // style: TextStyle(fontSize: 16),

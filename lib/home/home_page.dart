@@ -12,6 +12,7 @@ import 'package:ddfapp/widgets/side_controller.dart';
 import 'package:ddfapp/widgets/side_view.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:serial_port_win32/serial_port_win32.dart';
 import 'package:path_provider/path_provider.dart';
@@ -87,7 +88,6 @@ class _HomePageState extends State<HomePage> {
     try {
       final file = await _pickFile;
       final contents = await file.readAsString();
-      print(contents);
       return contents;
     } catch (e) {
       return "";
@@ -942,8 +942,10 @@ class _HomePageState extends State<HomePage> {
                                                       for (var i = 0;
                                                           i < 80;
                                                           i++) {
-                                                        print(
-                                                            "${valueTPS[i]};${valueRPM[i]};${valueInjector[i]};");
+                                                        if (kDebugMode) {
+                                                          print(
+                                                              "${valueTPS[i]};${valueRPM[i]};${valueInjector[i]};");
+                                                        }
                                                       }
                                                       for (var i = 0;
                                                           i < h.slotData.value;
@@ -985,12 +987,9 @@ class _HomePageState extends State<HomePage> {
                                                             "${h.ctrlToString(textRow, "TPS")}\n"
                                                             "${h.ctrlToString(textColumn, "RPM")}\n"
                                                             "${h.ctrlToString(textInjector, "injector")}");
-                                                        files.then(
-                                                          (value) => {
-                                                            print(value),
-                                                          },
-                                                        );
-                                                        h.isSaved.value = true;
+                                                        files.whenComplete(() =>
+                                                            h.isSaved.value =
+                                                                true);
                                                       }
                                                     } catch (e) {
                                                       showSnackbar(

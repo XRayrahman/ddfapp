@@ -1,5 +1,7 @@
 // import 'dart:math';
 
+import 'package:flutter/foundation.dart';
+
 void main() {
   // Define the dimensions of the array
   const int rows = 20;
@@ -8,7 +10,9 @@ void main() {
   // Create a sorted array
   var array = List.generate(
       rows, (i) => List.generate(columns, (j) => i * columns + j + 1));
-  print(array);
+  if (kDebugMode) {
+    print(array);
+  }
 
   // Flatten the array into a one-dimensional list
   var flatArray = array.expand((i) => i).toList();
@@ -23,7 +27,9 @@ void main() {
   var row = index ~/ columns;
   var column = index % columns;
 
-  print("Found value 77 at array[$row][$column]");
+  if (kDebugMode) {
+    print("Found value 77 at array[$row][$column]");
+  }
 }
 
 int binarySearch(List<int> array, int value) {

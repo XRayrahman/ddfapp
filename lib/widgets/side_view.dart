@@ -2,10 +2,10 @@ import 'package:ddfapp/home/home_controller.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ddfapp/widgets/side_widget.dart';
 import 'package:ddfapp/widgets/side_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:serial_port_win32/serial_port_win32.dart';
 import 'notification.dart';
-import 'dart:typed_data';
 
 class SideView extends StatefulWidget {
   const SideView({super.key});
@@ -57,7 +57,7 @@ class _SideViewState extends State<SideView> {
                                       try {
                                         port.open();
                                       } catch (e) {
-                                        print("port already opened");
+                                        throw Exception("port already opened");
                                       }
 
                                       if (sC.isConnected.value == true) {
@@ -72,7 +72,9 @@ class _SideViewState extends State<SideView> {
                                               sC.readTPS.value = intList[1];
                                               sC.readMAP.value = intList[2];
                                             } catch (e) {
-                                              print("waiting data...");
+                                              if (kDebugMode) {
+                                                print("waiting data...");
+                                              }
                                             }
                                           });
                                         } catch (e) {

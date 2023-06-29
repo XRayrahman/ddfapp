@@ -10,18 +10,6 @@ class LabelRow extends StatelessWidget {
   List textController = List.generate(10, (index) => TextEditingController());
   final bool disabled;
   final BoxDecoration? boxDecor;
-  // List placeHolder = [
-  //   "10",
-  //   "20",
-  //   "30",
-  //   "40",
-  //   "50",
-  //   "60",
-  //   "70",
-  //   "80",
-  //   "90",
-  //   "100",
-  // ];
   String? placeHolder = "";
 
   @override

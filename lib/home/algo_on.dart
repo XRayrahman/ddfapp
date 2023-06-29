@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 void main() {
   // Define the dimensions of the array
   const int rows = 20;
@@ -6,7 +8,9 @@ void main() {
   // Create an array
   var array = List.generate(
       rows, (i) => List.generate(columns, (j) => i * columns + j + 1));
-  print(array);
+  if (kDebugMode) {
+    print(array);
+  }
 
   // Search for the value 6
   var found = false;
@@ -27,9 +31,11 @@ void main() {
   }
 
   // Print the result
-  if (found) {
-    print("Found value 6 at array[$row][$column]");
-  } else {
-    print("Value 6 not found in the array");
+  if (kDebugMode) {
+    if (found) {
+      print("Found value 6 at array[$row][$column]");
+    } else {
+      print("Value 6 not found in the array");
+    }
   }
 }
