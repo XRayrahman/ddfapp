@@ -12,8 +12,8 @@ class NotificationBar extends StatelessWidget {
   });
 
   BuildContext contextRoot;
-  double? height = 11;
-  double? width = 4;
+  double? height = 10;
+  double? width = 200;
   Widget content = const Text("");
   String? type = "";
   bool? isLong = false;
@@ -21,16 +21,16 @@ class NotificationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    height ??= 9;
+    height ??= 10;
     width ??= 16;
     if (isLong == true) {
       isLongConst = true;
     }
 
     return SizedBox(
-      height: MediaQuery.of(contextRoot).size.height / (20 - height!),
+      height: (MediaQuery.of(contextRoot).size.height / 100) * height!,
       // width: MediaQuery.of(context).size.width / 4,
-      width: MediaQuery.of(contextRoot).size.width / (20 - width!),
+      width: (MediaQuery.of(contextRoot).size.width + width!) / 5,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: InfoBar(

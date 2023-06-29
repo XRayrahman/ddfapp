@@ -1,5 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import '../text_input.dart';
 
 class SettingsPage extends StatefulWidget {

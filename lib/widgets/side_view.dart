@@ -1,12 +1,11 @@
 import 'package:ddfapp/home/home_controller.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:ddfapp/side_widget.dart';
+import 'package:ddfapp/widgets/side_widget.dart';
 import 'package:ddfapp/widgets/side_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ddfapp/text_input.dart';
-import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:serial_port_win32/serial_port_win32.dart';
+import 'notification.dart';
+import 'dart:typed_data';
 
 class SideView extends StatefulWidget {
   const SideView({super.key});
@@ -19,12 +18,13 @@ class _SideViewState extends State<SideView> {
   final SideController sC = Get.put(SideController());
   bool isMaximized = false;
   var portSelected = "COM1";
+
   @override
   Widget build(BuildContext context) {
     final SideController sC = SideController();
     final HomeController h = HomeController();
-    final TextEditingController portController =
-        TextEditingController(text: sC.ports.toString());
+    // final TextEditingController portController =
+    //     TextEditingController(text: sC.ports.toString());
     List listPort = ["COM1", "COM2"];
 
     return Container(
@@ -53,7 +53,6 @@ class _SideViewState extends State<SideView> {
                                   if (sC.isConnected.value == true) {
                                     try {
                                       h.ports = SerialPort.getAvailablePorts();
-                                      print(h.ports);
                                       SerialPort port = SerialPort(h.ports[0]);
                                       try {
                                         port.open();
@@ -62,50 +61,65 @@ class _SideViewState extends State<SideView> {
                                       }
 
                                       if (sC.isConnected.value == true) {
-                                        //   // while (true) {
-
                                         //   //READ PORT
                                         try {
-                                          port.readBytesOnListen(8, (value) {
-                                            var split = value.toString();
-                                            print(split);
-                                            final splitted = split.split(",");
-                                            print(splitted);
+                                          port.readBytesOnListen(4, (value) {
+                                            List<int> intList =
+                                                sC.byteToInt(value);
 
-                                            for (var x = 0;
-                                                x < splitted.length;
-                                                x++) {
-                                              splitted[x] = splitted[x]
-                                                  .replaceAll("[", " ");
-                                              splitted[x] = splitted[x]
-                                                  .replaceAll("]", " ");
+                                            try {
+                                              sC.readRPM.value = intList[0];
+                                              sC.readTPS.value = intList[1];
+                                              sC.readMAP.value = intList[2];
+                                            } catch (e) {
+                                              print("waiting data...");
                                             }
-                                            sC.readRPM.value =
-                                                int.parse(splitted[0]);
-                                            sC.readTPS.value =
-                                                int.parse(splitted[1]);
-                                            sC.readMAP.value =
-                                                int.parse(splitted[2]);
-                                            // sC.readTEMP.value =
-                                            //     int.parse(splitted[3]);
                                           });
                                         } catch (e) {
-                                          print(e);
+                                          port.close();
+                                          // print(e);
                                         }
-                                        // }
-                                        print("done");
                                       } else {
                                         port.close();
                                       }
                                     } catch (e) {
-                                      print("ERROR: {$e}");
+                                      showSnackbar(
+                                        duration: const Duration(seconds: 1),
+                                        alignment: Alignment.topRight,
+                                        context,
+                                        NotificationBar(
+                                          contextRoot: context,
+                                          type: "ERROR",
+                                          content: const Text(
+                                            "No device connected",
+                                          ),
+                                        ),
+                                      );
+
+                                      // print("ERROR: {$e}");
                                     }
                                   } else {
-                                    h.ports = SerialPort.getAvailablePorts();
-                                    print(h.ports);
-                                    SerialPort port =
-                                        SerialPort(h.ports[0], openNow: false);
-                                    port.close();
+                                    try {
+                                      h.ports = SerialPort.getAvailablePorts();
+                                      SerialPort port = SerialPort(h.ports[0],
+                                          openNow: false);
+
+                                      port.close();
+                                      showSnackbar(
+                                        duration: const Duration(seconds: 1),
+                                        alignment: Alignment.topRight,
+                                        context,
+                                        NotificationBar(
+                                          contextRoot: context,
+                                          type: "SUCCESS",
+                                          content: const Text(
+                                            "port closed",
+                                          ),
+                                        ),
+                                      );
+                                    } catch (e) {
+                                      // print("ERROR: {$e}");
+                                    }
                                   }
                                 },
                                 checked: sC.isConnected.value,
@@ -119,11 +133,11 @@ class _SideViewState extends State<SideView> {
                               ))),
                       Row(children: [
                         Expanded(
-                            child: Combobox<String>(
-                          placeholder: Text("PORT"),
+                            child: ComboBox<String>(
+                          placeholder: const Text("PORT"),
                           value: portSelected,
                           items: listPort.map((e) {
-                            return ComboboxItem(
+                            return ComboBoxItem(
                               value: e.toString(),
                               child: Text(e.toString()),
                               // onTap: () => setState(
@@ -233,11 +247,11 @@ class _SideViewState extends State<SideView> {
                         ],
                       ),
                     )
-                  : Row(
+                  : const Row(
                       children: [
                         Expanded(
                           child: Column(
-                            children: const [
+                            children: [
                               SideWidget(
                                 title: "TPS",
                                 dataValue: "0 V",
@@ -254,12 +268,12 @@ class _SideViewState extends State<SideView> {
                             ],
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 10,
                         ),
                         Expanded(
                           child: Column(
-                            children: const [
+                            children: [
                               SideWidget(
                                 title: "MAP",
                                 dataValue: "0 V",

@@ -14,7 +14,7 @@ class SideWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 120,
+      height: 100,
       padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 255, 255, 255),
@@ -38,11 +38,11 @@ class SideWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 5,
+            height: 2,
           ),
           Text(
             dataValue,
-            style: const TextStyle(fontSize: 45),
+            style: const TextStyle(fontSize: 32),
           ),
         ],
       ),
