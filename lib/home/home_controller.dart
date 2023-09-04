@@ -6,9 +6,9 @@ class HomeController extends GetxController {
   RxBool isSaved = false.obs;
   var slotData = 80.obs;
   var maxInjectorValue = 3000.obs;
-  var baudrate = "115200".obs;
+  var baudrate = 115200.obs;
   var maxCOM = "15".obs;
-  var delaySend = "1000".obs;
+  var delaySend = "500".obs;
   var readRPM = "0".obs;
 
   List ports = [].obs;
@@ -88,12 +88,12 @@ class HomeController extends GetxController {
       default:
         throw ArgumentError("unknown choice");
     }
-    int x = (end - start) ~/ n;
+    int increment = ((end - start) / (n - 1)).round();
     for (int i = 0; i < 80; i++) {
       if (i == 79) {
         vecData[i][y] = end.toString();
       } else {
-        vecData[i][y] = (x * i + start).toString();
+        vecData[i][y] = ((increment * i) + start).toString();
       }
     }
     update();

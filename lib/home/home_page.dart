@@ -1,15 +1,14 @@
 import 'dart:io';
-
 import 'package:ddfapp/home/home_controller.dart';
-import 'package:ddfapp/home/send_data.dart';
-import 'package:ddfapp/text_input.dart';
-import 'package:ddfapp/widgets/divide.dart';
-import 'package:ddfapp/widgets/grid_input.dart';
-import 'package:ddfapp/widgets/label_column.dart';
-import 'package:ddfapp/widgets/label_row.dart';
+import 'package:ddfapp/home/upload_controller.dart';
+import 'package:ddfapp/widgets/text_input.dart';
+import 'package:ddfapp/widgets/divider.dart';
+import 'package:ddfapp/widgets/table/grid_input.dart';
+import 'package:ddfapp/widgets//table/label_column.dart';
+import 'package:ddfapp/widgets/table/label_row.dart';
 import 'package:ddfapp/widgets/notification.dart';
-import 'package:ddfapp/widgets/side_controller.dart';
-import 'package:ddfapp/widgets/side_view.dart';
+import 'package:ddfapp/home/home_side_controller.dart';
+import 'package:ddfapp/home/home_side.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
@@ -34,6 +33,7 @@ class ChartData {
 class _HomePageState extends State<HomePage> {
   final HomeController h = Get.put(HomeController());
   final SideController sC = Get.put(SideController());
+  final menuController = FlyoutController();
   bool checkedRow = false;
   bool checkedColumn = false;
   bool checkedInjector = true;
@@ -43,46 +43,8 @@ class _HomePageState extends State<HomePage> {
   int lengthOutput = 80;
   int lengthColumn = 8;
   int lengthRow = 10;
-  Color colorEnabled = const Color.fromARGB(255, 0, 120, 212);
-  Color colorInput = const Color.fromARGB(49, 110, 110, 110);
-  Color colorDisabled = const Color.fromARGB(255, 101, 101, 101);
-
-  // FOR LOAD DATA
-
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-    return directory.path;
-  }
-
-  Future<File> writeToFile(String counter) async {
-    final file = await _saveFile;
-    // Write the file
-    return file.writeAsString(counter);
-  }
-
-  Future<File> get _saveFile async {
-    String? result = await FilePicker.platform.saveFile(
-      dialogTitle: "Select or create File to save Values",
-      type: FileType.custom,
-      allowedExtensions: ['txt', 'log'],
-      initialDirectory: await _localPath,
-    );
-    return File(result.toString());
-  }
-
-  Future<File> get _pickFile async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      dialogTitle: "Select a saved Data Value",
-      type: FileType.custom,
-      allowedExtensions: ['txt', 'log'],
-      initialDirectory: await _localPath,
-    );
-
-    if (result == null) return File("");
-
-    PlatformFile file = result.files.single;
-    return File(file.path.toString());
-  }
+  Color colorInput = const Color.fromARGB(255, 249, 249, 249);
+  Color colorDisabled = const Color.fromARGB(222, 101, 101, 101);
 
   Future<String> loadData() async {
     try {
@@ -97,19 +59,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final List<ChartData> chartData1 = [
-      ChartData(1, 4.2),
-      ChartData(2, 2.3),
-      ChartData(3, 1.5),
-      ChartData(4, 2.2),
-      ChartData(5, 3.1)
+      ChartData(1, 0),
+      ChartData(2, 0),
+      ChartData(3, 0),
+      ChartData(4, 0),
+      ChartData(5, 0)
     ];
 
     final List<ChartData> chartData2 = [
-      ChartData(1, 3.2),
-      ChartData(2, 2.7),
-      ChartData(3, 3.5),
-      ChartData(4, 2.2),
-      ChartData(5, 1.3)
+      ChartData(1, 0),
+      ChartData(2, 0),
+      ChartData(3, 0),
+      ChartData(4, 0),
+      ChartData(5, 0)
     ];
 
     TextEditingController setInjectorVal = TextEditingController();
@@ -268,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                           ],
                                         ),
-                                        const Divide(
+                                        const cDivider(
                                           direction: Axis.vertical,
                                           size: 120,
                                           marginH: 20,
@@ -338,14 +300,13 @@ class _HomePageState extends State<HomePage> {
                                                 SizedBox(
                                                   height: 38,
                                                   child: TextInput(
-                                                      boxDecoration:
-                                                          BoxDecoration(
-                                                              color:
-                                                                  colorInput),
-                                                      disabled: false,
-                                                      placholder: "injector",
-                                                      controller:
-                                                          setInjectorVal),
+                                                    boxDecoration:
+                                                        BoxDecoration(
+                                                            color: colorInput),
+                                                    disabled: false,
+                                                    placholder: "injector",
+                                                    controller: setInjectorVal,
+                                                  ),
                                                 ),
                                                 FilledButton(
                                                   child: const Text("OK"),
@@ -414,7 +375,7 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                           ],
                                         ),
-                                        const Divide(
+                                        const cDivider(
                                           direction: Axis.vertical,
                                           size: 120,
                                           marginH: 20,
@@ -468,9 +429,8 @@ class _HomePageState extends State<HomePage> {
                                                       controller:
                                                           setTPSValueMin),
                                                 ),
-                                                const Divider(
-                                                  direction: Axis.horizontal,
-                                                  size: 10,
+                                                const Text(
+                                                  "--",
                                                 ),
                                                 SizedBox(
                                                   height: 35,
@@ -571,9 +531,8 @@ class _HomePageState extends State<HomePage> {
                                                       controller:
                                                           setRPMValueMin),
                                                 ),
-                                                const Divider(
-                                                  direction: Axis.horizontal,
-                                                  size: 10,
+                                                const Text(
+                                                  "--",
                                                 ),
                                                 SizedBox(
                                                   height: 35,
@@ -676,9 +635,8 @@ class _HomePageState extends State<HomePage> {
                                                       controller:
                                                           setINJValueMin),
                                                 ),
-                                                const Divider(
-                                                  direction: Axis.horizontal,
-                                                  size: 10,
+                                                const Text(
+                                                  "--",
                                                 ),
                                                 SizedBox(
                                                   height: 35,
@@ -769,7 +727,7 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                           ],
                                         ),
-                                        const Divide(
+                                        const cDivider(
                                           direction: Axis.vertical,
                                           size: 120,
                                           marginH: 20,
@@ -785,6 +743,7 @@ class _HomePageState extends State<HomePage> {
                                               alignment: Alignment.center,
                                               margin: const EdgeInsets.only(
                                                 top: 10,
+                                                bottom: 3,
                                               ),
                                               width: 100,
                                               child: const Row(
@@ -855,9 +814,9 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
+                                            // const SizedBox(
+                                            //   height: 40,
+                                            // ),
                                           ],
                                         ),
                                       ],
@@ -920,118 +879,182 @@ class _HomePageState extends State<HomePage> {
                                             const SizedBox(
                                               width: 15,
                                             ),
-                                            FilledButton(
-                                              child: const SizedBox(
-                                                  width: 100,
-                                                  child: Text("Save Value")),
-                                              onPressed: () {
-                                                setState(
-                                                  () {
-                                                    try {
-                                                      final valueInjector =
-                                                          h.ctrlToStringList(
-                                                              textInjector,
-                                                              "injector");
-                                                      final valueRPM =
-                                                          h.ctrlToStringList(
-                                                              textColumn,
-                                                              "RPM");
-                                                      final valueTPS =
-                                                          h.ctrlToStringList(
-                                                              textRow, "TPS");
-                                                      for (var i = 0;
-                                                          i < 80;
-                                                          i++) {
-                                                        if (kDebugMode) {
-                                                          print(
-                                                              "${valueTPS[i]};${valueRPM[i]};${valueInjector[i]};");
+                                            FlyoutTarget(
+                                              controller: menuController,
+                                              child: FilledButton(
+                                                child: const SizedBox(
+                                                    width: 100,
+                                                    child: Text("Save Value")),
+                                                onPressed: () {
+                                                  setState(
+                                                    () {
+                                                      try {
+                                                        final valueInjector =
+                                                            h.ctrlToStringList(
+                                                                textInjector,
+                                                                "injector");
+                                                        final valueRPM =
+                                                            h.ctrlToStringList(
+                                                                textColumn,
+                                                                "RPM");
+                                                        final valueTPS =
+                                                            h.ctrlToStringList(
+                                                                textRow, "TPS");
+                                                        for (var i = 0;
+                                                            i < 80;
+                                                            i++) {
+                                                          if (kDebugMode) {
+                                                            print(
+                                                                "${valueTPS[i]};${valueRPM[i]};${valueInjector[i]};");
+                                                          }
                                                         }
-                                                      }
-                                                      for (var i = 0;
-                                                          i < h.slotData.value;
-                                                          i++) {
-                                                        if (valueInjector[i] >=
+                                                        for (var i = 0;
+                                                            i <
+                                                                h.slotData
+                                                                    .value;
+                                                            i++) {
+                                                          if (valueInjector[
+                                                                  i] >=
+                                                              h.maxInjectorValue
+                                                                  .value) {
+                                                            showSnackbar(
+                                                              duration:
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              alignment:
+                                                                  Alignment
+                                                                      .topRight,
+                                                              context,
+                                                              NotificationBar(
+                                                                height: 13,
+                                                                contextRoot:
+                                                                    context,
+                                                                type: "ERROR",
+                                                                content: Text(
+                                                                    "Value(s) is more than maximum value settings at cell: ${i + 1}"),
+                                                              ),
+                                                            );
+                                                            h.isSaved.value =
+                                                                false;
+                                                          }
+                                                        }
+                                                        if (valueInjector[h
+                                                                    .slotData
+                                                                    .value -
+                                                                1] <=
                                                             h.maxInjectorValue
                                                                 .value) {
-                                                          showSnackbar(
-                                                            duration:
-                                                                const Duration(
-                                                                    seconds: 3),
-                                                            alignment: Alignment
-                                                                .topRight,
-                                                            context,
-                                                            NotificationBar(
-                                                              height: 13,
-                                                              contextRoot:
-                                                                  context,
-                                                              type: "ERROR",
-                                                              content: Text(
-                                                                  "Value(s) is more than maximum value settings at cell: ${i + 1}"),
-                                                            ),
-                                                          );
-                                                          h.isSaved.value =
-                                                              false;
-                                                        }
-                                                      }
-                                                      if (valueInjector[
-                                                              h.slotData.value -
-                                                                  1] <=
-                                                          h.maxInjectorValue
-                                                              .value) {
-                                                        h.onSave(
-                                                          valueTPS,
-                                                          valueRPM,
-                                                          valueInjector,
-                                                        );
-                                                        Future<File> files = writeToFile(
-                                                            "${h.ctrlToString(textRow, "TPS")}\n"
-                                                            "${h.ctrlToString(textColumn, "RPM")}\n"
-                                                            "${h.ctrlToString(textInjector, "injector")}");
-                                                        files.whenComplete(() =>
-                                                            h.isSaved.value =
-                                                                true);
-                                                      }
-                                                    } catch (e) {
-                                                      showSnackbar(
-                                                        duration:
-                                                            const Duration(
-                                                                seconds: 3),
-                                                        alignment:
-                                                            Alignment.topRight,
-                                                        context,
-                                                        NotificationBar(
-                                                          height: 20,
-                                                          contextRoot: context,
-                                                          type: "ERROR",
-                                                          content: Text(
-                                                              "${e}value is invalid or still empty"),
-                                                        ),
-                                                      );
-                                                      h.isSaved.value = false;
-                                                    }
+                                                          menuController
+                                                              .showFlyout(
+                                                                  autoModeConfiguration:
+                                                                      FlyoutAutoConfiguration(
+                                                                    preferredMode:
+                                                                        FlyoutPlacementMode
+                                                                            .topCenter,
+                                                                  ),
+                                                                  barrierDismissible:
+                                                                      true,
+                                                                  dismissOnPointerMoveAway:
+                                                                      true,
+                                                                  dismissWithEsc:
+                                                                      true,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return MenuFlyout(
+                                                                        items: [
+                                                                          MenuFlyoutItem(
+                                                                            leading:
+                                                                                const Icon(FluentIcons.save),
+                                                                            text:
+                                                                                const Text('Save'),
+                                                                            onPressed:
+                                                                                (() {
+                                                                              h.onSave(
+                                                                                valueTPS,
+                                                                                valueRPM,
+                                                                                valueInjector,
+                                                                              );
+                                                                              Flyout.of(context).close;
+                                                                              h.isSaved.value = true;
+                                                                              showSnackbar(
+                                                                                duration: const Duration(seconds: 3),
+                                                                                alignment: Alignment.topRight,
+                                                                                context,
+                                                                                NotificationBar(
+                                                                                  height: 10,
+                                                                                  width: 14,
+                                                                                  contextRoot: context,
+                                                                                  type: "SUCCESS",
+                                                                                  content: const Text("Value saved"),
+                                                                                ),
+                                                                              );
+                                                                            }),
+                                                                          ),
+                                                                          MenuFlyoutItem(
+                                                                            leading:
+                                                                                const Icon(FluentIcons.save_as),
+                                                                            text:
+                                                                                const Text('Save as'),
+                                                                            onPressed:
+                                                                                (() {
+                                                                              h.onSave(
+                                                                                valueTPS,
+                                                                                valueRPM,
+                                                                                valueInjector,
+                                                                              );
+                                                                              Future<File> files = writeToFile("${h.ctrlToString(textRow, "TPS")}\n"
+                                                                                  "${h.ctrlToString(textColumn, "RPM")}\n"
+                                                                                  "${h.ctrlToString(textInjector, "injector")}");
+                                                                              files.whenComplete(() => h.isSaved.value = true);
 
-                                                    if (h.isSaved.value ==
-                                                        true) {
-                                                      showSnackbar(
-                                                        duration:
-                                                            const Duration(
-                                                                seconds: 3),
-                                                        alignment:
-                                                            Alignment.topRight,
-                                                        context,
-                                                        NotificationBar(
-                                                          height: 10,
-                                                          width: 14,
-                                                          contextRoot: context,
-                                                          type: "SUCCESS",
-                                                          content: const Text(
-                                                              "Value saved"),
-                                                        ),
-                                                      );
-                                                    }
-                                                  },
-                                                );
-                                              },
+                                                                              showSnackbar(
+                                                                                duration: const Duration(seconds: 3),
+                                                                                alignment: Alignment.topRight,
+                                                                                context,
+                                                                                NotificationBar(
+                                                                                  height: 10,
+                                                                                  width: 14,
+                                                                                  contextRoot: context,
+                                                                                  type: "SUCCESS",
+                                                                                  content: const Text("Value saved"),
+                                                                                ),
+                                                                              );
+                                                                              Flyout.of(context).close;
+                                                                            }),
+                                                                          ),
+                                                                        ]);
+                                                                  });
+
+                                                          // saveDialog(
+                                                          //     context,
+                                                          //     textRow,
+                                                          //     textColumn,
+                                                          //     textInjector);
+                                                        }
+                                                      } catch (e) {
+                                                        showSnackbar(
+                                                          duration:
+                                                              const Duration(
+                                                                  seconds: 3),
+                                                          alignment: Alignment
+                                                              .topRight,
+                                                          context,
+                                                          NotificationBar(
+                                                            height: 20,
+                                                            contextRoot:
+                                                                context,
+                                                            type: "ERROR",
+                                                            content: Text(
+                                                                "${e}value is invalid or still empty"),
+                                                          ),
+                                                        );
+                                                        h.isSaved.value = false;
+                                                      }
+                                                    },
+                                                  );
+                                                },
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -1165,7 +1188,7 @@ class _HomePageState extends State<HomePage> {
                                           disabled: readOnlyRow,
                                           boxDecor: BoxDecoration(
                                             color: checkedRow
-                                                ? colorEnabled
+                                                ? Colors.teal
                                                 : colorDisabled,
                                           ),
                                           textController: textControllerRow),
@@ -1186,7 +1209,7 @@ class _HomePageState extends State<HomePage> {
                                     disabled: readOnlyColumn,
                                     boxDecor: BoxDecoration(
                                       color: checkedColumn
-                                          ? colorEnabled
+                                          ? Colors.teal
                                           : colorDisabled,
                                     ),
                                     textController: textControllerColumn,
@@ -1205,11 +1228,6 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       GridInput(
                                         readOnly: readOnlyInjector,
-                                        boxDecoration: BoxDecoration(
-                                            color: checkedInjector
-                                                ? const Color.fromARGB(
-                                                    49, 110, 110, 110)
-                                                : colorDisabled),
                                         textC: textControllerInjector,
                                       ),
                                     ],
@@ -1281,9 +1299,37 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// void _send(String data) {
-//   final HomeController hC = Get.put(HomeController());
-//   // final port = hC.ports[0];
-//   // print(port.writeBytesFromString());
-// }
+// FOR LOAD DATA
+Future<String> get _localPath async {
+  final directory = await getApplicationDocumentsDirectory();
+  return directory.path;
+}
 
+Future<File> writeToFile(String counter) async {
+  final file = await _saveFile;
+  return file.writeAsString(counter);
+}
+
+Future<File> get _saveFile async {
+  String? result = await FilePicker.platform.saveFile(
+    dialogTitle: "Select or create File to save Values",
+    type: FileType.custom,
+    allowedExtensions: ['txt', 'log'],
+    initialDirectory: await _localPath,
+  );
+  return File(result.toString());
+}
+
+Future<File> get _pickFile async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles(
+    dialogTitle: "Select a saved Data Value",
+    type: FileType.custom,
+    allowedExtensions: ['txt', 'log'],
+    initialDirectory: await _localPath,
+  );
+
+  if (result == null) return File("");
+
+  PlatformFile file = result.files.single;
+  return File(file.path.toString());
+}

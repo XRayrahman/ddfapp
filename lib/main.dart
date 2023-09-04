@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:ddfapp/home/home_page.dart';
 import 'package:ddfapp/settings/settings_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -7,30 +6,36 @@ import 'package:window_size/window_size.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // check for platform / operating system used
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    setWindowMinSize(const Size(1300, 820));
+    setWindowMinSize(const Size(1300, 830));
   }
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
+    // Build base for the application based on Fluent UI Design System
     return FluentApp(
-      theme: FluentThemeData(fontFamily: "Segoe-UI"),
-      title: 'Flutter Demo',
+      theme: FluentThemeData(
+        fontFamily: "Segoe-UI",
+        accentColor: Colors.teal,
+      ),
+      title: 'ECU DDF',
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(title: 'DDF'),
+      home: const MyHomePage(title: 'Dual-Diesel Fuel ECU'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -42,20 +47,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Main Navigation for the application with 2 pane (for now)
+    // home-> for data manipulation and settings-> for parameter
     return NavigationView(
-      // appBar: NavigationAppBar(
-      //   // title: Row(
-      //   //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //   //   children: const [
-      //   //     Text(
-      //   //       "ECU DDF CONFIGURATION",
-      //   //       style: TextStyle(
-      //   //         fontSize: 24,
-      //   //       ),
-      //   //     ),
-      //   //   ],
-      //   // ),
-      // ),
       pane: NavigationPane(
         selected: indexPage,
         size: const NavigationPaneSize(openMaxWidth: 50),
@@ -78,13 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      // content: NavigationBody(
-      //   index: indexPage,
-      //   children: const [
-      //     HomePage(),
-      //     SettingsPage(),
-      //   ],
-      // ),
     );
   }
 }

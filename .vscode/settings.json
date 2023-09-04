@@ -1,4 +1,9 @@
 {
     "editor.tabCompletion": "on",
-    "diffEditor.codeLens": true
+    "diffEditor.codeLens": true,
+    "rust-analyzer.linkedProjects": [
+        ".\\rust-serial\\Cargo.toml",
+        ".\\rust-serial\\Cargo.toml"
+    ],
+    "cmake.sourceDirectory": "G:/development/ddf/ddfapp/windows"
 }

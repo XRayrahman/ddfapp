@@ -20,7 +20,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=3.0.0"
 dependencies:
   flutter:
     sdk: flutter
@@ -42,12 +42,17 @@ dependencies:
   syncfusion_flutter_charts: ^21.2.8
   path_provider: ^2.0.15
   file_picker: ^5.3.1
+  ffi: ^2.0.2
+  flutter_rust_bridge: ^1.78.0
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   msix: ^3.9.1
+  ffigen: ^8.0.2
+  build_runner: ^2.4.6
 
 flutter:
   # The following line ensures that the Material Icons font is
@@ -65,6 +70,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/
+    - lib/assets/sern.dll
     # - lib/assets/programs/
 
   # An image asset can refer to one or more resolution-specific "variants", see
