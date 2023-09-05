@@ -39,8 +39,8 @@ void showContentDialog(
     context: contexts,
     builder: (context) => ContentDialog(
       constraints:
-          const BoxConstraints(maxWidth: 380, minHeight: 540, maxHeight: 580),
-      title: const Text('Send value to ECU?'),
+          const BoxConstraints(maxWidth: 380, minHeight: 500, maxHeight: 600),
+      title: const Text('Send Configuration'),
       content: Column(
         children: [
           Text(
@@ -102,6 +102,9 @@ void showContentDialog(
           child: const Text('OK'),
           onPressed: () async {
             var timeEach = int.parse(delayController.text);
+            if (h.ports.isEmpty) {
+              h.ports.add(0);
+            }
             if (h.ports.isNotEmpty) {
               try {
                 showSnackbar(
@@ -144,66 +147,6 @@ void showContentDialog(
                   },
                 );
                 try {
-                  // final portSend = SerialPort(h.ports[0], openNow: false);
-                  // portSend.open();
-                  // try {
-                  //   // const dec2hex = AnyBase(AnyBase.dec, AnyBase.hex);
-                  //   // var test = dec2hex.convert('512.5');
-                  //   // print(test);
-
-                  //   for (var i = 0;
-                  //       i < int.parse(slotController.text) * 3;
-                  //       i++) {
-                  //     var slotData = dataParsed[i].toString();
-                  //     // "${dataParsed[i].toString()}${dataParsed[i + 1].toString()}${dataParsed[i + 2].toString()}";
-                  //     // print(slotData);
-
-                  //     Process.run(
-                  //       r'lib/assets/programs/SerialSend.exe',
-                  //       [
-                  //         '/devnum',
-                  //         'test',
-                  //         '/baudrate',
-                  //         baudrateController.text,
-                  //         '/hex',
-                  //         slotData
-                  //         // outputData,
-                  //         // columnData,
-                  //         // rowData
-                  //       ],
-                  //     ).then(
-                  //       (ProcessResult results) async {
-                  //         // List stringSplit = [];
-                  //         // List tryingSplit = [];
-                  //         // String tests = "";
-
-                  //         // print("out :" + results.stderr);
-
-                  //         // print("err :" + results.stdout);
-
-                  //         results.stderr == null
-                  //             ? h.isSended.value = false
-                  //             : {};
-                  //       },
-                  //     );
-                  //     await Future.delayed(Duration(milliseconds: timeEach));
-                  //   }
-                  // } catch (e) {
-                  //   showSnackbar(
-                  //     duration: const Duration(seconds: 3),
-                  //     alignment: Alignment.topRight,
-                  //     context,
-                  //     NotificationBar(
-                  //       height: 11,
-                  //       contextRoot: context,
-                  //       type: "ERROR",
-                  //       content: Text(
-                  //         e.toString(),
-                  //       ),
-                  //     ),
-                  //   );
-                  // }
-
                   String libPath = "";
                   if (kReleaseMode) {
                     // I'm on release mode, absolute linking
@@ -228,10 +171,6 @@ void showContentDialog(
                   final List valueRPM = rpm.cast<int>();
                   final List valueTPS = h.ctrlToStringList(rowData, "TPS");
                   var x = 0;
-
-                  if (h.ports.isEmpty) {
-                    h.ports.add(0);
-                  }
                   var packetTPS = "";
                   var listTPS =
                       List.generate(10, (index) => valueTPS[index % 10]);
@@ -271,26 +210,6 @@ void showContentDialog(
 
                       final result = customSerialCommunication.sendData(
                           0, h.baudrate.value, command, i, listData);
-                      // String packetData = "$packetState$changeCell$rowIndex"
-                      //     "${h.toHEX(valueRPM[x])}"
-                      //     "${h.toHEX(valueOutput[x])}"
-                      //     "${h.toHEX(valueOutput[x + 1])}"
-                      //     "${h.toHEX(valueOutput[x + 2])}"
-                      //     "${h.toHEX(valueOutput[x + 3])}"
-                      //     "${h.toHEX(valueOutput[x + 4])}"
-                      //     "${h.toHEX(valueOutput[x + 5])}"
-                      //     "${h.toHEX(valueOutput[x + 6])}"
-                      //     "${h.toHEX(valueOutput[x + 7])}"
-                      //     "${h.toHEX(valueOutput[x + 8])}"
-                      //     "${h.toHEX(valueOutput[x + 9])}";
-                      // String packetdataSize = (packetData.length + bytes8)
-                      //     .toRadixString(8)
-                      //     .padLeft(2, "0");
-                      // portSend.WriteTotalTimeoutMultiplier = 1;
-                      // portSend.writeBytesFromString(
-                      //   // "first is baris, kemudian data + check manual "
-                      //   packetData,
-                      // );
                       if (kDebugMode) {
                         if (result == 0) {
                           print('Data sent successfully.');
